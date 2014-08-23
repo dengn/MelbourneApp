@@ -21,13 +21,13 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +38,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.melbournestore.adaptors.CategoryListAdaptor;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget
@@ -68,23 +69,33 @@ import android.widget.Toast;
  * for example enabling or disabling a data overlay on top of the current content.</p>
  */
 public class MainActivity extends Activity {
+	
+	private static final String TAG = "Melbourne";
+	
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+    
+    private ListView mCategoryList;
+    
     private ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mMenuTitles;
+    
+    private static int[] categoryImages = {R.drawable.category1, R.drawable.category2, R.drawable.category3};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = getResources().getStringArray(R.array.menu_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        
+        mCategoryList = (ListView) findViewById(R.id.category);
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -92,6 +103,9 @@ public class MainActivity extends Activity {
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mMenuTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        
+        mCategoryList.setAdapter(new CategoryListAdaptor(this,categoryImages));
+        mCategoryList.setOnItemClickListener(new CategoryItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -119,7 +133,7 @@ public class MainActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            selectItem(0);
+            //selectItem(0);
         }
     }
 
@@ -149,15 +163,15 @@ public class MainActivity extends Activity {
         // Handle action buttons
         switch(item.getItemId()) {
         case R.id.action_websearch:
-            // create intent to perform web search for this planet
-            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-            // catch event that there's no activity to handle intent
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-            }
+//            // create intent to perform web search for this planet
+//            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+//            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+//            // catch event that there's no activity to handle intent
+//            if (intent.resolveActivity(getPackageManager()) != null) {
+//                startActivity(intent);
+//            } else {
+//                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+//            }
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -168,8 +182,22 @@ public class MainActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+            //selectItem(position);
+        	Log.d(TAG, String.valueOf(position)+" drawer item clicked");
         }
+    }
+    
+    private class CategoryItemClickListener implements ListView.OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			// TODO Auto-generated method stub
+			Log.d(TAG, String.valueOf(position)+" item clicked");
+			Intent intent = new Intent(MainActivity.this, PlateActivity.class);
+            startActivity(intent);
+		}
+    	
     }
 
     private void selectItem(int position) {
