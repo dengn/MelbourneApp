@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" 
+    android:descendantFocusability="blocksDescendants">
     <ListView
         android:id="@+id/plates_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:id="@+id/childLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#55000000"
+        android:layout_alignParentBottom="true">
+        <!-- This will be your overlay so here you can add your login button ect -->
+        <TextView
+            android:id="@+id/confirm_price"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:textSize="25dp"
+        	android:gravity="end"/>
+        <Button
+        	android:id="@+id/confirm_choice"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Button" 
+        	android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 
-</LinearLayout>
+
+</RelativeLayout >
