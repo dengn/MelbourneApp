@@ -24,11 +24,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import com.melbournestore.adaptors.PlateListAdapter;
 
 public class PlateActivity extends Activity {
 
-   
+	private static final String TAG = "Melbourne";
+	
+    private ListView mPlatesList;
+    
+    private int[] plateImages = {R.drawable.plate1, R.drawable.plate2, R.drawable.plate3, R.drawable.plate4, R.drawable.plate5};
+
+    private String[] plateTitles = {"ÂéÀ±Ğ¡ÁúÏº",
+        "ËâÄàĞ¡ÁúÏº",
+        "Åİ½·Ğ¡ÁúÏº",
+        "¿§à¬Ğ¡ÁúÏº",
+        "Ğ¡ÁúÏº³´Äê¸â"};
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +54,16 @@ public class PlateActivity extends Activity {
         // Specify that the Home button should show an "Up" caret, indicating that touching the
         // button will take the user one step up in the application's hierarchy.
         actionBar.setDisplayHomeAsUpEnabled(true);
+        
+        mPlatesList = (ListView) findViewById(R.id.plates_list);
+        mPlatesList.setAdapter(new PlateListAdapter(this, plateTitles, plateImages));
+        
+        Intent intent = getIntent();
+        int category = intent.getIntExtra("Category",0);
+        Log.d(TAG,"category: "+String.valueOf(category));
+        
+        
+        
     }
     
     @Override

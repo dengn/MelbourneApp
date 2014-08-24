@@ -33,6 +33,14 @@
         <item>买家秀</item>
         <item>精品推荐</item>
     </string-array>
+    
+    <string-array name="plates_items">
+        <item>麻辣小龙虾</item>
+        <item>蒜泥小龙虾</item>
+        <item>泡椒小龙虾</item>
+        <item>咖喱小龙虾</item>
+        <item>小龙虾炒年糕</item>
+    </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>

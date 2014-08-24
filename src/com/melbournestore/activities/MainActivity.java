@@ -21,7 +21,6 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -39,7 +38,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.melbournestore.adaptors.CategoryListAdaptor;
+import com.melbournestore.adaptors.CategoryListAdapter;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget
@@ -104,8 +103,8 @@ public class MainActivity extends Activity {
                 R.layout.drawer_list_item, mMenuTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
-        mCategoryList.setAdapter(new CategoryListAdaptor(this,categoryImages));
-        mCategoryList.setOnItemClickListener(new CategoryItemClickListener());
+        mCategoryList.setAdapter(new CategoryListAdapter(this,categoryImages));
+
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -187,18 +186,7 @@ public class MainActivity extends Activity {
         }
     }
     
-    private class CategoryItemClickListener implements ListView.OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			// TODO Auto-generated method stub
-			Log.d(TAG, String.valueOf(position)+" item clicked");
-			Intent intent = new Intent(MainActivity.this, PlateActivity.class);
-            startActivity(intent);
-		}
-    	
-    }
+   
 
     private void selectItem(int position) {
         // update the main content by replacing fragments
