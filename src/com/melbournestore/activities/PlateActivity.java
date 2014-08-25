@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.melbournestore.adaptors.PlateListAdapter;
+import com.melbournestore.utils.MelbourneMath;
 
 public class PlateActivity extends Activity {
 
@@ -44,6 +45,8 @@ public class PlateActivity extends Activity {
     
     private TextView mTotalPrice;
     
+    private TextView mTotalNum;
+    
     private int[] plateImages = {R.drawable.plate1, R.drawable.plate2, R.drawable.plate3, R.drawable.plate4, R.drawable.plate5};
 
     private String[] plateTitles = {"麻辣小龙虾",
@@ -53,11 +56,12 @@ public class PlateActivity extends Activity {
         "小龙虾炒年糕"};
 
     private int[] platePrices = {55, 55, 58, 58, 55};
-    private String[] plateStocks = {"今日库存20份","今日库存20份","今日库存20份","今日库存10kg","今日库存10份"};
-    
-    private String[] plateNumbers = {"1","1","2","1","2"};
+    private int[] plateStocks = {20, 20, 20, 10, 10};
+    private int[] plateNumbers = {1, 1, 1, 2, 2};
     
     private int totalPrice = 0; 
+    
+    private int totalNum = 0;
     
     private Handler mHandler = new Handler() {
         @Override
@@ -68,12 +72,21 @@ public class PlateActivity extends Activity {
             	//plus = 1 
                 case 1:
                 	totalPrice+=platePrices[position];
+                	totalNum++;
                 	mTotalPrice.setText("$"+String.valueOf(totalPrice));
+                	mTotalNum.setText(String.valueOf(totalNum));
                     break;
                 //minus = 2
                 case 2:
-                	totalPrice-=platePrices[position];
-                	mTotalPrice.setText("$"+String.valueOf(totalPrice));
+                	if(totalPrice<=0){
+                		
+                	}else{
+                		
+                		totalPrice-=platePrices[position];
+                		totalNum--;
+                		mTotalPrice.setText("$"+String.valueOf(totalPrice));
+                		mTotalNum.setText(String.valueOf(totalNum));
+                	}
                     break;
 
             }
@@ -96,12 +109,23 @@ public class PlateActivity extends Activity {
         
         mPlatesList = (ListView) findViewById(R.id.plates_list);
         
-        String[] platePrices_string = new String[platePrices.length];
-        for(int i=0;i<platePrices.length;i++){
-        	platePrices_string[i]="$"+String.valueOf(platePrices[i]);
-        }
+//        String[] platePrices_string = new String[platePrices.length];
+//        for(int i=0;i<platePrices.length;i++){
+//        	platePrices_string[i]="$"+String.valueOf(platePrices[i]);
+//        }
+//        
+//        String[] plateStocks_string = new String[plateStocks.length];
+//        for(int i=0;i<plateStocks.length;i++){
+//        	plateStocks_string[i]="今日库存"+String.valueOf(plateStocks[i]+"份");
+//        }
+//        
+//        String[] plateNumbers_string = new String[plateNumbers.length];
+//        for(int i=0;i<plateNumbers.length;i++){
+//        	plateNumbers_string[i]=String.valueOf(plateNumbers[i]);
+//        }
         
-        mPlatesList.setAdapter(new PlateListAdapter(this, mHandler, plateTitles, platePrices_string, plateStocks, plateNumbers, plateImages));
+        
+        mPlatesList.setAdapter(new PlateListAdapter(this, mHandler, plateTitles, platePrices, plateStocks, plateNumbers, plateImages));
 
         
         mConfirmChoice = (Button) findViewById(R.id.confirm_choice);
@@ -109,6 +133,10 @@ public class PlateActivity extends Activity {
         
         mTotalPrice = (TextView) findViewById(R.id.confirm_price);
         mTotalPrice.setText("$"+String.valueOf(totalPrice));
+        
+        mTotalNum = (TextView) findViewById(R.id.plate_num_total);
+        totalNum = MelbourneMath.sum(plateNumbers);
+        mTotalNum.setText(String.valueOf(totalNum));
         
         Intent intent = getIntent();
         int category = intent.getIntExtra("Category",0);

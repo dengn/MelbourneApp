@@ -4,17 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/plate_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center" />
-    <TextView
-        android:id="@+id/plate_number"
-        android:layout_gravity="center" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/circle"/>
+    <RelativeLayout
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/plate_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"  
+
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/plate_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"  
+
+            android:layout_gravity="center"
+            android:background="@drawable/circle" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -28,6 +37,7 @@
             android:layout_gravity="center"
             android:text="TextView"
             android:textSize="20dp" />
+
         <TextView
             android:id="@+id/plate_price"
             android:layout_width="wrap_content"
@@ -35,6 +45,7 @@
             android:layout_gravity="center"
             android:text="TextView"
             android:textSize="20dp" />
+
         <TextView
             android:id="@+id/plate_like"
             android:layout_width="wrap_content"
@@ -43,20 +54,23 @@
             android:text="TextView"
             android:textSize="15dp" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-		<Button
-		    android:id="@+id/plate_plus"
-		    android:layout_width="wrap_content"
+
+        <Button
+            android:id="@+id/plate_plus"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+" />
-		<Button
-		    android:id="@+id/plate_minus"
-		    android:layout_width="wrap_content"
+
+        <Button
+            android:id="@+id/plate_minus"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-" />
-     </LinearLayout>   
+    </LinearLayout>
+
 </LinearLayout>

@@ -20,6 +20,14 @@
         	android:layout_height="wrap_content"
         	android:textSize="25dp"
         	android:gravity="end"/>
+        <TextView
+            android:id="@+id/plate_num_total"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:textSize="25dp"
+        	android:background="@drawable/circle"
+        	android:layout_alignParentRight="true" 
+        	android:gravity="end"/>
         <Button
         	android:id="@+id/confirm_choice"
         	android:layout_width="wrap_content"

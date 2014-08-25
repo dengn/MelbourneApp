@@ -17,10 +17,10 @@ import com.melbournestore.activities.R;
 
 public class PlateListAdapter extends BaseAdapter {
 	String[] plate_names;
-	String[] plate_prices;
-	String[] plate_stocks;
+	int[] plate_prices;
+	int[] plate_stocks;
 	
-	String[] plates_nums;
+	int[] plates_nums;
 
 	Context mContext;
 	int[] imageId;
@@ -30,7 +30,7 @@ public class PlateListAdapter extends BaseAdapter {
 	private static LayoutInflater inflater = null;
 
 	public PlateListAdapter(Context context, Handler handler, String[] names,
-			String[] prices, String[] stocks, String[] numbers, int[] imgs) {
+			int[] prices, int[] stocks, int[] numbers, int[] imgs) {
 		// TODO Auto-generated constructor stub
 		plate_names = names;
 		plate_prices = prices;
@@ -78,7 +78,7 @@ public class PlateListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		Holder holder = new Holder();
+		final Holder holder = new Holder();
 		View rowView;
 		rowView = inflater.inflate(R.layout.plate_list_item, null);
 		holder.names_view = (TextView) rowView.findViewById(R.id.plate_name);
@@ -91,11 +91,11 @@ public class PlateListAdapter extends BaseAdapter {
 		holder.minus = (Button) rowView.findViewById(R.id.plate_minus);
 
 		holder.names_view.setText(plate_names[position]);
-		holder.prices_view.setText(plate_prices[position]);
-		holder.stocks_view.setText(plate_stocks[position]);
+		holder.prices_view.setText("$"+String.valueOf(plate_prices[position]));
+		holder.stocks_view.setText("今日库存"+plate_stocks[position]+"份");
 		holder.imgs_view.setImageResource(imageId[position]);
 		
-		holder.num_view.setText(plates_nums[position]);
+		holder.num_view.setText(String.valueOf(plates_nums[position]));
 		// rowView.setOnClickListener(new OnClickListener() {
 		// @Override
 		// public void onClick(View v) {
@@ -121,6 +121,13 @@ public class PlateListAdapter extends BaseAdapter {
 				message.what = 1;
 
 				mHandler.sendMessage(message);
+				
+				plate_stocks[position]--;
+				plates_nums[position]++;
+				
+				holder.stocks_view.setText("今日库存"+plate_stocks[position]+"份");
+				holder.num_view.setText(String.valueOf(plates_nums[position]));
+				
 			}
 		});
 
@@ -138,7 +145,13 @@ public class PlateListAdapter extends BaseAdapter {
 				message.what = 2;
 
 				mHandler.sendMessage(message);
+				
+				plate_stocks[position]++;
+				plates_nums[position]--;
 
+				holder.stocks_view.setText("今日库存"+plate_stocks[position]+"份");
+				holder.num_view.setText(String.valueOf(plates_nums[position]));
+				
 			}
 		});
 
