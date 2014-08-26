@@ -1,40 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:descendantFocusability="blocksDescendants">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
     <ListView
-        android:id="@+id/plates_list"
+        android:id="@+id/shopping_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <RelativeLayout
-        android:id="@+id/plate_bottom_layour"
+        android:id="@+id/shopping_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="#55000000"
         android:layout_alignParentBottom="true">
         <!-- This will be your overlay so here you can add your login button ect -->
         <TextView
-            android:id="@+id/confirm_price"
+            android:id="@+id/price_total"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:textSize="25dp"
-        	android:gravity="end"/>
-        <TextView
-            android:id="@+id/plate_num_total"
-            android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:textSize="25dp"
-        	android:background="@drawable/circle"
-        	android:layout_alignParentRight="true" 
         	android:gravity="end"/>
         <Button
-        	android:id="@+id/confirm_choice"
+        	android:id="@+id/confirm_order"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:text="确定" 
+        	android:text="确认下单" 
         	android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
-
-</RelativeLayout >
+</RelativeLayout>
