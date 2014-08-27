@@ -9,6 +9,8 @@ import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,6 +76,22 @@ public class ShoppingCartActivity extends Activity {
 
 		priceTotal = MelbourneUtils.sum_price(orderPrices,orderNumbers);
 		mTotalPrice.setText("$"+String.valueOf(priceTotal));
+		
+		
+		mConfirmOrders.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				Intent intent = new Intent(ShoppingCartActivity.this, SubmitOrderActivity.class);
+				intent.putExtra("total_price", priceTotal);
+				
+				startActivity(intent);
+
+			}
+
+		});
 	}
 
 	@Override

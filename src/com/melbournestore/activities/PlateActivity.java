@@ -60,6 +60,8 @@ public class PlateActivity extends Activity {
 	private int totalPrice = 0;
 
 	private int totalNum = 0;
+	
+	
 
 	private Handler mHandler = new Handler() {
 		@Override

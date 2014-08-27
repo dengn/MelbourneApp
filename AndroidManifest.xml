@@ -40,6 +40,8 @@
             android:name=".PlateActivity"  />
        	<activity 
             android:name=".ShoppingCartActivity"  />
+       	<activity 
+            android:name=".SubmitOrderActivity"  />
 
     </application>
 
