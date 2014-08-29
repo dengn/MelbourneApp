@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,15 +31,17 @@ public class SubmitListAdapter extends BaseAdapter{
 	
 	Handler mHandler;
 	Context mContext;
+	int mPriceTotal;
 	
 	private static LayoutInflater inflater = null;
 	
-	public SubmitListAdapter(Context context, Handler handler) {
+	public SubmitListAdapter(Context context, Handler handler, int priceTotal) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
 		mHandler = handler;
+		mPriceTotal = priceTotal;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -170,12 +173,12 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_url.title = (TextView)convertView.findViewById(R.id.delivery_title);
         	holder_url.info = (TextView)convertView.findViewById(R.id.delivery_info);
         	
-        	holder_url.title.setText("配送说明");
-        	holder_url.info.setText("服务守则");
+        	holder_url.title.setText("配送费(Northwest+$8)");
+        	holder_url.info.setText(Html.fromHtml("<u>"+"派送说明"+"</u>"));  
         	
         	convertView.setTag(holder_url);
         	
-        	convertView.setOnClickListener(new OnClickListener(){
+        	holder_url.info.setOnClickListener(new OnClickListener(){
 
 				@Override
 				public void onClick(View v) {
@@ -192,7 +195,7 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_empty = new viewHolder_empty();
         	convertView = inflater.inflate(R.layout.submit_list_item_coupon, parent, false);
         	
-        	holder_empty.title = (TextView)convertView.findViewById(R.id.delivery_title);
+        	holder_empty.title = (TextView)convertView.findViewById(R.id.coupon_title);
         
         	
         	holder_empty.title.setText("使用优惠券");

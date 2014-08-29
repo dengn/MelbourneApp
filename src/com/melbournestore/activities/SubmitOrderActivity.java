@@ -53,7 +53,7 @@ public class SubmitOrderActivity extends Activity{
 		mSubmitPrice = (TextView) findViewById(R.id.submit_price_total);
 
 		mSubmitList = (ListView) findViewById(R.id.submit_list);
-		mSubmitList.setAdapter(new SubmitListAdapter(this, mHandler));
+		mSubmitList.setAdapter(new SubmitListAdapter(this, mHandler, priceTotal));
 
 
 		mSubmitOrders.setText("确认下单");

@@ -42,6 +42,10 @@
             android:name=".ShoppingCartActivity"  />
        	<activity 
             android:name=".SubmitOrderActivity"  />
+       	<activity 
+       	    android:name=".ChooseAddressActivity" />
+       	<activity 
+       	    android:name=".DeliveryNoticeActivity" />
 
     </application>
 

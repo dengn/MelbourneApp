@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layercontainer"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -10,27 +10,13 @@
 
     <TextView 
     android:id="@+id/address_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:gravity="center_vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:textColor="#fff"
-    android:background="?android:attr/activatedBackgroundIndicator"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
     
     <TextView 
     android:id="@+id/address_info"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:gravity="center_vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:textColor="#fff"
-    android:background="?android:attr/activatedBackgroundIndicator"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 
     <ImageView
         android:id="@+id/address_rightarrow"
@@ -38,4 +24,4 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
 
-</RelativeLayout>
+</LinearLayout>
