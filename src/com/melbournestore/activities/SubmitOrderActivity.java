@@ -1,9 +1,13 @@
 package com.melbournestore.activities;
 
+import com.melbournestore.adaptors.SubmitListAdapter;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.MenuItem;
@@ -20,6 +24,15 @@ public class SubmitOrderActivity extends Activity{
 	private ListView mSubmitList;
 	
 	int priceTotal;
+	
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+
+			
+		}
+
+	};
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,11 +53,28 @@ public class SubmitOrderActivity extends Activity{
 		mSubmitPrice = (TextView) findViewById(R.id.submit_price_total);
 
 		mSubmitList = (ListView) findViewById(R.id.submit_list);
-		//mSubmitList.setAdapter(new OrderListAdapter(this, mHandler));
+		mSubmitList.setAdapter(new SubmitListAdapter(this, mHandler));
 
 
+		mSubmitOrders.setText("确认下单");
+		
 		mSubmitPrice.setText("$"+String.valueOf(priceTotal));
 	}
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    // Check which request we're responding to
+	    if (requestCode == SubmitListAdapter.result_code_address) {
+	    	//Get the Address choosed
+	    	
+	        // Make sure the request was successful
+	        if (resultCode == RESULT_OK) {
+	           
+	        }
+	    }
+	}
+	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
