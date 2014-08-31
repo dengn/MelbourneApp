@@ -46,6 +46,8 @@
        	    android:name=".ChooseAddressActivity" />
        	<activity 
        	    android:name=".DeliveryNoticeActivity" />
+       	<activity 
+       	    android:name=".SuburbActivity" />
 
     </application>
 
