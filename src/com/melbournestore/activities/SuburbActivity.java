@@ -4,47 +4,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.ListActivity;
+import android.app.ActionBar.LayoutParams;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.melbournestore.adaptors.AddrZoneListAdapter;
 import com.melbournestore.models.ItemEntity;
 
-public class SuburbActivity extends ListActivity{
+public class SuburbActivity extends Activity implements  
+SearchView.OnQueryTextListener{
 	
 	private SearchView search_suburb;
 	private ListView suburb_list;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.suburb_layout);
+		setContentView(R.layout.suburb_layout);
 		
-		ListView listView = getListView();
-
-		// Set up action bar.
-		final ActionBar actionBar = getActionBar();
-
-		// Specify that the Home button should show an "Up" caret, indicating
-		// that touching the
-		// button will take the user one step up in the application's hierarchy.
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		initActionBar(); 
 		
 		//search_suburb = (SearchView) findViewById(R.id.search_view);
-		//suburb_list = (ListView) findViewById(R.id.suburb_list);
+		suburb_list = (ListView) findViewById(R.id.suburb_list);
 		
-		
+		search_suburb.setOnQueryTextListener(this);  
+		search_suburb.setSubmitButtonEnabled(false);
 		
         List<ItemEntity> data = createTestData();
         
         AddrZoneListAdapter suburbAdapter = new AddrZoneListAdapter(getApplication(), data);
         
-        listView.setAdapter(suburbAdapter);
+        suburb_list.setAdapter(suburbAdapter);
 	}
 	
 	
@@ -105,7 +104,45 @@ public class SuburbActivity extends ListActivity{
         return data;
         
     }
+
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
+	
+	private void initActionBar(){
+		
+		// Set up action bar.
+		final ActionBar actionBar = getActionBar();
+
+		// Specify that the Home button should show an "Up" caret, indicating
+		// that touching the
+		// button will take the user one step up in the application's hierarchy.
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		// 自定义标题栏  
+        getActionBar().setDisplayShowHomeEnabled(false);  
+        getActionBar().setDisplayShowTitleEnabled(false);  
+        getActionBar().setDisplayShowCustomEnabled(true);  
+        LayoutInflater mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
+        View mTitleView = mInflater.inflate(R.layout.suburb_action_bar_layout,  
+                null);  
+        getActionBar().setCustomView(  
+                mTitleView,  
+                new ActionBar.LayoutParams(LayoutParams.MATCH_PARENT,  
+                        LayoutParams.WRAP_CONTENT));  
+        search_suburb = (SearchView) mTitleView.findViewById(R.id.search_view);  
+	}
 
 }

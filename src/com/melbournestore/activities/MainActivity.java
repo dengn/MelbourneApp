@@ -16,8 +16,6 @@
 
 package com.melbournestore.activities;
 
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -26,19 +24,16 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.melbournestore.adaptors.CategoryListAdapter;
+import com.melbournestore.fragments.MyOrdersFragment;
+import com.melbournestore.fragments.PlateFragment;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget
@@ -74,7 +69,6 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     
-    private ListView mCategoryList;
     
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -82,7 +76,7 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
     private String[] mMenuTitles;
     
-    private static int[] categoryImages = {R.drawable.category1, R.drawable.category2, R.drawable.category3};
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +87,6 @@ public class MainActivity extends Activity {
         mMenuTitles = getResources().getStringArray(R.array.menu_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        
-        mCategoryList = (ListView) findViewById(R.id.category);
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -103,7 +95,6 @@ public class MainActivity extends Activity {
                 R.layout.drawer_list_item, mMenuTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
-        mCategoryList.setAdapter(new CategoryListAdapter(this,categoryImages));
 
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -132,7 +123,7 @@ public class MainActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            //selectItem(0);
+            selectItem(0);
         }
     }
 
@@ -181,27 +172,42 @@ public class MainActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //selectItem(position);
-        	Log.d(TAG, String.valueOf(position)+" drawer item clicked");
+            selectItem(position);
+        	//Log.d(TAG, String.valueOf(position)+" drawer item clicked");
         }
     }
     
    
 
     private void selectItem(int position) {
+    	
+    	FragmentManager fragmentManager = getFragmentManager();
         // update the main content by replacing fragments
-        Fragment fragment = new PlanetFragment();
-        Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-        fragment.setArguments(args);
+    	switch(position){
+    	case 0:
+    		
+    		Fragment plate_fragment = new PlateFragment();
+            
+            fragmentManager.beginTransaction().replace(R.id.content_frame, plate_fragment).commit();
+            
+            // update selected item and title, then close the drawer
+            mDrawerList.setItemChecked(position, true);
+            setTitle(mMenuTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		break;
+    	case 1:
+    		
+    		Fragment myorders_fragment = new MyOrdersFragment();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        // update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mMenuTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+            fragmentManager.beginTransaction().replace(R.id.content_frame, myorders_fragment).commit();
+            
+            // update selected item and title, then close the drawer
+            mDrawerList.setItemChecked(position, true);
+            setTitle(mMenuTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		break;
+    	}
+    	
     }
 
     @Override
@@ -229,28 +235,5 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * Fragment that appears in the "content_frame", shows a planet
-     */
-    public static class PlanetFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
-
-        public PlanetFragment() {
-            // Empty constructor required for fragment subclasses
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-            int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.planets_array)[i];
-
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-                            "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
-            return rootView;
-        }
-    }
+    
 }
