@@ -49,5 +49,30 @@ public class Shop {
 	public String getUpdateTime(){
 		return update_time;
 	}
+	
+	public void setId(int id){
+		this.id = id;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	public void setDesc(String desc){
+		this.desc = desc;
+	}
+	public void setAddr(String addr){
+		this.addr = addr;
+	}
+	public void setContactNumber(String contact_number){
+		this.contact_number = contact_number;
+	}
+	public void setSeq(int seq){
+		this.seq = seq;
+	}
+	public void setImage(String image){
+		this.image = image;
+	}
+	public void setUpdateTime(String update_time){
+		this.update_time = update_time;
+	}
 }
 
