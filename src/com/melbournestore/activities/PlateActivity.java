@@ -54,8 +54,12 @@ public class PlateActivity extends Activity {
 			"Ð¡ÁúÏº³´Äê¸â" };
 
 	private int[] platePrices = { 55, 55, 58, 58, 55 };
+	
+	
 	private int[] plateStocks = { 20, 20, 20, 10, 10 };
-	private int[] plateNumbers = { 1, 1, 1, 2, 2 };
+	private int[] plateNumbers = { 0, 0, 1, 2, 2 };
+	
+	private int[] plateLikeNumbers = {100,101,458,258,254};
 
 	private int totalPrice = 0;
 
@@ -73,7 +77,7 @@ public class PlateActivity extends Activity {
 			case 1:
 				totalPrice += platePrices[position];
 				totalNum++;
-				plateNumbers[position]++;
+				//plateNumbers[position]++;
 				mTotalPrice.setText("$" + String.valueOf(totalPrice));
 				mTotalNum.setText(String.valueOf(totalNum));
 				break;
@@ -85,7 +89,7 @@ public class PlateActivity extends Activity {
 
 					totalPrice -= platePrices[position];
 					totalNum--;
-					plateNumbers[position]--;
+					//plateNumbers[position]--;
 					mTotalPrice.setText("$" + String.valueOf(totalPrice));
 					mTotalNum.setText(String.valueOf(totalNum));
 				}
@@ -127,7 +131,7 @@ public class PlateActivity extends Activity {
 
 		mPlatesList.setAdapter(new PlateListAdapter(this, mHandler,
 				plateTitles, platePrices, plateStocks, plateNumbers,
-				plateImages));
+				plateImages, plateLikeNumbers));
 
 		mConfirmChoice = (Button) findViewById(R.id.confirm_choice);
 		mConfirmChoice.bringToFront();
@@ -138,6 +142,8 @@ public class PlateActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
+				
+				
 				Intent intent = new Intent(PlateActivity.this, ShoppingCartActivity.class);
 				startActivity(intent);
 
@@ -146,6 +152,7 @@ public class PlateActivity extends Activity {
 		});
 
 		mTotalPrice = (TextView) findViewById(R.id.confirm_price);
+		totalPrice = MelbourneUtils.sum_price(platePrices, plateNumbers);
 		mTotalPrice.setText("$" + String.valueOf(totalPrice));
 
 		mTotalNum = (TextView) findViewById(R.id.plate_num_total);

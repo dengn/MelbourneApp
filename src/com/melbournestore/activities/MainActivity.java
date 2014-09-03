@@ -21,6 +21,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,9 +30,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.melbournestore.adaptors.DrawerListAdapter;
+import com.melbournestore.db.DataResourceUtils;
 import com.melbournestore.fragments.MyOrdersFragment;
 import com.melbournestore.fragments.PlateFragment;
 
@@ -76,6 +78,8 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
     private String[] mMenuTitles;
     
+    private Handler mHandler = new Handler();
+    
     
 
     @Override
@@ -84,15 +88,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         mTitle = mDrawerTitle = getTitle();
-        mMenuTitles = getResources().getStringArray(R.array.menu_items);
+        mMenuTitles = DataResourceUtils.drawerItemsTitles;
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mMenuTitles));
+
+		// set up the drawer's list view with items and click listener
+//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+//                R.layout.drawer_list_item, mMenuTitles));
+//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setAdapter(new DrawerListAdapter(MainActivity.this, mHandler));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
 
@@ -123,7 +130,7 @@ public class MainActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(1);
         }
     }
 
@@ -185,6 +192,12 @@ public class MainActivity extends Activity {
         // update the main content by replacing fragments
     	switch(position){
     	case 0:
+//            mDrawerList.setItemChecked(position, true);
+//            setTitle(mMenuTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		break;
+    		
+    	case 1:
     		
     		Fragment plate_fragment = new PlateFragment();
             
@@ -192,10 +205,10 @@ public class MainActivity extends Activity {
             
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
-            setTitle(mMenuTitles[position]);
+            setTitle(mMenuTitles[position-1]);
             mDrawerLayout.closeDrawer(mDrawerList);
     		break;
-    	case 1:
+    	case 2:
     		
     		Fragment myorders_fragment = new MyOrdersFragment();
 
@@ -203,7 +216,22 @@ public class MainActivity extends Activity {
             
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
-            setTitle(mMenuTitles[position]);
+            setTitle(mMenuTitles[position-1]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		break;
+    	case 3:
+            mDrawerList.setItemChecked(position, true);
+            setTitle(mMenuTitles[position-1]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		break;
+    	case 4:
+            mDrawerList.setItemChecked(position, true);
+            setTitle(mMenuTitles[position-1]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		break;
+    	case 5:
+            mDrawerList.setItemChecked(position, true);
+            setTitle(mMenuTitles[position-1]);
             mDrawerLayout.closeDrawer(mDrawerList);
     		break;
     	}
