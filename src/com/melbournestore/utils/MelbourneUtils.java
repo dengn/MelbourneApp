@@ -2,8 +2,6 @@ package com.melbournestore.utils;
 
 import java.io.File;
 
-import android.util.Log;
-import android.widget.Toast;
 
 public class MelbourneUtils {
 
