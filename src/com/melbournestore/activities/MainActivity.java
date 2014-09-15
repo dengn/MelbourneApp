@@ -19,6 +19,7 @@ package com.melbournestore.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -68,6 +69,8 @@ public class MainActivity extends Activity {
 	
 	private static final String TAG = "Melbourne";
 	
+	private static final int LOGIN_CODE = 1;
+	
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     
@@ -80,6 +83,9 @@ public class MainActivity extends Activity {
     
     private Handler mHandler = new Handler();
     
+    private boolean isLoggedIn = false;
+    
+    private String loginNumber;
     
 
     @Override
@@ -99,7 +105,9 @@ public class MainActivity extends Activity {
 //        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 //                R.layout.drawer_list_item, mMenuTitles));
 //        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerList.setAdapter(new DrawerListAdapter(MainActivity.this, mHandler));
+        loginNumber = "";
+        
+        mDrawerList.setAdapter(new DrawerListAdapter(MainActivity.this, isLoggedIn, loginNumber, mHandler));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
 
@@ -175,6 +183,24 @@ public class MainActivity extends Activity {
         }
     }
 
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == LOGIN_CODE) {
+            if(resultCode == RESULT_OK){
+            	//get the ID of the client
+                String phoneNumber=data.getStringExtra("number");
+                isLoggedIn = true;
+                loginNumber = phoneNumber;
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
+    
+    
+    
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -194,6 +220,17 @@ public class MainActivity extends Activity {
     	case 0:
 //            mDrawerList.setItemChecked(position, true);
 //            setTitle(mMenuTitles[position]);
+    		
+    		//Not logged in yet
+    		if(!isLoggedIn){
+    			Intent intent = new Intent(this, LoginActivity.class);
+    			startActivityForResult(intent, LOGIN_CODE);
+    		}
+    		else{
+    			Intent intent = new Intent(this, MyAccountActivity.class);
+    			startActivity(intent);
+    		}
+    		
             mDrawerLayout.closeDrawer(mDrawerList);
     		break;
     		

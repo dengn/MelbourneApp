@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name=".PlateActivity"  />7
+            android:name=".PlateActivity"  />
        	<activity 
             android:name=".ShoppingCartActivity"  />
        	<activity 
@@ -50,6 +50,13 @@
        	    android:name=".SuburbActivity" />
        	<activity 
        	    android:name=".OrderSubmittedActivity" />
+       	<activity 
+       	    android:name=".LoginActivity" />
+       	<activity 
+       	    android:name=".MyAccountActivity" />
+       	<activity 
+       	    android:name=".DeliveryAgreementActivity" 
+       	    android:parentActivityName=".LoginActivity"/>
 
     </application>
 
