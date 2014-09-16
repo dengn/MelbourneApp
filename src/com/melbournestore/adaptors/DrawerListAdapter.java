@@ -1,6 +1,7 @@
 package com.melbournestore.adaptors;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,9 +40,9 @@ public class DrawerListAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void refresh(Context context, boolean isLoggedIn,
+	public void refresh(boolean isLoggedIn,
 			String loginNumber, Handler handler) {
-		mContext = context;
+
 		mHandler = handler;
 		mIsLoggedIn = isLoggedIn;
 		mLoginNumber = loginNumber;
@@ -82,6 +83,8 @@ public class DrawerListAdapter extends BaseAdapter {
 					.findViewById(R.id.drawer_login_number);
 			holder_login.profile = (ImageView) convertView
 					.findViewById(R.id.drawer_login_image);
+			
+			holder_login.phone_number.setTextColor(Color.WHITE);
 
 			if (!mIsLoggedIn) {
 				holder_login.phone_number.setText("Î´µÇÂ¼");
@@ -104,6 +107,8 @@ public class DrawerListAdapter extends BaseAdapter {
 					.findViewById(R.id.drawer_normal_image);
 			holder_normal.title = (TextView) convertView
 					.findViewById(R.id.drawer_normal_title);
+			
+			holder_normal.title.setTextColor(Color.WHITE);
 
 			holder_normal.logo
 					.setImageResource(DataResourceUtils.drawerItemsImages[position - 1]);

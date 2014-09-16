@@ -119,20 +119,10 @@ public class LoginActivity extends Activity{
 			// activity and
 			// use NavUtils in the Support Package to ensure proper handling of
 			// Up.
-			Intent upIntent = new Intent(this, MainActivity.class);
-			if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-				// This activity is not part of the application's task, so
-				// create a new task
-				// with a synthesized back stack.
-				TaskStackBuilder.from(this)
-				// If there are ancestor activities, they should be added here.
-						.addNextIntent(upIntent).startActivities();
-				finish();
-			} else {
-				// This activity is part of the application's task, so simply
-				// navigate up to the hierarchical parent activity.
-				NavUtils.navigateUpTo(this, upIntent);
-			}
+			Intent upIntent = NavUtils.getParentActivityIntent(this);
+			upIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			startActivity(upIntent);
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

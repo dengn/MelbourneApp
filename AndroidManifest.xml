@@ -19,7 +19,7 @@
     android:versionCode="1"
     android:versionName="1.0">
 
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     
@@ -37,21 +37,29 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name=".PlateActivity"  />
+            android:name=".PlateActivity"  
+            android:parentActivityName=".MainActivity"/>
        	<activity 
-            android:name=".ShoppingCartActivity"  />
+            android:name=".ShoppingCartActivity"  
+            android:parentActivityName=".PlateActivity"/>
        	<activity 
-            android:name=".SubmitOrderActivity"  />
+            android:name=".SubmitOrderActivity"  
+            android:parentActivityName=".ShoppingCartActivity" />
        	<activity 
-       	    android:name=".ChooseAddressActivity" />
+       	    android:name=".ChooseAddressActivity" 
+       	    android:parentActivityName=".SubmitOrderActivity" />
        	<activity 
-       	    android:name=".DeliveryNoticeActivity" />
+       	    android:name=".DeliveryNoticeActivity" 
+       	    android:parentActivityName=".SubmitOrderActivity" />
        	<activity 
-       	    android:name=".SuburbActivity" />
+       	    android:name=".SuburbActivity" 
+       	    android:parentActivityName=".ChooseAddressActivity"/>
        	<activity 
-       	    android:name=".OrderSubmittedActivity" />
+       	    android:name=".OrderSubmittedActivity" 
+       	    android:parentActivityName=".SubmitOrderActivity"/>
        	<activity 
-       	    android:name=".LoginActivity" />
+       	    android:name=".LoginActivity" 
+       	    android:parentActivityName=".MainActivity"/>
        	<activity 
        	    android:name=".MyAccountActivity" />
        	<activity 

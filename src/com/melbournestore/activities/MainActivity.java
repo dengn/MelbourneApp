@@ -74,6 +74,8 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     
+    private DrawerListAdapter mDrawerListAdapter;
+    
     
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -107,7 +109,9 @@ public class MainActivity extends Activity {
 //        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         loginNumber = "";
         
-        mDrawerList.setAdapter(new DrawerListAdapter(MainActivity.this, isLoggedIn, loginNumber, mHandler));
+        mDrawerListAdapter = new DrawerListAdapter(MainActivity.this, isLoggedIn, loginNumber, mHandler);
+        
+        mDrawerList.setAdapter(mDrawerListAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
 
@@ -192,6 +196,9 @@ public class MainActivity extends Activity {
                 String phoneNumber=data.getStringExtra("number");
                 isLoggedIn = true;
                 loginNumber = phoneNumber;
+                mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler);
+                mDrawerList.setAdapter(mDrawerListAdapter);
+                mDrawerLayout.openDrawer(mDrawerList);
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
