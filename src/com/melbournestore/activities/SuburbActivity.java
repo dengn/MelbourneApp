@@ -9,15 +9,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.melbournestore.adaptors.AddrZoneListAdapter;
+import com.melbournestore.application.SysApplication;
 import com.melbournestore.models.ItemEntity;
 
 public class SuburbActivity extends Activity implements  
@@ -26,9 +30,33 @@ SearchView.OnQueryTextListener{
 	private SearchView search_suburb;
 	private ListView suburb_list;
 	
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle b = msg.getData();
+			String suburbChosen = b.getString("suburb");
+			switch (msg.what) {
+			// get the suburb chosen
+			case 1:
+				
+				Intent returnIntent = new Intent();
+				returnIntent.putExtra("suburb",suburbChosen);
+				setResult(RESULT_OK,returnIntent);
+				finish();
+				
+				break;
+
+
+			}
+		}
+
+	};
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suburb_layout);
+		
+		SysApplication.getInstance().addActivity(this); 
 		
 		
 		initActionBar(); 
@@ -41,7 +69,7 @@ SearchView.OnQueryTextListener{
 		
         List<ItemEntity> data = createTestData();
         
-        AddrZoneListAdapter suburbAdapter = new AddrZoneListAdapter(getApplication(), data);
+        AddrZoneListAdapter suburbAdapter = new AddrZoneListAdapter(getApplication(), data, mHandler);
         
         suburb_list.setAdapter(suburbAdapter);
 	}
@@ -134,5 +162,20 @@ SearchView.OnQueryTextListener{
                         LayoutParams.WRAP_CONTENT));  
         search_suburb = (SearchView) mTitleView.findViewById(R.id.search_view);  
 	}
+	
+    private long mExitTime;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                                    mExitTime = System.currentTimeMillis();
+
+                            } else {
+                            		SysApplication.getInstance().exit();  
+                            }
+                            return true;
+                    }
+                    return super.onKeyDown(keyCode, event);
+            }
 
 }

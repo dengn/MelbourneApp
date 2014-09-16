@@ -17,10 +17,11 @@ import android.widget.TextView;
 import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.DeliveryNoticeActivity;
 import com.melbournestore.activities.R;
+import com.melbournestore.activities.SubmitOrderActivity;
 
 public class SubmitListAdapter extends BaseAdapter{
 	
-	public static final int result_code_address = 1;
+	
 	
     final int TYPE_TEXT   = 0;
     final int TYPE_ACTIVITY  = 1;
@@ -33,18 +34,27 @@ public class SubmitListAdapter extends BaseAdapter{
 	Context mContext;
 	int mPriceTotal;
 	
+	String mAddress;
+	
 	private static LayoutInflater inflater = null;
 	
-	public SubmitListAdapter(Context context, Handler handler, int priceTotal) {
+	public SubmitListAdapter(Context context, Handler handler, int priceTotal, String address) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
 		mHandler = handler;
 		mPriceTotal = priceTotal;
+		mAddress = address;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+	
+	public void refresh(int priceTotal, String address){
+		mPriceTotal = priceTotal;
+		mAddress = address;
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -121,7 +131,7 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_activity.rightArrow = (ImageView) convertView.findViewById(R.id.address_rightarrow);
         	
         	
-        	holder_activity.title.setText("运送地址");
+        	holder_activity.title.setText("运送地址 "+mAddress);
         	holder_activity.rightArrow.setImageResource(R.drawable.right_arrow);
         	
         	convertView.setTag(holder_activity);
@@ -132,7 +142,7 @@ public class SubmitListAdapter extends BaseAdapter{
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(mContext, ChooseAddressActivity.class);
-					((Activity) mContext).startActivityForResult(intent, result_code_address);
+					((Activity) mContext).startActivityForResult(intent, SubmitOrderActivity.result_code_address);
 				}
         		
         	});

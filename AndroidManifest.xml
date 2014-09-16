@@ -61,7 +61,8 @@
        	    android:name=".LoginActivity" 
        	    android:parentActivityName=".MainActivity"/>
        	<activity 
-       	    android:name=".MyAccountActivity" />
+       	    android:name=".MyAccountActivity" 
+       	    android:parentActivityName=".MainActivity"/>
        	<activity 
        	    android:name=".DeliveryAgreementActivity" 
        	    android:parentActivityName=".LoginActivity"/>

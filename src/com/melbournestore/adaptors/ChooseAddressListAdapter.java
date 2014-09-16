@@ -16,12 +16,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.activities.SuburbActivity;
 
 public class ChooseAddressListAdapter extends BaseAdapter {
 	
-	public static final int result_code_suburb = 2;
+
 
 	private Handler mHandler;
 	private Context mContext;
@@ -32,15 +33,24 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 
 	private static LayoutInflater inflater = null;
 
-	public ChooseAddressListAdapter(Context context, Handler handler) {
+	public ChooseAddressListAdapter(Context context, Handler handler, String suburb) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
 		mHandler = handler;
+		addr_suburb = suburb;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
+	
+	public void refresh(String unit, String street, String suburb){
+		addr_unit = unit;
+		addr_street = street;
+		addr_suburb = suburb;
+		notifyDataSetChanged();
+	}
+	
 
 	@Override
 	public int getCount() {
@@ -77,6 +87,8 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	
         	holder_edittext.title.setText("Unit/No.");
         	
+        	holder_edittext.text.setText(addr_unit);
+        	
         	holder_edittext.text.setOnFocusChangeListener(new OnFocusChangeListener() {
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus){
@@ -108,6 +120,8 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	holder_edittext.text = (EditText)convertView.findViewById(R.id.memo_info);
         	
         	holder_edittext.title.setText("Street");
+        	
+        	holder_edittext.text.setText(addr_street);
         	
         	holder_edittext.text.setOnFocusChangeListener(new OnFocusChangeListener() {
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -143,7 +157,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	
         	
         	holder_activity.title.setText("Suburb");
-        	holder_activity.info.setText("Two River");
+        	holder_activity.info.setText(addr_suburb);
         	holder_activity.rightArrow.setImageResource(R.drawable.right_arrow);
         	
         	convertView.setTag(holder_activity);
@@ -154,7 +168,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(mContext, SuburbActivity.class);
-					((Activity) mContext).startActivityForResult(intent, result_code_suburb);
+					((Activity) mContext).startActivityForResult(intent, ChooseAddressActivity.result_code_suburb);
 				}
         		
         	});

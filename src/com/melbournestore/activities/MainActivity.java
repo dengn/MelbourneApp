@@ -26,14 +26,17 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.melbournestore.adaptors.DrawerListAdapter;
+import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.DataResourceUtils;
 import com.melbournestore.fragments.MyOrdersFragment;
 import com.melbournestore.fragments.PlateFragment;
@@ -94,6 +97,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        SysApplication.getInstance().addActivity(this); 
         
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = DataResourceUtils.drawerItemsTitles;
@@ -307,5 +312,21 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    
+    private long mExitTime;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                                    mExitTime = System.currentTimeMillis();
+
+                            } else {
+                            		SysApplication.getInstance().exit();  
+                            }
+                            return true;
+                    }
+                    return super.onKeyDown(keyCode, event);
+            }
+    
     
 }

@@ -5,9 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.melbournestore.application.SysApplication;
 
 public class DeliveryNoticeActivity extends Activity{
 	
@@ -17,6 +20,8 @@ public class DeliveryNoticeActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.delivery_notice_layout);
+		
+		SysApplication.getInstance().addActivity(this); 
 		
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
@@ -52,5 +57,20 @@ public class DeliveryNoticeActivity extends Activity{
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+    private long mExitTime;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                                    mExitTime = System.currentTimeMillis();
+
+                            } else {
+                            		SysApplication.getInstance().exit();  
+                            }
+                            return true;
+                    }
+                    return super.onKeyDown(keyCode, event);
+            }
 
 }

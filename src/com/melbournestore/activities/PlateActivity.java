@@ -23,16 +23,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melbournestore.adaptors.PlateListAdapter;
+import com.melbournestore.application.SysApplication;
 import com.melbournestore.utils.MelbourneUtils;
 
 public class PlateActivity extends Activity {
@@ -103,6 +105,8 @@ public class PlateActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plate_layout);
+		
+		SysApplication.getInstance().addActivity(this); 
 
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
@@ -195,5 +199,20 @@ public class PlateActivity extends Activity {
 	// }
 	// }
 	//
+	
+    private long mExitTime;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                                    mExitTime = System.currentTimeMillis();
+
+                            } else {
+                            		SysApplication.getInstance().exit();  
+                            }
+                            return true;
+                    }
+                    return super.onKeyDown(keyCode, event);
+            }
 
 }

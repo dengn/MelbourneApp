@@ -3,11 +3,14 @@ package com.melbournestore.adaptors;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.melbournestore.activities.R;
@@ -26,15 +29,19 @@ public class AddrZoneListAdapter extends BaseAdapter {
     private List<ItemEntity> mData;
     private LayoutInflater mLayoutInflater;
     
+    private Handler mHandler;
+    
     // ===========================================================
     // Constructors
     // ===========================================================
 
-    public AddrZoneListAdapter(Context pContext, List<ItemEntity> pData) {
+    public AddrZoneListAdapter(Context pContext, List<ItemEntity> pData, Handler handler) {
         mContext = pContext;
         mData = pData;
         
         mLayoutInflater = LayoutInflater.from(mContext);
+        
+        mHandler = handler;
     }
     
     // ===========================================================
@@ -63,8 +70,24 @@ public class AddrZoneListAdapter extends BaseAdapter {
         }
 
         // 获取数据
-        ItemEntity itemEntity = (ItemEntity) getItem(position);
+        final ItemEntity itemEntity = (ItemEntity) getItem(position);
         viewHolder.content.setText(itemEntity.getContent());
+        
+        viewHolder.content.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Message message = new Message();
+				Bundle b = new Bundle();
+				// send the suburb chosen
+				b.putString("suburb", itemEntity.getContent());
+				message.setData(b);
+				message.what = 1;
+				mHandler.sendMessage(message);
+			}
+        	
+        });
 
         if ( needTitle(position) ) {
             // 显示标题并设置内容 

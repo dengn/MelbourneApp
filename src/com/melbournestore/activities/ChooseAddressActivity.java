@@ -2,12 +2,12 @@ package com.melbournestore.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,22 +16,47 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melbournestore.adaptors.ChooseAddressListAdapter;
+import com.melbournestore.application.SysApplication;
 
 public class ChooseAddressActivity extends Activity {
 
+	public static final int result_code_suburb = 2;
+	
 	private ListView chooseAddr_list;
 	private ListView addr_zone_list;
 	private TextView addr_zone;
+	
+	private ChooseAddressListAdapter mChooseAddressListAdapter;
 
 	private String addr_unit;
 	private String addr_street;
 	private String addr_suburb;
 	
-	private Handler mHandler;
+	private Handler mHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle b = msg.getData();
+
+			switch (msg.what) {
+			// unit = 1
+			case 1:
+				addr_unit = b.getString("unit");
+
+			// street = 2
+			case 2:
+				addr_street = b.getString("street");
+
+				break;
+
+			}
+		}
+	};
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choose_address_layout);
+		
+		SysApplication.getInstance().addActivity(this); 
 
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
@@ -40,9 +65,16 @@ public class ChooseAddressActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		
+		addr_unit = "";
+		addr_street = "";
+		addr_suburb = "";
 
 		chooseAddr_list = (ListView) findViewById(R.id.chooseAddr_list);
-		chooseAddr_list.setAdapter(new ChooseAddressListAdapter(this, mHandler));
+		
+		mChooseAddressListAdapter = new ChooseAddressListAdapter(this, mHandler, addr_suburb);
+		chooseAddr_list.setAdapter(mChooseAddressListAdapter);
 
 		addr_zone_list = (ListView) findViewById(R.id.addr_zone_list);
 
@@ -50,9 +82,7 @@ public class ChooseAddressActivity extends Activity {
 		addr_zone.setText("所属区域");
 		
 
-		addr_unit = "";
-		addr_street = "";
-		addr_suburb = "";
+
 
 
 
@@ -72,6 +102,26 @@ public class ChooseAddressActivity extends Activity {
 		menu.findItem(R.id.finish).setVisible(true);
 		return super.onPrepareOptionsMenu(menu);
 	}
+	
+	
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+	        if (requestCode == result_code_suburb) {
+	            if(resultCode == RESULT_OK){
+	            	//get the suburb 
+	            	
+	                String suburb=data.getStringExtra("suburb");
+	                addr_suburb = suburb;
+	                mChooseAddressListAdapter.refresh(addr_unit, addr_street, addr_suburb);
+	                chooseAddr_list.setAdapter(mChooseAddressListAdapter);
+	                
+	            }
+	            if (resultCode == RESULT_CANCELED) {
+	                //Write your code if there's no result
+	            }
+	        }
+	    }//onActivityResult
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -89,20 +139,31 @@ public class ChooseAddressActivity extends Activity {
 			finish();
 			return true;
 		case R.id.finish:
-			// create intent to perform web search for this planet
-			Intent intent = new Intent(this, SubmitOrderActivity.class);
-			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-			// catch event that there's no activity to handle intent
-			if (intent.resolveActivity(getPackageManager()) != null) {
-				startActivity(intent);
-			} else {
-				Toast.makeText(this, R.string.app_not_available,
-						Toast.LENGTH_LONG).show();
-			}
+			
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra("address",addr_unit+"\n"+addr_street+"\n"+addr_suburb);
+			setResult(RESULT_OK,returnIntent);
+			finish();
+			
 			return true;
 
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+    private long mExitTime;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                                    mExitTime = System.currentTimeMillis();
+
+                            } else {
+                            		SysApplication.getInstance().exit();  
+                            }
+                            return true;
+                    }
+                    return super.onKeyDown(keyCode, event);
+            }
 
 }

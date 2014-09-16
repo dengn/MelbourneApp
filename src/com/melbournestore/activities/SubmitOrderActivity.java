@@ -7,23 +7,32 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melbournestore.adaptors.SubmitListAdapter;
+import com.melbournestore.application.SysApplication;
 
 public class SubmitOrderActivity extends Activity{
+	
+	
+	public static final int result_code_address = 3;
 	
 	private Button mSubmitOrders;
 
 	private TextView mSubmitPrice;
 
 	private ListView mSubmitList;
+	
+	private SubmitListAdapter mSubmitListAdapter;
+	
+	private String mDeliveryAddress;
 	
 	int priceTotal;
 	
@@ -39,6 +48,8 @@ public class SubmitOrderActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submit_order_layout);
+		
+		SysApplication.getInstance().addActivity(this); 
 
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
@@ -47,6 +58,10 @@ public class SubmitOrderActivity extends Activity{
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		mDeliveryAddress = "";
+		
+		
 		
 		Intent intent = getIntent();
 		priceTotal=intent.getIntExtra("total_price", 0);
@@ -67,7 +82,9 @@ public class SubmitOrderActivity extends Activity{
 		mSubmitPrice = (TextView) findViewById(R.id.submit_price_total);
 
 		mSubmitList = (ListView) findViewById(R.id.submit_list);
-		mSubmitList.setAdapter(new SubmitListAdapter(this, mHandler, priceTotal));
+		
+		mSubmitListAdapter = new SubmitListAdapter(this, mHandler, priceTotal, mDeliveryAddress);
+		mSubmitList.setAdapter(mSubmitListAdapter);
 
 
 		mSubmitOrders.setText("确认下单");
@@ -79,12 +96,14 @@ public class SubmitOrderActivity extends Activity{
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    // Check which request we're responding to
-	    if (requestCode == SubmitListAdapter.result_code_address) {
+	    if (requestCode == result_code_address) {
 	    	//Get the Address choosed
 	    	
 	        // Make sure the request was successful
 	        if (resultCode == RESULT_OK) {
-	           
+	        	mDeliveryAddress = data.getStringExtra("address");
+	        	mSubmitListAdapter.refresh(priceTotal, mDeliveryAddress);
+	    		mSubmitList.setAdapter(mSubmitListAdapter);
 	        }
 	    }
 	}
@@ -108,4 +127,20 @@ public class SubmitOrderActivity extends Activity{
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+    private long mExitTime;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                                    mExitTime = System.currentTimeMillis();
+
+                            } else {
+                            		SysApplication.getInstance().exit();  
+                            }
+                            return true;
+                    }
+                    return super.onKeyDown(keyCode, event);
+            }
 }

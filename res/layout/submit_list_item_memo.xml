@@ -11,8 +11,6 @@
 	<EditText
     android:id="@+id/memo_info"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:hint="备注"
-    android:inputType="textShortMessage" />
+    android:layout_height="wrap_content"/>
 
 </LinearLayout>
