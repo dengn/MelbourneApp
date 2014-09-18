@@ -2,15 +2,14 @@ package com.melbournestore.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,7 +35,28 @@ public class MyAccountActivity extends Activity{
 	
 	private MyAccountListAdapter mMyAccountListAdapter;
 	
+	private PopupWindow mpopupWindow; 
+	
 	private String mAddress;
+	
+	private Handler mHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle b = msg.getData();
+			int action = b.getInt("action");
+			switch (msg.what) {
+
+			case 1:
+				// Popup Menu
+				if(action == 1){
+					showPopMenu();
+				}
+
+				break;
+
+			}
+		}
+	};
 	
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +80,7 @@ public class MyAccountActivity extends Activity{
 		
 		mMyAccountList = (ListView) findViewById(R.id.myaccount_list);
 		
-		mMyAccountListAdapter = new MyAccountListAdapter(this, mAddress);
+		mMyAccountListAdapter = new MyAccountListAdapter(this, mHandler, mAddress);
 		mMyAccountList.setAdapter(mMyAccountListAdapter);
 		
 
@@ -104,15 +124,39 @@ public class MyAccountActivity extends Activity{
 	
 	
 	private void showPopMenu() {  
-        View view = View.inflate(mContext, R.layout.share_popup_menu, null);  
+        View view = View.inflate(this, R.layout.profile_popup_menu, null);  
  
         RelativeLayout profile_camera = (RelativeLayout) view.findViewById(R.id.profile_camera);  
         RelativeLayout profile_album = (RelativeLayout) view.findViewById(R.id.profile_album);  
-        Button profile_cancle = (Button) view.findViewById(R.id.profile_cancle);  
+        Button profile_cancel = (Button) view.findViewById(R.id.profile_cancel);  
   
-        profile_camera.setOnClickListener(mContext);  
-        profile_album.setOnClickListener(mContext);  
-        profile_cancle.setOnClickListener(mContext);  
+        profile_camera.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });  
+        profile_album.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });  
+        profile_cancel.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mpopupWindow.dismiss(); 
+			}
+        	
+        });   
 
         view.setOnClickListener(new OnClickListener() {  
               
@@ -124,8 +168,8 @@ public class MyAccountActivity extends Activity{
         });  
           
         view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));  
-        LinearLayout ll_popup = (LinearLayout) view.findViewById(R.id.ll_popup);  
-        ll_popup.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_bottom_in));  
+        LinearLayout profile_popup = (LinearLayout) view.findViewById(R.id.profile_popup);  
+        profile_popup.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_bottom_in));  
           
         if(mpopupWindow==null){  
             mpopupWindow = new PopupWindow(this);  
@@ -138,7 +182,7 @@ public class MyAccountActivity extends Activity{
         }  
           
         mpopupWindow.setContentView(view);  
-        mpopupWindow.showAtLocation(bt_share, Gravity.BOTTOM, 0, 0);  
+        mpopupWindow.showAtLocation(profile_cancel, Gravity.BOTTOM, 0, 0);  
         mpopupWindow.update();  
     }  
 	

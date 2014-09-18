@@ -3,20 +3,15 @@ package com.melbournestore.adaptors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.view.Gravity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.melbournestore.activities.ChooseAddressActivity;
@@ -33,17 +28,20 @@ public class MyAccountListAdapter extends BaseAdapter{
     
 	private Context mContext;
 	
+	private Handler mHandler;
+	
 	private String mAddress;
     
 	private static LayoutInflater inflater = null;
     
     
     
-	public MyAccountListAdapter(Context context, String address) {
+	public MyAccountListAdapter(Context context, Handler handler, String address) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
+		mHandler = handler;
 		mAddress = address;
 		
 		inflater = (LayoutInflater) context
@@ -99,7 +97,17 @@ public class MyAccountListAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					
+					Message message = new Message();
+					Bundle b = new Bundle();
+					// send the action to do
+					// action = 1 open popup
+					b.putInt("action", 1);
+					message.setData(b);
+
+					// plus = 1
+					message.what = 1;
+
+					mHandler.sendMessage(message);
 				}
         		
         	});
