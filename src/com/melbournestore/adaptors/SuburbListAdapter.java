@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.melbournestore.activities.R;
 import com.melbournestore.models.ItemEntity;
 
-public class AddrZoneListAdapter extends BaseAdapter {
+public class SuburbListAdapter extends BaseAdapter {
     // ===========================================================
     // Constants
     // ===========================================================
@@ -35,7 +35,7 @@ public class AddrZoneListAdapter extends BaseAdapter {
     // Constructors
     // ===========================================================
 
-    public AddrZoneListAdapter(Context pContext, List<ItemEntity> pData, Handler handler) {
+    public SuburbListAdapter(Context pContext, List<ItemEntity> pData, Handler handler) {
         mContext = pContext;
         mData = pData;
         

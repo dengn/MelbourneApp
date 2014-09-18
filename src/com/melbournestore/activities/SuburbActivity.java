@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.melbournestore.adaptors.AddrZoneListAdapter;
+import com.melbournestore.adaptors.SuburbListAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.models.ItemEntity;
 
@@ -69,7 +69,7 @@ SearchView.OnQueryTextListener{
 		
         List<ItemEntity> data = createTestData();
         
-        AddrZoneListAdapter suburbAdapter = new AddrZoneListAdapter(getApplication(), data, mHandler);
+        SuburbListAdapter suburbAdapter = new SuburbListAdapter(getApplication(), data, mHandler);
         
         suburb_list.setAdapter(suburbAdapter);
 	}

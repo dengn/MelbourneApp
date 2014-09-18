@@ -2,20 +2,46 @@ package com.melbournestore.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NavUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.melbournestore.adaptors.MyAccountListAdapter;
 import com.melbournestore.application.SysApplication;
 
 public class MyAccountActivity extends Activity{
+	
+	public static final int choose_address_code = 4;
+	
+	private Button mLogout;
+
+	private ListView mMyAccountList;
+	
+	private MyAccountListAdapter mMyAccountListAdapter;
+	
+	private String mAddress;
+	
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login_layout);
+		setContentView(R.layout.myaccount_layout);
 		
 		SysApplication.getInstance().addActivity(this); 
 		
@@ -26,6 +52,19 @@ public class MyAccountActivity extends Activity{
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		mAddress ="";
+		
+		
+		mLogout = (Button) findViewById(R.id.logout);
+		
+		mMyAccountList = (ListView) findViewById(R.id.myaccount_list);
+		
+		mMyAccountListAdapter = new MyAccountListAdapter(this, mAddress);
+		mMyAccountList.setAdapter(mMyAccountListAdapter);
+		
+
+		
 	}
 	
 	@Override
@@ -46,6 +85,62 @@ public class MyAccountActivity extends Activity{
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    // Check which request we're responding to
+	    if (requestCode == choose_address_code) {
+	    	//Get the Address choosed
+	    	
+	        // Make sure the request was successful
+	        if (resultCode == RESULT_OK) {
+	        	mAddress = data.getStringExtra("address");
+	        	mMyAccountListAdapter.refresh(mAddress);
+	        	mMyAccountList.setAdapter(mMyAccountListAdapter);
+	        }
+	    }
+	}
+	
+	
+	
+	private void showPopMenu() {  
+        View view = View.inflate(mContext, R.layout.share_popup_menu, null);  
+ 
+        RelativeLayout profile_camera = (RelativeLayout) view.findViewById(R.id.profile_camera);  
+        RelativeLayout profile_album = (RelativeLayout) view.findViewById(R.id.profile_album);  
+        Button profile_cancle = (Button) view.findViewById(R.id.profile_cancle);  
+  
+        profile_camera.setOnClickListener(mContext);  
+        profile_album.setOnClickListener(mContext);  
+        profile_cancle.setOnClickListener(mContext);  
+
+        view.setOnClickListener(new OnClickListener() {  
+              
+            @Override  
+            public void onClick(View v) {  
+                  
+                mpopupWindow.dismiss();  
+            }  
+        });  
+          
+        view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));  
+        LinearLayout ll_popup = (LinearLayout) view.findViewById(R.id.ll_popup);  
+        ll_popup.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_bottom_in));  
+          
+        if(mpopupWindow==null){  
+            mpopupWindow = new PopupWindow(this);  
+            mpopupWindow.setWidth(LayoutParams.MATCH_PARENT);  
+            mpopupWindow.setHeight(LayoutParams.MATCH_PARENT);  
+            mpopupWindow.setBackgroundDrawable(new BitmapDrawable());  
+  
+            mpopupWindow.setFocusable(true);  
+            mpopupWindow.setOutsideTouchable(true);  
+        }  
+          
+        mpopupWindow.setContentView(view);  
+        mpopupWindow.showAtLocation(bt_share, Gravity.BOTTOM, 0, 0);  
+        mpopupWindow.update();  
+    }  
 	
     private long mExitTime;
     public boolean onKeyDown(int keyCode, KeyEvent event) {
