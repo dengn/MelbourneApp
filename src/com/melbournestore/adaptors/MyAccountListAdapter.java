@@ -3,6 +3,7 @@ package com.melbournestore.adaptors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,26 +31,30 @@ public class MyAccountListAdapter extends BaseAdapter{
 	
 	private Handler mHandler;
 	
+	private Bitmap mProfile;
+	
 	private String mAddress;
     
 	private static LayoutInflater inflater = null;
     
     
     
-	public MyAccountListAdapter(Context context, Handler handler, String address) {
+	public MyAccountListAdapter(Context context, Handler handler, Bitmap profile, String address) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
 		mHandler = handler;
+		mProfile = profile;
 		mAddress = address;
 		
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void refresh(String address){
+	public void refresh(String address, Bitmap profile){
 		mAddress = address;
+		mProfile = profile;
 		notifyDataSetChanged();
 	}
     
@@ -88,8 +93,13 @@ public class MyAccountListAdapter extends BaseAdapter{
         	holder_profile.profile = (ImageView)convertView.findViewById(R.id.myaccount_profile_image);
         	holder_profile.number = (TextView)convertView.findViewById(R.id.myaccount_profile_number);
         	
-        	//set images 
-        	holder_profile.profile.setImageResource(R.drawable.profile_userphoto);
+        	//set images
+        	if(mProfile==null) {
+            	holder_profile.profile.setImageResource(R.drawable.profile_userphoto);
+        	} else {
+        		holder_profile.profile.setImageBitmap(mProfile);
+        	}
+
         	holder_profile.number.setText("0485245801");
         	
         	holder_profile.profile.setOnClickListener(new OnClickListener(){

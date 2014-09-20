@@ -1,18 +1,17 @@
 package com.melbournestore.adaptors;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.melbournestore.activities.R;
-import com.melbournestore.adaptors.ChooseAddressListAdapter.viewHolder_edittext;
 import com.melbournestore.db.DataResourceUtils;
 
 public class DrawerListAdapter extends BaseAdapter {
@@ -21,6 +20,8 @@ public class DrawerListAdapter extends BaseAdapter {
 
 	Handler mHandler;
 
+	Bitmap mProfile;
+
 	Context mContext;
 
 	String mLoginNumber;
@@ -28,24 +29,26 @@ public class DrawerListAdapter extends BaseAdapter {
 	private static LayoutInflater inflater = null;
 
 	public DrawerListAdapter(Context context, boolean isLoggedIn,
-			String loginNumber, Handler handler) {
+			String loginNumber, Handler handler, Bitmap profile) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
 		mHandler = handler;
 		mIsLoggedIn = isLoggedIn;
 		mLoginNumber = loginNumber;
+		mProfile = profile;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void refresh(boolean isLoggedIn,
-			String loginNumber, Handler handler) {
+	public void refresh(boolean isLoggedIn, String loginNumber,
+			Handler handler, Bitmap profile) {
 
 		mHandler = handler;
 		mIsLoggedIn = isLoggedIn;
 		mLoginNumber = loginNumber;
+		mProfile = profile;
 		notifyDataSetChanged();
 	}
 
@@ -83,7 +86,7 @@ public class DrawerListAdapter extends BaseAdapter {
 					.findViewById(R.id.drawer_login_number);
 			holder_login.profile = (ImageView) convertView
 					.findViewById(R.id.drawer_login_image);
-			
+
 			holder_login.phone_number.setTextColor(Color.WHITE);
 
 			if (!mIsLoggedIn) {
@@ -92,8 +95,12 @@ public class DrawerListAdapter extends BaseAdapter {
 						.setImageResource(R.drawable.sidebar_userphoto_default);
 			} else {
 				holder_login.phone_number.setText(mLoginNumber);
-				holder_login.profile
-						.setImageResource(R.drawable.profile_userphoto);
+				if (mProfile == null) {
+					holder_login.profile
+							.setImageResource(R.drawable.profile_userphoto);
+				}else{
+					holder_login.profile.setImageBitmap(mProfile);
+				}
 			}
 
 		}
@@ -107,7 +114,7 @@ public class DrawerListAdapter extends BaseAdapter {
 					.findViewById(R.id.drawer_normal_image);
 			holder_normal.title = (TextView) convertView
 					.findViewById(R.id.drawer_normal_title);
-			
+
 			holder_normal.title.setTextColor(Color.WHITE);
 
 			holder_normal.logo

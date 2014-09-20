@@ -21,6 +21,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -74,6 +75,8 @@ public class MainActivity extends Activity {
 	
 	private static final int LOGIN_CODE = 1;
 	
+	private static final int MY_ACCOUNT_CODE = 7;
+	
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     
@@ -92,6 +95,8 @@ public class MainActivity extends Activity {
     
     private String loginNumber;
     
+    private Bitmap mProfile;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,20 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         SysApplication.getInstance().addActivity(this); 
+        
+        
+        Intent intent = getIntent();
+        if(intent.getParcelableExtra("profile")!=null){
+        	mProfile = intent.getParcelableExtra("profile");
+        }
+        if(intent.getBooleanExtra("logout",false)){
+        	isLoggedIn = true;
+        }
+        
+        
+        
+
+        
         
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = DataResourceUtils.drawerItemsTitles;
@@ -114,7 +133,7 @@ public class MainActivity extends Activity {
 //        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         loginNumber = "";
         
-        mDrawerListAdapter = new DrawerListAdapter(MainActivity.this, isLoggedIn, loginNumber, mHandler);
+        mDrawerListAdapter = new DrawerListAdapter(MainActivity.this, isLoggedIn, loginNumber, mHandler, mProfile);
         
         mDrawerList.setAdapter(mDrawerListAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -201,12 +220,32 @@ public class MainActivity extends Activity {
                 String phoneNumber=data.getStringExtra("number");
                 isLoggedIn = true;
                 loginNumber = phoneNumber;
-                mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler);
+                mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
                 mDrawerList.setAdapter(mDrawerListAdapter);
                 mDrawerLayout.openDrawer(mDrawerList);
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
+            }
+        }
+        else if(requestCode == MY_ACCOUNT_CODE) {
+        	if(resultCode == RESULT_OK){
+            	//get the profile photo
+                
+                if(data.getParcelableExtra("profile")!=null){
+                	mProfile = data.getParcelableExtra("profile");
+                }
+                if(data.getBooleanExtra("logout",false)){
+                	isLoggedIn = false;
+                }
+        		
+                //mProfile = data.getParcelableExtra("profile");
+                
+                
+                
+                mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
+                mDrawerList.setAdapter(mDrawerListAdapter);
+                mDrawerLayout.openDrawer(mDrawerList);
             }
         }
     }//onActivityResult
@@ -240,7 +279,8 @@ public class MainActivity extends Activity {
     		}
     		else{
     			Intent intent = new Intent(this, MyAccountActivity.class);
-    			startActivity(intent);
+    			intent.putExtra("profile", mProfile);
+    			startActivityForResult(intent, MY_ACCOUNT_CODE);
     		}
     		
             mDrawerLayout.closeDrawer(mDrawerList);
