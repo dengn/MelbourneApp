@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
     
     private Handler mHandler = new Handler();
     
-    private boolean isLoggedIn = false;
+    private boolean isLoggedIn;
     
     private String loginNumber;
     
@@ -106,15 +106,18 @@ public class MainActivity extends Activity {
         SysApplication.getInstance().addActivity(this); 
         
         
-        Intent intent = getIntent();
-        if(intent.getParcelableExtra("profile")!=null){
-        	mProfile = intent.getParcelableExtra("profile");
-        }
-        if(intent.getBooleanExtra("logout",false)){
-        	isLoggedIn = true;
-        }
+//        Intent intent = getIntent();
+//        if(intent.getParcelableExtra("profile")!=null){
+//        	mProfile = intent.getParcelableExtra("profile");
+//        }
+//        if(intent.getBooleanExtra("logout",false)){
+//        	isLoggedIn = true;
+//        }
         
         
+        isLoggedIn = SysApplication.getLoginStatus();
+        
+        mProfile = null;
         
 
         
@@ -213,12 +216,19 @@ public class MainActivity extends Activity {
 
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	
+        mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
+        mDrawerList.setAdapter(mDrawerListAdapter);
 
+    	
         if (requestCode == LOGIN_CODE) {
             if(resultCode == RESULT_OK){
             	//get the ID of the client
+            	
+            	SysApplication.setLoginStatus(true);
+            	
                 String phoneNumber=data.getStringExtra("number");
-                isLoggedIn = true;
+                isLoggedIn = SysApplication.getLoginStatus();
                 loginNumber = phoneNumber;
                 mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
                 mDrawerList.setAdapter(mDrawerListAdapter);
@@ -236,7 +246,7 @@ public class MainActivity extends Activity {
                 	mProfile = data.getParcelableExtra("profile");
                 }
                 if(data.getBooleanExtra("logout",false)){
-                	isLoggedIn = false;
+                	isLoggedIn = SysApplication.getLoginStatus();
                 }
         		
                 //mProfile = data.getParcelableExtra("profile");

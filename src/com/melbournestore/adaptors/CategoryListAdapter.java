@@ -17,6 +17,8 @@ public class CategoryListAdapter extends BaseAdapter {
 
 	Context mContext;
 	int[] imageId;
+
+	
 	private static LayoutInflater inflater = null;
 
 	public CategoryListAdapter(Context context, int[] prgmImages) {
@@ -24,6 +26,8 @@ public class CategoryListAdapter extends BaseAdapter {
 
 		mContext = context;
 		imageId = prgmImages;
+
+		
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}

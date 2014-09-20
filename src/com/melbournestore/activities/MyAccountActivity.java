@@ -103,6 +103,8 @@ public class MyAccountActivity extends Activity {
 //				startActivity(intent);
 //				finish();
 				
+				SysApplication.setLoginStatus(false);
+				
 				Intent returnIntent = new Intent();
 				returnIntent.putExtra("logout",true);
 				setResult(RESULT_OK, returnIntent);

@@ -21,6 +21,8 @@ import com.melbournestore.application.SysApplication;
 import com.melbournestore.utils.MelbourneUtils;
 
 public class ShoppingCartActivity extends Activity {
+	
+	public static final int LOGIN_CODE = 8;
 
 	private Button mConfirmOrders;
 
@@ -43,13 +45,13 @@ public class ShoppingCartActivity extends Activity {
 			switch (msg.what) {
 			// plus = 1
 			case 1:
-				priceTotal+=orderPrices[position];
-				mTotalPrice.setText("$"+String.valueOf(priceTotal));
+				priceTotal += orderPrices[position];
+				mTotalPrice.setText("$" + String.valueOf(priceTotal));
 				break;
 			// minus = 2
 			case 2:
-				priceTotal-=orderPrices[position];
-				mTotalPrice.setText("$"+String.valueOf(priceTotal));
+				priceTotal -= orderPrices[position];
+				mTotalPrice.setText("$" + String.valueOf(priceTotal));
 				break;
 
 			}
@@ -60,8 +62,8 @@ public class ShoppingCartActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shopping_cart_layout);
-		
-		SysApplication.getInstance().addActivity(this); 
+
+		SysApplication.getInstance().addActivity(this);
 
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
@@ -78,20 +80,29 @@ public class ShoppingCartActivity extends Activity {
 		mOrderList.setAdapter(new OrderListAdapter(this, mHandler, orderNames,
 				orderPrices, orderNumbers));
 
-		priceTotal = MelbourneUtils.sum_price(orderPrices,orderNumbers);
-		mTotalPrice.setText("$"+String.valueOf(priceTotal));
-		
-		
+		priceTotal = MelbourneUtils.sum_price(orderPrices, orderNumbers);
+		mTotalPrice.setText("$" + String.valueOf(priceTotal));
+
 		mConfirmOrders.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				Intent intent = new Intent(ShoppingCartActivity.this, SubmitOrderActivity.class);
-				intent.putExtra("total_price", priceTotal);
-				
-				startActivity(intent);
+				boolean isLoggedIn = SysApplication.getLoginStatus();
+				if (isLoggedIn) {
+					Intent intent = new Intent(ShoppingCartActivity.this,
+							SubmitOrderActivity.class);
+					intent.putExtra("total_price", priceTotal);
+
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(ShoppingCartActivity.this,
+							LoginActivity.class);
+					//intent.putExtra("total_price", priceTotal);
+
+					startActivityForResult(intent, LOGIN_CODE);
+				}
 
 			}
 
@@ -116,19 +127,20 @@ public class ShoppingCartActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-    private long mExitTime;
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                                    mExitTime = System.currentTimeMillis();
 
-                            } else {
-                            		SysApplication.getInstance().exit();  
-                            }
-                            return true;
-                    }
-                    return super.onKeyDown(keyCode, event);
-            }
+	private long mExitTime;
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+
+			} else {
+				SysApplication.getInstance().exit();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

@@ -31,11 +31,13 @@
     <application
         android:label="@string/app_name"
         android:icon="@drawable/launch_icon"
-        android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
+        >
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -43,34 +45,44 @@
         </activity>
         <activity 
             android:name=".PlateActivity"  
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
        	<activity 
             android:name=".ShoppingCartActivity"  
-            android:parentActivityName=".PlateActivity"/>
+            android:parentActivityName=".PlateActivity"
+            android:screenOrientation="portrait"/>
        	<activity 
             android:name=".SubmitOrderActivity"  
-            android:parentActivityName=".ShoppingCartActivity" />
+            android:parentActivityName=".ShoppingCartActivity" 
+            android:screenOrientation="portrait"/>
        	<activity 
        	    android:name=".ChooseAddressActivity" 
-       	    android:parentActivityName=".SubmitOrderActivity" />
+       	    android:parentActivityName=".SubmitOrderActivity" 
+       	    android:screenOrientation="portrait"/>
        	<activity 
        	    android:name=".DeliveryNoticeActivity" 
-       	    android:parentActivityName=".SubmitOrderActivity" />
+       	    android:parentActivityName=".SubmitOrderActivity" 
+       	    android:screenOrientation="portrait"/>
        	<activity 
        	    android:name=".SuburbActivity" 
-       	    android:parentActivityName=".ChooseAddressActivity"/>
+       	    android:parentActivityName=".ChooseAddressActivity"
+       	    android:screenOrientation="portrait"/>
        	<activity 
        	    android:name=".OrderSubmittedActivity" 
-       	    android:parentActivityName=".SubmitOrderActivity"/>
+       	    android:parentActivityName=".SubmitOrderActivity"
+       	    android:screenOrientation="portrait"/>
        	<activity 
        	    android:name=".LoginActivity" 
-       	    android:parentActivityName=".MainActivity"/>
+       	    android:parentActivityName=".MainActivity"
+       	    android:screenOrientation="portrait"/>
        	<activity 
        	    android:name=".MyAccountActivity" 
-       	    android:parentActivityName=".MainActivity"/>
+       	    android:parentActivityName=".MainActivity"
+       	    android:screenOrientation="portrait"/>
        	<activity 
        	    android:name=".DeliveryAgreementActivity" 
-       	    android:parentActivityName=".LoginActivity"/>
+       	    android:parentActivityName=".LoginActivity"
+       	    android:screenOrientation="portrait"/>
 
     </application>
 

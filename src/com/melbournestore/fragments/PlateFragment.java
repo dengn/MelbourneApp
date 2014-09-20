@@ -13,9 +13,9 @@ import com.melbournestore.db.DataResourceUtils;
 
 public class PlateFragment extends Fragment{
 	
+	
     public PlateFragment() {
         
-
     }
 
     @Override

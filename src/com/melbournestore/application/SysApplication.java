@@ -8,7 +8,11 @@ import android.app.Activity;
 public class SysApplication {
 	    private List<Activity> mList = new LinkedList<Activity>(); 
 	    private static SysApplication instance; 
+	    
+	    private static boolean isLoggedIn = false;
 
+	    
+	    
 	    private SysApplication() {   
 	    } 
 	    public synchronized static SysApplication getInstance() { 
@@ -34,5 +38,15 @@ public class SysApplication {
 	            System.exit(0); 
 	        } 
 	    } 
+	    
+	    public static boolean getLoginStatus(){
+	    	return isLoggedIn;
+	    }
+	    
+	    public static void setLoginStatus(boolean status){
+	    	isLoggedIn = status;
+	    	
+	    }
+	    
 	 
 }
