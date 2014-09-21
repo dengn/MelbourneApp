@@ -8,8 +8,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.melbournestore.activities.MainActivity;
 import com.melbournestore.activities.PlateActivity;
 import com.melbournestore.activities.R;
 
@@ -17,16 +17,19 @@ public class CategoryListAdapter extends BaseAdapter {
 
 	Context mContext;
 	int[] imageId;
+	String[] mShopText;
+	String[] mShopSubtext;
 
 	
 	private static LayoutInflater inflater = null;
 
-	public CategoryListAdapter(Context context, int[] prgmImages) {
+	public CategoryListAdapter(Context context, int[] prgmImages, String[] shopText, String[] shopSubtext) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
 		imageId = prgmImages;
-
+		mShopText = shopText;
+		mShopSubtext = shopSubtext;
 		
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,6 +55,9 @@ public class CategoryListAdapter extends BaseAdapter {
 
 	public class Holder {
 		ImageView img;
+		
+		TextView shopText;
+		TextView shopSubtext;
 	}
 
 	@Override
@@ -62,6 +68,13 @@ public class CategoryListAdapter extends BaseAdapter {
 		rowView = inflater.inflate(R.layout.category_list_item, null);
 		holder.img = (ImageView) rowView.findViewById(R.id.plates_image);
 		holder.img.setImageResource(imageId[position]);
+		
+		holder.shopText = (TextView) rowView.findViewById(R.id.shop_name);
+		holder.shopText.setText(mShopText[position]);
+		
+		holder.shopSubtext = (TextView) rowView.findViewById(R.id.shop_description);
+		holder.shopSubtext.setText(mShopSubtext[position]);
+		
 		rowView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

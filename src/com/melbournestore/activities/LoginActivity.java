@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,8 @@ public class LoginActivity extends Activity{
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		getActionBar().setTitle("用户登录");
+		
 		loginText = (TextView) findViewById(R.id.login_notice);
 		loginText.setText("请使用手机号码登录");
 
@@ -54,7 +57,7 @@ public class LoginActivity extends Activity{
 		loginCheckbox.setText("");
 		
 		loginTextAgreement = (TextView) findViewById(R.id.login_text_agreement);
-		loginTextAgreement.setText("同意<墨尔本送餐服务协议>");
+		loginTextAgreement.setText("同意<"+Html.fromHtml("<u>"+"墨尔本送餐服务协议"+"</u>")+">");
 		
 		loginTextAgreement.setOnClickListener(new OnClickListener(){
 

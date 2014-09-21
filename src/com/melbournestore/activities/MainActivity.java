@@ -226,6 +226,7 @@ public class MainActivity extends Activity {
         mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
         mDrawerList.setAdapter(mDrawerListAdapter);
 
+        selectItem(1);
     	
         if (requestCode == LOGIN_CODE) {
             if(resultCode == RESULT_OK){
@@ -239,6 +240,8 @@ public class MainActivity extends Activity {
                 mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
                 mDrawerList.setAdapter(mDrawerListAdapter);
                 mDrawerLayout.openDrawer(mDrawerList);
+                
+                selectItem(1);
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -262,6 +265,8 @@ public class MainActivity extends Activity {
                 mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
                 mDrawerList.setAdapter(mDrawerListAdapter);
                 mDrawerLayout.openDrawer(mDrawerList);
+                
+                selectItem(1);
             }
         }
     }//onActivityResult

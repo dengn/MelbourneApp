@@ -25,7 +25,7 @@ public class PlateFragment extends Fragment{
 
         
         ListView category = (ListView) rootView.findViewById(R.id.category);
-        category.setAdapter(new CategoryListAdapter(getActivity(), DataResourceUtils.categoryItemsImages));
+        category.setAdapter(new CategoryListAdapter(getActivity(), DataResourceUtils.shopItemsImages, DataResourceUtils.shopItems, DataResourceUtils.shopSubitems));
         
         return rootView;
     }

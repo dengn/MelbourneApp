@@ -14,7 +14,8 @@ import com.melbournestore.application.SysApplication;
 
 public class DeliveryAgreementActivity extends Activity {
 	
-	private TextView textAgreement;
+	private TextView textAgreement1;
+	private TextView textAgreement2;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,8 +31,11 @@ public class DeliveryAgreementActivity extends Activity {
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		textAgreement = (TextView) findViewById(R.id.delivery_text_agreement);
-		textAgreement.setText("使用条款和隐私政策\n欢迎使用本软件及服务\n...");
+		textAgreement1 = (TextView) findViewById(R.id.delivery_text_agreement1);
+		textAgreement1.setText("使用条款和隐私政策");
+		
+		textAgreement2 = (TextView) findViewById(R.id.delivery_text_agreement2);
+		textAgreement2.setText("欢迎使用本软件及服务\n...");
 	}
 	
 	@Override
