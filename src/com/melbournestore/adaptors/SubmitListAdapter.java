@@ -3,7 +3,9 @@ package com.melbournestore.adaptors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +37,11 @@ public class SubmitListAdapter extends BaseAdapter{
 	int mPriceTotal;
 	
 	String mAddress;
+	String mTime;
 	
 	private static LayoutInflater inflater = null;
 	
-	public SubmitListAdapter(Context context, Handler handler, int priceTotal, String address) {
+	public SubmitListAdapter(Context context, Handler handler, int priceTotal, String address, String time) {
 		// TODO Auto-generated constructor stub
 
 		
@@ -46,14 +49,16 @@ public class SubmitListAdapter extends BaseAdapter{
 		mHandler = handler;
 		mPriceTotal = priceTotal;
 		mAddress = address;
+		mTime = time;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void refresh(int priceTotal, String address){
+	public void refresh(int priceTotal, String address, String time){
 		mPriceTotal = priceTotal;
 		mAddress = address;
+		mTime = time;
 		notifyDataSetChanged();
 	}
 
@@ -158,10 +163,31 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_checkbox.rightArrow = (ImageView) convertView.findViewById(R.id.time_rightarrow);
         	
         	
-        	holder_checkbox.title.setText("运送时间");
+        	holder_checkbox.title.setText("运送时间"+mTime);
         	holder_checkbox.rightArrow.setImageResource(R.drawable.right_arrow);
         	
         	convertView.setTag(holder_checkbox);
+        	
+        	convertView.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					//popup the delivery time picker
+					Message message = new Message();
+					Bundle b = new Bundle();
+					// send the action to do
+					// action = 2 open time picker
+					b.putInt("action", 2);
+					message.setData(b);
+
+					
+					message.what = 1;
+
+					mHandler.sendMessage(message);
+				}
+        		
+        	});
         	break;
         case TYPE_EDITTEXT:
         	

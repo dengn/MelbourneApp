@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.melbournestore.adaptors.DrawerListAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.DataResourceUtils;
+import com.melbournestore.fragments.GoogleMapFragment;
 import com.melbournestore.fragments.MyOrdersFragment;
 import com.melbournestore.fragments.PlateFragment;
 
@@ -319,6 +320,10 @@ public class MainActivity extends Activity {
             mDrawerLayout.closeDrawer(mDrawerList);
     		break;
     	case 3:
+    		
+    		Fragment googlemap_fragment = new GoogleMapFragment(this);
+    		fragmentManager.beginTransaction().replace(R.id.content_frame, googlemap_fragment).commit();
+    		
             mDrawerList.setItemChecked(position, true);
             setTitle(mMenuTitles[position-1]);
             mDrawerLayout.closeDrawer(mDrawerList);

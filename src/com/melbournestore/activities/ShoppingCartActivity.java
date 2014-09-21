@@ -1,11 +1,17 @@
 package com.melbournestore.activities;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -18,6 +24,7 @@ import android.widget.Toast;
 
 import com.melbournestore.adaptors.OrderListAdapter;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.utils.BitmapUtils;
 import com.melbournestore.utils.MelbourneUtils;
 
 public class ShoppingCartActivity extends Activity {
@@ -108,6 +115,28 @@ public class ShoppingCartActivity extends Activity {
 
 		});
 	}
+	
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check which request we're responding to
+
+		switch (requestCode) {
+		case LOGIN_CODE:
+			// Get the Address chosen
+
+			// Make sure the request was successful
+			if (resultCode == RESULT_OK) {
+				SysApplication.setLoginStatus(true);
+			}
+			break;
+
+		}
+
+	}
+	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

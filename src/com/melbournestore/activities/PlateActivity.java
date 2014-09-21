@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.melbournestore.adaptors.PlateListAdapter;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.db.DataResourceUtils;
 import com.melbournestore.utils.MelbourneUtils;
 
 public class PlateActivity extends Activity {
@@ -49,8 +50,7 @@ public class PlateActivity extends Activity {
 
 	private TextView mTotalNum;
 
-	private int[] plateImages = { R.drawable.plate1, R.drawable.plate2,
-			R.drawable.plate3, R.drawable.plate4, R.drawable.plate5 };
+
 
 	private String[] plateTitles = { "ÂéÀ±Ğ¡ÁúÏº", "ËâÄàĞ¡ÁúÏº", "Åİ½·Ğ¡ÁúÏº", "¿§à¬Ğ¡ÁúÏº",
 			"Ğ¡ÁúÏº³´Äê¸â" };
@@ -135,7 +135,7 @@ public class PlateActivity extends Activity {
 
 		mPlatesList.setAdapter(new PlateListAdapter(this, mHandler,
 				plateTitles, platePrices, plateStocks, plateNumbers,
-				plateImages, plateLikeNumbers));
+				DataResourceUtils.plateImages, plateLikeNumbers));
 
 		mConfirmChoice = (Button) findViewById(R.id.confirm_choice);
 		mConfirmChoice.bringToFront();

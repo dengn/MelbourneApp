@@ -1,6 +1,8 @@
 package com.melbournestore.adaptors;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,14 +16,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.melbournestore.activities.ChooseAddressActivity;
+import com.melbournestore.activities.DishActivity;
 import com.melbournestore.activities.R;
-
+import com.melbournestore.activities.SubmitOrderActivity;
 
 public class PlateListAdapter extends BaseAdapter {
 	String[] plate_names;
 	int[] plate_prices;
 	int[] plate_stocks;
-	
+
 	int[] plate_stocks_max;
 
 	int[] plates_nums;
@@ -45,8 +49,8 @@ public class PlateListAdapter extends BaseAdapter {
 		plate_prices = prices;
 		plate_stocks = stocks;
 		plates_nums = numbers;
-		
-		plate_stocks_max= stocks;
+
+		plate_stocks_max = stocks;
 
 		like_nums = like_numbers;
 
@@ -114,8 +118,9 @@ public class PlateListAdapter extends BaseAdapter {
 
 		holder.plus = (Button) rowView.findViewById(R.id.plate_plus);
 		holder.minus = (Button) rowView.findViewById(R.id.plate_minus);
-		
-		setComponentsStatus(holder.plus, holder.minus, holder.num_view, position);
+
+		setComponentsStatus(holder.plus, holder.minus, holder.num_view,
+				position);
 
 		holder.names_view.setText(plate_names[position]);
 		holder.prices_view
@@ -134,19 +139,36 @@ public class PlateListAdapter extends BaseAdapter {
 		//
 		// }
 		// });
+
+		rowView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(mContext, DishActivity.class);
+				intent.putExtra("position",position);
+				((Activity) mContext).startActivity(intent);
+				
+			}
+
+		});
+
 		holder.like_number_view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (!likeClicked) {
-					holder.like_view.setImageResource(R.drawable.other_icon_liked);
+					holder.like_view
+							.setImageResource(R.drawable.other_icon_liked);
 
 					holder.like_number_view.setText(String
 							.valueOf(like_nums[position] + 1));
-				}
-				else{
-					Toast.makeText(mContext, "亲，今天已经点过赞了。", Toast.LENGTH_SHORT).show();
+					
+					likeClicked = true;
+				} else {
+					Toast.makeText(mContext, "亲，今天已经点过赞了。", Toast.LENGTH_SHORT)
+							.show();
 				}
 			}
 
@@ -167,18 +189,17 @@ public class PlateListAdapter extends BaseAdapter {
 
 				mHandler.sendMessage(message);
 
-				plate_stocks[position]=plate_stocks[position]-1;
-				plates_nums[position]=plates_nums[position]+1;
-				
-				
-				
-				//Log.d(TAG,"plus clicked. plate_stocks number: ");
+				plate_stocks[position] = plate_stocks[position] - 1;
+				plates_nums[position] = plates_nums[position] + 1;
 
-				holder.stocks_view.setText("今日库存" + String.valueOf(plate_stocks[position])
-						+ "份");
+				// Log.d(TAG,"plus clicked. plate_stocks number: ");
+
+				holder.stocks_view.setText("今日库存"
+						+ String.valueOf(plate_stocks[position]) + "份");
 				holder.num_view.setText(String.valueOf(plates_nums[position]));
-				
-				setComponentsStatus(holder.plus, holder.minus, holder.num_view, position);
+
+				setComponentsStatus(holder.plus, holder.minus, holder.num_view,
+						position);
 
 			}
 		});
@@ -198,37 +219,36 @@ public class PlateListAdapter extends BaseAdapter {
 
 				mHandler.sendMessage(message);
 
-				
-				plate_stocks[position]=plate_stocks[position]+1;
-				plates_nums[position]=plates_nums[position]-1;
+				plate_stocks[position] = plate_stocks[position] + 1;
+				plates_nums[position] = plates_nums[position] - 1;
 
-				holder.stocks_view.setText("今日库存" + String.valueOf(plate_stocks[position])
-						+ "份");
+				holder.stocks_view.setText("今日库存"
+						+ String.valueOf(plate_stocks[position]) + "份");
 				holder.num_view.setText(String.valueOf(plates_nums[position]));
-				
-				setComponentsStatus(holder.plus, holder.minus, holder.num_view, position);
+
+				setComponentsStatus(holder.plus, holder.minus, holder.num_view,
+						position);
 
 			}
 		});
 
 		return rowView;
 	}
-	
-	private void setComponentsStatus(Button plusButton, Button minusButton, TextView numView, int position){
+
+	private void setComponentsStatus(Button plusButton, Button minusButton,
+			TextView numView, int position) {
 		int stock_num = plate_stocks[position];
 		int plate_num = plates_nums[position];
-		
-		if(stock_num<=0){
+
+		if (stock_num <= 0) {
 			plusButton.setEnabled(false);
-		}
-		else{
+		} else {
 			plusButton.setEnabled(true);
 		}
-		if(plate_num<=0){
+		if (plate_num <= 0) {
 			numView.setVisibility(View.INVISIBLE);
 			minusButton.setEnabled(false);
-		}
-		else{
+		} else {
 			numView.setVisibility(View.VISIBLE);
 			minusButton.setEnabled(true);
 		}
