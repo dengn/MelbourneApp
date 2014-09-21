@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.melbournestore.activities.R;
 import com.melbournestore.db.DataResourceUtils;
+import com.melbournestore.utils.CircleImageView;
 
 public class DrawerListAdapter extends BaseAdapter {
 
@@ -84,7 +85,7 @@ public class DrawerListAdapter extends BaseAdapter {
 
 			holder_login.phone_number = (TextView) convertView
 					.findViewById(R.id.drawer_login_number);
-			holder_login.profile = (ImageView) convertView
+			holder_login.profile = (CircleImageView) convertView
 					.findViewById(R.id.drawer_login_image);
 
 			holder_login.phone_number.setTextColor(Color.WHITE);
@@ -136,7 +137,7 @@ public class DrawerListAdapter extends BaseAdapter {
 
 	class viewHolder_login {
 
-		private ImageView profile;
+		private CircleImageView profile;
 
 		private TextView phone_number;
 
