@@ -34,12 +34,14 @@ public class MyAccountListAdapter extends BaseAdapter{
 	private Bitmap mProfile;
 	
 	private String mAddress;
+	
+	private String mNumber;
     
 	private static LayoutInflater inflater = null;
     
     
     
-	public MyAccountListAdapter(Context context, Handler handler, Bitmap profile, String address) {
+	public MyAccountListAdapter(Context context, Handler handler, Bitmap profile, String address, String number) {
 		// TODO Auto-generated constructor stub
 
 		
@@ -47,14 +49,16 @@ public class MyAccountListAdapter extends BaseAdapter{
 		mHandler = handler;
 		mProfile = profile;
 		mAddress = address;
+		mNumber = number;
 		
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void refresh(String address, Bitmap profile){
+	public void refresh(String address, Bitmap profile, String number){
 		mAddress = address;
 		mProfile = profile;
+		mNumber = number;
 		notifyDataSetChanged();
 	}
     
@@ -100,7 +104,7 @@ public class MyAccountListAdapter extends BaseAdapter{
         		holder_profile.profile.setImageBitmap(mProfile);
         	}
 
-        	holder_profile.number.setText("0485245801");
+        	holder_profile.number.setText(mNumber);
         	
         	holder_profile.profile.setOnClickListener(new OnClickListener(){
 

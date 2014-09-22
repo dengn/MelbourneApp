@@ -52,6 +52,8 @@ public class MyAccountActivity extends Activity {
 	private String mAddress;
 
 	private Bitmap mProfile;
+	
+	private String mNumber;
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -85,12 +87,17 @@ public class MyAccountActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		
+		getActionBar().setTitle("ÎÒµÄ");
 
 		Intent intent = getIntent();
 
 		mAddress = "";
 
 		mProfile = intent.getParcelableExtra("profile");
+		
+		mNumber = intent.getStringExtra("number");
 
 		mLogout = (Button) findViewById(R.id.logout);
 		
@@ -116,7 +123,7 @@ public class MyAccountActivity extends Activity {
 		mMyAccountList = (ListView) findViewById(R.id.myaccount_list);
 
 		mMyAccountListAdapter = new MyAccountListAdapter(this, mHandler,
-				mProfile, mAddress);
+				mProfile, mAddress, mNumber);
 		mMyAccountList.setAdapter(mMyAccountListAdapter);
 
 	}
@@ -152,7 +159,7 @@ public class MyAccountActivity extends Activity {
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
 				mAddress = data.getStringExtra("address");
-				mMyAccountListAdapter.refresh(mAddress, mProfile);
+				mMyAccountListAdapter.refresh(mAddress, mProfile, mNumber);
 				mMyAccountList.setAdapter(mMyAccountListAdapter);
 			}
 			break;
@@ -166,7 +173,7 @@ public class MyAccountActivity extends Activity {
 					
 					mProfile = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
 
-					mMyAccountListAdapter.refresh(mAddress, mProfile);
+					mMyAccountListAdapter.refresh(mAddress, mProfile, mNumber);
 					mMyAccountList.setAdapter(mMyAccountListAdapter);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -185,7 +192,7 @@ public class MyAccountActivity extends Activity {
 				
 				mProfile = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
 				
-				mMyAccountListAdapter.refresh(mAddress, mProfile);
+				mMyAccountListAdapter.refresh(mAddress, mProfile, mNumber);
 				mMyAccountList.setAdapter(mMyAccountListAdapter);
 			}
 			break;

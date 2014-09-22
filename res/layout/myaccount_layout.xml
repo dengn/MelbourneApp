@@ -2,26 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/sidebar_bg"
     android:orientation="vertical" >
+
     <ListView
         android:id="@+id/myaccount_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <RelativeLayout
-        android:id="@+id/myaccount_bottom_layour"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#55000000"
-        android:layout_alignParentBottom="true">
-        <!-- This will be your overlay so here you can add your login button ect -->
+        android:layout_height="match_parent"
+        android:divider="@color/lightlightgray"   
+		android:dividerHeight="1px" />
 
-
-        <Button
-        	android:id="@+id/logout"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="退出此账号" 
-        	android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="800px"
+        android:layout_height="150px"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:background="#50000000"
+        android:text="退出此账号"
+        android:layout_marginBottom="80px"
+        android:layout_marginLeft="135px"
+        android:textColor="@color/white"
+        android:textSize="70px" />
 
 </RelativeLayout>

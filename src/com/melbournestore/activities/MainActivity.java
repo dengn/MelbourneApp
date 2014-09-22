@@ -301,6 +301,7 @@ public class MainActivity extends Activity {
     		else{
     			Intent intent = new Intent(this, MyAccountActivity.class);
     			intent.putExtra("profile", mProfile);
+    			intent.putExtra("number", loginNumber);
     			startActivityForResult(intent, MY_ACCOUNT_CODE);
     		}
     		
