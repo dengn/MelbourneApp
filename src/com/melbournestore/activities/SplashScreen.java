@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 
 public class SplashScreen extends Activity {
 	 
@@ -14,6 +17,11 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        
+        FrameLayout mainFrame = ((FrameLayout) findViewById(R.id.frame_splash));
+        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(this,
+                R.anim.hyperspace_jump);
+        mainFrame.startAnimation(hyperspaceJumpAnimation);
  
         new Handler().postDelayed(new Runnable() {
  
