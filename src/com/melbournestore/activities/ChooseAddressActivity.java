@@ -133,9 +133,9 @@ public class ChooseAddressActivity extends Activity {
 			// activity and
 			// use NavUtils in the Support Package to ensure proper handling of
 			// Up.
-			Intent upIntent = NavUtils.getParentActivityIntent(this);
-			upIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			startActivity(upIntent);
+//			Intent upIntent = NavUtils.getParentActivityIntent(this);
+//			upIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//			startActivity(upIntent);
 			finish();
 			return true;
 		case R.id.finish:

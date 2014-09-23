@@ -7,7 +7,7 @@
     android:orientation="horizontal" >
 
     <TableRow
-        android:id="@+id/tableRow3"
+        android:id="@+id/myaccount_like_table"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="1px"
