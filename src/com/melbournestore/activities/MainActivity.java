@@ -310,7 +310,7 @@ public class MainActivity extends Activity {
     		
     	case 1:
     		
-    		Fragment plate_fragment = new PlateFragment();
+    		Fragment plate_fragment = new PlateFragment(this);
             
             fragmentManager.beginTransaction().replace(R.id.content_frame, plate_fragment).commit();
             
