@@ -129,6 +129,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	
         	holder_edittext.text.setOnFocusChangeListener(new OnFocusChangeListener() {
                 public void onFocusChange(View v, boolean hasFocus) {
+                	
                     if (!hasFocus){
                         final int position = v.getId();
                         final EditText Caption = (EditText) v;

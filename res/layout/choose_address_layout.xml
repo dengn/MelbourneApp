@@ -12,10 +12,10 @@
         android:id="@+id/chooseAddr_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" 
-        android:layout_marginTop="80px"
+        android:layout_marginTop="27dp"
         android:background="#50000000"
         android:divider="@color/lightlightgray"   
-		android:dividerHeight="1px"/>
+		android:dividerHeight="1dp"/>
 
 
 
