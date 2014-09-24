@@ -23,8 +23,7 @@ public class ChooseAddressActivity extends Activity {
 	public static final int result_code_suburb = 2;
 	
 	private ListView chooseAddr_list;
-	private ListView addr_zone_list;
-	private TextView addr_zone;
+
 	
 	private ChooseAddressListAdapter mChooseAddressListAdapter;
 
@@ -66,6 +65,8 @@ public class ChooseAddressActivity extends Activity {
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		getActionBar().setTitle("送货地址");
+		
 		
 		addr_unit = "";
 		addr_street = "";
@@ -76,11 +77,7 @@ public class ChooseAddressActivity extends Activity {
 		mChooseAddressListAdapter = new ChooseAddressListAdapter(this, mHandler, addr_suburb);
 		chooseAddr_list.setAdapter(mChooseAddressListAdapter);
 
-		addr_zone_list = (ListView) findViewById(R.id.addr_zone_list);
 
-		addr_zone = (TextView) findViewById(R.id.addr_zone);
-		addr_zone.setText("所属区域");
-		
 
 
 
@@ -141,7 +138,7 @@ public class ChooseAddressActivity extends Activity {
 		case R.id.finish:
 			
 			Intent returnIntent = new Intent();
-			returnIntent.putExtra("address",addr_unit+"\n"+addr_street+"\n"+addr_suburb);
+			returnIntent.putExtra("address",addr_unit+","+addr_street+","+addr_suburb);
 			setResult(RESULT_OK,returnIntent);
 			finish();
 			

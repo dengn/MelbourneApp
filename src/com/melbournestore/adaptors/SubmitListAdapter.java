@@ -137,7 +137,7 @@ public class SubmitListAdapter extends BaseAdapter{
         	
         	
         	holder_activity.title.setText("运送地址 "+mAddress);
-        	holder_activity.rightArrow.setImageResource(R.drawable.right_arrow);
+        	holder_activity.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_activity);
         	
@@ -164,7 +164,7 @@ public class SubmitListAdapter extends BaseAdapter{
         	
         	
         	holder_checkbox.title.setText("运送时间"+mTime);
-        	holder_checkbox.rightArrow.setImageResource(R.drawable.right_arrow);
+        	holder_checkbox.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_checkbox);
         	

@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/myaccount_coupon_info"
-            android:layout_width="360px"
+            android:layout_width="670px"
             android:layout_height="100px"
             android:layout_marginBottom="20px"
             android:layout_marginTop="20px"
@@ -31,7 +31,7 @@
 
         <ImageView
             android:id="@+id/myaccount_coupon_rightarrow"
-            android:layout_width="360px"
+            android:layout_width="50px"
             android:layout_height="100px"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="20px"

@@ -23,16 +23,16 @@
     
     	<TextView 
     		android:id="@+id/myaccount_address_info"
-    		android:layout_width="360px"
+    		android:layout_width="670px"
             android:layout_height="100px" 
             android:textColor="@color/white"
             android:layout_marginTop="20px"
         	android:layout_marginBottom="20px"
-            android:textSize="60px"/>
+            android:textSize="40px"/>
 
     	<ImageView
         	android:id="@+id/myaccount_address_rightarrow"
-        	android:layout_width="360px"
+        	android:layout_width="50px"
             android:layout_height="100px" 
             android:layout_marginTop="20px"
         	android:layout_marginBottom="20px"

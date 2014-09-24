@@ -161,7 +161,7 @@ public class MyAccountListAdapter extends BaseAdapter{
         	
         	holder_address.title.setText("送货地址");
         	holder_address.address.setText(mAddress);
-        	holder_address.rightArrow.setImageResource(R.drawable.right_arrow);
+        	holder_address.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setOnClickListener(new OnClickListener(){
 
@@ -186,7 +186,7 @@ public class MyAccountListAdapter extends BaseAdapter{
         	
         	
         	holder_coupon.title.setText("我的优惠券");
-        	holder_coupon.rightArrow.setImageResource(R.drawable.right_arrow);
+        	holder_coupon.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_coupon);
         	break;

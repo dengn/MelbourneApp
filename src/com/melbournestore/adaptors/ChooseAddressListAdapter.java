@@ -89,6 +89,8 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	
         	holder_edittext.text.setText(addr_unit);
         	
+        	holder_edittext.text.setHint("275");
+        	
         	holder_edittext.text.setOnFocusChangeListener(new OnFocusChangeListener() {
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus){
@@ -120,6 +122,8 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	holder_edittext.text = (EditText)convertView.findViewById(R.id.memo_info);
         	
         	holder_edittext.title.setText("Street");
+        	
+        	holder_edittext.text.setHint("King Street");
         	
         	holder_edittext.text.setText(addr_street);
         	
@@ -156,9 +160,11 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	holder_activity.rightArrow = (ImageView) convertView.findViewById(R.id.address_rightarrow);
         	
         	
+        	
         	holder_activity.title.setText("Suburb");
         	holder_activity.info.setText(addr_suburb);
-        	holder_activity.rightArrow.setImageResource(R.drawable.right_arrow);
+        	holder_activity.info.setHint("City");
+        	holder_activity.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_activity);
         	

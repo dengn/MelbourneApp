@@ -3,14 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
-        <TextView 
-    android:id="@+id/memo_title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-    
-	<EditText
-    android:id="@+id/memo_info"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1px"
+        android:padding="1dip" >
+
+        <TextView
+            android:id="@+id/memo_title"
+            android:layout_width="360px"
+            android:layout_height="150px"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="15px"
+            android:layout_marginLeft="50px"
+            android:textColor="@color/white"
+            android:textSize="80px" />
+
+        <!--
+        <EditText
+            android:id="@+id/memo_info"
+            android:layout_width="720px"
+            android:layout_height="150px" 
+            android:layout_alignParentLeft="true"
+            android:singleLine="true"
+        	android:scrollHorizontally="true"  
+        	android:textSize="80px"
+        	android:textColor="@color/white"
+        	android:queryHint="275"/>
+        -->
+
+        <EditText
+            android:id="@+id/memo_info"
+            android:layout_width="match_parent"
+            android:layout_height="150px"
+            android:layout_marginTop="15px"
+            android:layout_alignParentLeft="true"
+            android:background="#00000000"
+            android:paddingLeft="20px"
+            android:paddingRight="40px"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="70px"
+            android:width="300dp" />
+    </TableRow>
 
 </LinearLayout>
