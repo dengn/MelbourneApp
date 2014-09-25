@@ -132,7 +132,7 @@ public class SubmitOrderActivity extends Activity {
 
 		mSubmitOrders.setText("确认下单");
 
-		mSubmitPrice.setText("$" + String.valueOf(priceTotal));
+		mSubmitPrice.setText("共计费用：$" + String.valueOf(priceTotal));
 	}
 
 	@Override

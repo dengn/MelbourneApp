@@ -34,7 +34,7 @@
     <RelativeLayout
         android:id="@+id/submit_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
         android:background="#80000000" >
 
@@ -54,7 +54,7 @@
             android:id="@+id/submit_order"
             android:layout_width="267dp"
             android:layout_height="45dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"
             android:text="提交订单"
             android:textColor="@color/white"

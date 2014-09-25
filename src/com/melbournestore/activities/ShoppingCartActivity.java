@@ -90,7 +90,7 @@ public class ShoppingCartActivity extends Activity {
 				orderPrices, orderNumbers));
 
 		priceTotal = MelbourneUtils.sum_price(orderPrices, orderNumbers);
-		mTotalPrice.setText("$" + String.valueOf(priceTotal));
+		mTotalPrice.setText("共计费用：$" + String.valueOf(priceTotal));
 
 		mConfirmOrders.setOnClickListener(new OnClickListener() {
 

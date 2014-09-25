@@ -58,7 +58,8 @@ public class DishActivity extends Activity {
 		mDishTotalPrice = (TextView) findViewById(R.id.dish_price);
 		mDishTotalNum = (TextView) findViewById(R.id.dish_num_total);
 		
-		
+		mDishTotalPrice.setText("$128");
+		mDishTotalNum.setText("10");
 	}
 	
 	
