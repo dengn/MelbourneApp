@@ -106,6 +106,7 @@ public class MyAccountActivity extends Activity {
 		mNumber = intent.getStringExtra("number");
 
 		mLogout = (Button) findViewById(R.id.logout);
+		mLogout.getBackground().setAlpha(80);
 		
 		mLogout.setOnClickListener(new OnClickListener(){
 

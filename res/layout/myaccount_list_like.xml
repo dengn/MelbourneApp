@@ -22,10 +22,10 @@
             android:textColor="@color/white"/>
         
         <TextView
-                android:layout_width="1dp"
+                android:layout_width="1dip"
                 android:layout_height="40dp"
         		android:layout_marginTop="8dp"
-                android:background="@color/lightlightgray" />
+                android:background="@color/lightgray" />
 
         <TextView
             android:id="@+id/myaccount_order"
@@ -36,10 +36,10 @@
             android:textColor="@color/white"/>
         
         <TextView
-                android:layout_width="1dp"
+                android:layout_width="1dip"
                 android:layout_height="40dp" 
 				android:layout_marginTop="8dp"
-                android:background="@color/lightlightgray"/>
+                android:background="@color/lightgray"/>
 
         <TextView
             android:id="@+id/myaccount_coupon"

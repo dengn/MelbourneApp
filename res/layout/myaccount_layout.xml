@@ -9,8 +9,8 @@
         android:id="@+id/myaccount_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/lightlightgray"
-        android:dividerHeight="1dp" />
+        android:divider="@color/lightgray"
+        android:dividerHeight="1dip" />
 
     <ListView
         android:id="@+id/myaccount_list_address"
@@ -19,18 +19,18 @@
         android:layout_marginTop="252dp"
         android:layout_above="@+id/myaccount_list"
         android:layout_alignParentBottom="true"
-        android:divider="@color/lightlightgray"
-        android:dividerHeight="1dp" />
+        android:divider="@color/lightgray"
+        android:dividerHeight="1dip" />
 
     <ListView
         android:id="@+id/myaccount_list_coupon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="315dp"
-        android:divider="@color/lightlightgray"
+        android:divider="@color/lightgray"
         android:layout_above="@+id/myaccount_list_address"
         android:layout_alignParentBottom="true"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dip" />
 
     <Button
         android:id="@+id/logout"
@@ -40,7 +40,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="27dp"
         android:layout_marginLeft="45dp"
-        android:background="#50000000"
+        android:background="@drawable/button_style"
         android:text="退出此账号"
         android:textColor="@color/white"
         android:textSize="23dp" />

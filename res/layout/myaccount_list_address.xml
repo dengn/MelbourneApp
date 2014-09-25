@@ -8,8 +8,8 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightlightgray" />
+        android:layout_height="1dip"
+        android:background="@color/lightgray" />
 
     <TableRow
         android:id="@+id/myaccount_like_address"

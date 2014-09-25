@@ -94,6 +94,7 @@ public class SubmitOrderActivity extends Activity {
 		priceTotal = intent.getIntExtra("total_price", 0);
 
 		mSubmitOrders = (Button) findViewById(R.id.submit_order);
+		mSubmitOrders.getBackground().setAlpha(80);
 
 		mSubmitOrders.setOnClickListener(new OnClickListener() {
 

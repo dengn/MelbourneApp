@@ -71,6 +71,7 @@ public class LoginActivity extends Activity{
 		});
 		
 		loginButton = (Button) findViewById(R.id.login_button);
+		loginButton.getBackground().setAlpha(80);
 		loginButton.setText("µÇÂ¼");
 		
 		loginButton.setOnClickListener(new OnClickListener(){
