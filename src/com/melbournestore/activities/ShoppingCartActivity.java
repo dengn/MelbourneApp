@@ -81,6 +81,8 @@ public class ShoppingCartActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mConfirmOrders = (Button) findViewById(R.id.confirm_order);
+		mConfirmOrders.getBackground().setAlpha(80);
+		
 		mTotalPrice = (TextView) findViewById(R.id.price_total);
 
 		mOrderList = (ListView) findViewById(R.id.shopping_list);

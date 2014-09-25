@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melbournestore.adaptors.SubmitListAdapter;
+import com.melbournestore.adaptors.SubmitListCouponAdapter;
+import com.melbournestore.adaptors.SubmitListMemoAdapter;
 import com.melbournestore.application.SysApplication;
 
 public class SubmitOrderActivity extends Activity {
@@ -39,8 +41,12 @@ public class SubmitOrderActivity extends Activity {
 	private TextView mSubmitPrice;
 
 	private ListView mSubmitList;
+	private ListView mSubmitMemoList;
+	private ListView mSubmitCouponList;
 
 	private SubmitListAdapter mSubmitListAdapter;
+	private SubmitListMemoAdapter mSubmitListMemoAdapter;
+	private SubmitListCouponAdapter mSubmitListCouponAdapter;
 
 	private String mDeliveryAddress;
 	
@@ -111,10 +117,18 @@ public class SubmitOrderActivity extends Activity {
 		mSubmitPrice = (TextView) findViewById(R.id.submit_price_total);
 
 		mSubmitList = (ListView) findViewById(R.id.submit_list);
+		mSubmitMemoList = (ListView) findViewById(R.id.submit_memo_list);
+		mSubmitCouponList = (ListView) findViewById(R.id.submit_coupon_list);
 
-		mSubmitListAdapter = new SubmitListAdapter(this, mHandler, priceTotal,
+		mSubmitListAdapter = new SubmitListAdapter(this, mHandler, 
 				mDeliveryAddress, mDeliveryTime);
 		mSubmitList.setAdapter(mSubmitListAdapter);
+		
+		mSubmitListMemoAdapter = new SubmitListMemoAdapter(this, mHandler);
+		mSubmitMemoList.setAdapter(mSubmitListMemoAdapter);
+		
+		mSubmitListCouponAdapter = new SubmitListCouponAdapter(this, mHandler);
+		mSubmitCouponList.setAdapter(mSubmitListCouponAdapter);
 
 		mSubmitOrders.setText("确认下单");
 
@@ -130,7 +144,7 @@ public class SubmitOrderActivity extends Activity {
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
 				mDeliveryAddress = data.getStringExtra("address");
-				mSubmitListAdapter.refresh(priceTotal, mDeliveryAddress, mDeliveryTime);
+				mSubmitListAdapter.refresh(mDeliveryAddress, mDeliveryTime);
 				mSubmitList.setAdapter(mSubmitListAdapter);
 			}
 		}
@@ -186,7 +200,7 @@ public class SubmitOrderActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				mSubmitListAdapter.refresh(priceTotal, mDeliveryAddress, mDeliveryTime);
+				mSubmitListAdapter.refresh(mDeliveryAddress, mDeliveryTime);
 				mSubmitList.setAdapter(mSubmitListAdapter);
 				mTimePickerPopup.dismiss();
 			}

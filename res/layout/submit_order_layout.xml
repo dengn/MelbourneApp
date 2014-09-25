@@ -8,17 +8,28 @@
     <ListView
         android:id="@+id/submit_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:divider="@color/lightgray"
+        android:dividerHeight="1dip" />
 
     <ListView
-        android:id="@+id/submit_list_memo"
+        android:id="@+id/submit_memo_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" 
+        android:layout_marginTop="160dp"
+
+        android:divider="@color/lightgray"
+        android:dividerHeight="1dip"/>
 
     <ListView
-        android:id="@+id/submit_list_coupon"
+        android:id="@+id/submit_coupon_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" 
+        android:layout_marginTop="240dp"
+        android:divider="@color/lightgray"
+
+        android:dividerHeight="1dip"/>
 
     <RelativeLayout
         android:id="@+id/submit_bottom_layout"

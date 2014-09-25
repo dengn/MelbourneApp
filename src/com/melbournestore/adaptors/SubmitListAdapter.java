@@ -28,26 +28,23 @@ public class SubmitListAdapter extends BaseAdapter{
     final int TYPE_TEXT   = 0;
     final int TYPE_ACTIVITY  = 1;
     final int TYPE_CHECKBOX   = 2;
-    final int TYPE_EDITTEXT= 3;
-    final int TYPE_URL =4;
-    final int TYPE_EMPTY = 5;
+
 	
 	Handler mHandler;
 	Context mContext;
-	int mPriceTotal;
+
 	
 	String mAddress;
 	String mTime;
 	
 	private static LayoutInflater inflater = null;
 	
-	public SubmitListAdapter(Context context, Handler handler, int priceTotal, String address, String time) {
+	public SubmitListAdapter(Context context, Handler handler,  String address, String time) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
 		mHandler = handler;
-		mPriceTotal = priceTotal;
 		mAddress = address;
 		mTime = time;
 
@@ -55,8 +52,8 @@ public class SubmitListAdapter extends BaseAdapter{
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void refresh(int priceTotal, String address, String time){
-		mPriceTotal = priceTotal;
+	public void refresh(String address, String time){
+
 		mAddress = address;
 		mTime = time;
 		notifyDataSetChanged();
@@ -70,20 +67,15 @@ public class SubmitListAdapter extends BaseAdapter{
             return TYPE_TEXT;
         else if(p == 1)
             return TYPE_ACTIVITY;
-        else if(p == 2)
+        else
             return TYPE_CHECKBOX;
-        else if(p == 3)
-            return TYPE_EDITTEXT;
-        else if(p == 4)
-            return TYPE_URL;
-        else 
-            return TYPE_EMPTY;
+
     }
 	
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 6;
+		return 3;
 	}
 
 	@Override
@@ -104,9 +96,7 @@ public class SubmitListAdapter extends BaseAdapter{
 		viewHolder_text holder_text = null;
 		viewHolder_activity holder_activity = null;
 		viewHolder_checkbox holder_checkbox = null;
-		viewHolder_edittext holder_edittext = null;
-		viewHolder_url holder_url = null;
-		viewHolder_empty holder_empty = null;
+
          
         int type = getItemViewType(position);
 		
@@ -136,7 +126,8 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_activity.rightArrow = (ImageView) convertView.findViewById(R.id.address_rightarrow);
         	
         	
-        	holder_activity.title.setText("运送地址 "+mAddress);
+        	holder_activity.title.setText("运送地址"+mAddress);
+        	holder_activity.info.setHint("详细地址");
         	holder_activity.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_activity);
@@ -164,6 +155,7 @@ public class SubmitListAdapter extends BaseAdapter{
         	
         	
         	holder_checkbox.title.setText("运送时间"+mTime);
+        	holder_checkbox.info.setHint("范围20:00 - 24:00");
         	holder_checkbox.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_checkbox);
@@ -189,56 +181,7 @@ public class SubmitListAdapter extends BaseAdapter{
         		
         	});
         	break;
-        case TYPE_EDITTEXT:
-        	
-        	holder_edittext = new viewHolder_edittext();
-        	convertView = inflater.inflate(R.layout.submit_list_item_memo, parent, false);
-        	
-        	holder_edittext.title = (TextView)convertView.findViewById(R.id.memo_title);
-        	holder_edittext.memo = (EditText)convertView.findViewById(R.id.memo_info);
-        	
-        	holder_edittext.title.setText("备注");
-        	
-        	convertView.setTag(holder_edittext);
-        	break;
-        case TYPE_URL:
-        	
-        	holder_url = new viewHolder_url();
-        	convertView = inflater.inflate(R.layout.submit_list_item_delivery, parent, false);
-        	
-        	holder_url.title = (TextView)convertView.findViewById(R.id.delivery_title);
-        	holder_url.info = (TextView)convertView.findViewById(R.id.delivery_info);
-        	
-        	holder_url.title.setText("配送费(Northwest+$8)");
-        	holder_url.info.setText(Html.fromHtml("<u>"+"派送说明"+"</u>"));  
-        	
-        	convertView.setTag(holder_url);
-        	
-        	holder_url.info.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(mContext, DeliveryNoticeActivity.class);
-					mContext.startActivity(intent);
-				}
-        		
-        	});
-        	
-        	break;
-        case TYPE_EMPTY:
-        	
-        	holder_empty = new viewHolder_empty();
-        	convertView = inflater.inflate(R.layout.submit_list_item_coupon, parent, false);
-        	
-        	holder_empty.title = (TextView)convertView.findViewById(R.id.coupon_title);
-        
-        	
-        	holder_empty.title.setText("使用优惠券");
-
-        	
-        	convertView.setTag(holder_empty);
-        	break;
+      
         default:
         	break;
         }
@@ -271,23 +214,5 @@ public class SubmitListAdapter extends BaseAdapter{
         private ImageView rightArrow;
     }
     
-    class viewHolder_edittext{
-
-        private TextView title;
-
-        private EditText memo;
-
-    }
-    
-    class viewHolder_url{
-
-        private TextView title;
-
-        private TextView info;
-    }
-	
-    class viewHolder_empty{
-
-        private TextView title;
-    }
+ 
 }

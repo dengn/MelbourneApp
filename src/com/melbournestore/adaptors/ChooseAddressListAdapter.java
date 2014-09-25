@@ -80,10 +80,10 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 		switch (position) {
 		case 0:
         	holder_edittext = new viewHolder_edittext();
-        	convertView = inflater.inflate(R.layout.submit_list_item_memo, parent, false);
+        	convertView = inflater.inflate(R.layout.choose_address_unit, parent, false);
         	
-        	holder_edittext.title = (TextView)convertView.findViewById(R.id.memo_title);
-        	holder_edittext.text = (EditText)convertView.findViewById(R.id.memo_info);
+        	holder_edittext.title = (TextView)convertView.findViewById(R.id.unit_title);
+        	holder_edittext.text = (EditText)convertView.findViewById(R.id.unit_info);
         	
         	holder_edittext.title.setText("Unit/No.");
         	
@@ -116,10 +116,10 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 			break;
 		case 1:
         	holder_edittext = new viewHolder_edittext();
-        	convertView = inflater.inflate(R.layout.submit_list_item_memo, parent, false);
+        	convertView = inflater.inflate(R.layout.choose_address_street, parent, false);
         	
-        	holder_edittext.title = (TextView)convertView.findViewById(R.id.memo_title);
-        	holder_edittext.text = (EditText)convertView.findViewById(R.id.memo_info);
+        	holder_edittext.title = (TextView)convertView.findViewById(R.id.street_title);
+        	holder_edittext.text = (EditText)convertView.findViewById(R.id.street_info);
         	
         	holder_edittext.title.setText("Street");
         	
@@ -154,10 +154,10 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 			break;
 		case 2:
         	holder_activity = new viewHolder_activity();
-        	convertView = inflater.inflate(R.layout.submit_list_item_address, parent, false);
+        	convertView = inflater.inflate(R.layout.choose_address_suburb, parent, false);
         	
-        	holder_activity.title = (TextView)convertView.findViewById(R.id.address_title);
-        	holder_activity.info = (TextView)convertView.findViewById(R.id.address_info);
+        	holder_activity.title = (TextView)convertView.findViewById(R.id.suburb_title);
+        	holder_activity.info = (TextView)convertView.findViewById(R.id.suburb_info);
         	holder_activity.rightArrow = (ImageView) convertView.findViewById(R.id.address_rightarrow);
         	
         	
