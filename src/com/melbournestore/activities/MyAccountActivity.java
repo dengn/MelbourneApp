@@ -28,6 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.melbournestore.adaptors.MyAccountListAdapter;
+import com.melbournestore.adaptors.MyAccountListAddressAdapter;
+import com.melbournestore.adaptors.MyAccountListCouponAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.utils.BitmapUtils;
 
@@ -44,8 +46,12 @@ public class MyAccountActivity extends Activity {
 	private Button mLogout;
 
 	private ListView mMyAccountList;
+	private ListView mMyAccountListAddress;
+	private ListView mMyAccountListCoupon;
 
 	private MyAccountListAdapter mMyAccountListAdapter;
+	private MyAccountListAddressAdapter mMyAccountListAdapterAddress;
+	private MyAccountListCouponAdapter mMyAccountListAdapterCoupon;
 
 	private PopupWindow mpopupWindow;
 
@@ -121,10 +127,18 @@ public class MyAccountActivity extends Activity {
 		});
 
 		mMyAccountList = (ListView) findViewById(R.id.myaccount_list);
-
+		mMyAccountListAddress = (ListView) findViewById(R.id.myaccount_list_address);
+		mMyAccountListCoupon = (ListView) findViewById(R.id.myaccount_list_coupon);
+		
 		mMyAccountListAdapter = new MyAccountListAdapter(this, mHandler,
-				mProfile, mAddress, mNumber);
+				mProfile, mNumber);
 		mMyAccountList.setAdapter(mMyAccountListAdapter);
+		
+		mMyAccountListAdapterAddress = new MyAccountListAddressAdapter(this, mHandler, mAddress);
+		mMyAccountListAddress.setAdapter(mMyAccountListAdapterAddress);
+		
+		mMyAccountListAdapterCoupon = new MyAccountListCouponAdapter(this, mHandler);
+		mMyAccountListCoupon.setAdapter(mMyAccountListAdapterCoupon);
 
 	}
 
@@ -159,8 +173,8 @@ public class MyAccountActivity extends Activity {
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
 				mAddress = data.getStringExtra("address");
-				mMyAccountListAdapter.refresh(mAddress, mProfile, mNumber);
-				mMyAccountList.setAdapter(mMyAccountListAdapter);
+				mMyAccountListAdapterAddress.refresh(mAddress);
+				mMyAccountListAddress.setAdapter(mMyAccountListAdapterAddress);
 			}
 			break;
 		case REQUEST_CODE_IMAGE:
@@ -173,7 +187,7 @@ public class MyAccountActivity extends Activity {
 					
 					mProfile = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
 
-					mMyAccountListAdapter.refresh(mAddress, mProfile, mNumber);
+					mMyAccountListAdapter.refresh(mProfile, mNumber);
 					mMyAccountList.setAdapter(mMyAccountListAdapter);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -192,7 +206,7 @@ public class MyAccountActivity extends Activity {
 				
 				mProfile = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
 				
-				mMyAccountListAdapter.refresh(mAddress, mProfile, mNumber);
+				mMyAccountListAdapter.refresh(mProfile, mNumber);
 				mMyAccountList.setAdapter(mMyAccountListAdapter);
 			}
 			break;

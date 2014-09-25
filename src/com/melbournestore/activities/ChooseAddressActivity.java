@@ -24,6 +24,8 @@ public class ChooseAddressActivity extends Activity {
 	
 	private ListView chooseAddr_list;
 
+
+
 	
 	private ChooseAddressListAdapter mChooseAddressListAdapter;
 
@@ -73,6 +75,7 @@ public class ChooseAddressActivity extends Activity {
 		addr_suburb = "";
 
 		chooseAddr_list = (ListView) findViewById(R.id.chooseAddr_list);
+
 		
 		mChooseAddressListAdapter = new ChooseAddressListAdapter(this, mHandler, addr_suburb);
 		chooseAddr_list.setAdapter(mChooseAddressListAdapter);
