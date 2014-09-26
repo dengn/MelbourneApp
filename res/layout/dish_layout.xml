@@ -26,12 +26,13 @@
 
             <TextView
                 android:id="@+id/dish_num_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/circle"
+                android:background="@drawable/circle_bg"
                 android:shadowRadius="10.0"
+                android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
@@ -48,7 +49,7 @@
                 android:id="@+id/dish_confirm_choice"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="100dp"
+                android:layout_marginLeft="80dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/button_style"
                 android:text="确定"

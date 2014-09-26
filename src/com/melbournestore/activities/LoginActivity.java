@@ -135,18 +135,19 @@ public class LoginActivity extends Activity{
 		return super.onOptionsItemSelected(item);
 	}
 	
-    private long mExitTime;
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                                    mExitTime = System.currentTimeMillis();
+	private long mExitTime;
 
-                            } else {
-                            		SysApplication.getInstance().exit();  
-                            }
-                            return true;
-                    }
-                    return super.onKeyDown(keyCode, event);
-            }
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+
+			} else {
+				SysApplication.getInstance().exit();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

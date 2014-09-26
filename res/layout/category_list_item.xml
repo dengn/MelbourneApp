@@ -11,7 +11,8 @@
         android:layout_height="190dp"
         android:layout_gravity="center"
         android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp" />
+        android:layout_marginRight="7dp" 
+        android:scaleType="fitXY"/>
 
     <TextView
         android:id="@+id/shop_name"

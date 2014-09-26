@@ -23,6 +23,7 @@ public class DataResourceUtils {
 	
 
 	public static final int[] plateImages = { R.drawable.plate1, R.drawable.plate2,
-			R.drawable.plate3, R.drawable.plate4, R.drawable.plate5 };
+			R.drawable.plate3, R.drawable.plate4, R.drawable.plate5, R.drawable.plate6,
+			R.drawable.plate7, R.drawable.plate8, R.drawable.plate9 };
 
 }

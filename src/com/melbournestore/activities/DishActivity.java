@@ -6,18 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melbournestore.adaptors.DishListAdapter;
 import com.melbournestore.application.SysApplication;
 
 public class DishActivity extends Activity {
-	
+
 	private ListView mDishList;
-	
+
 	private DishListAdapter mDishListAdapter;
 
 	private Button mDishConfirmChoice;
@@ -25,18 +27,16 @@ public class DishActivity extends Activity {
 	private TextView mDishTotalPrice;
 
 	private TextView mDishTotalNum;
-	
+
 	private int mPosition;
-	
-	
+
 	private Handler mHandler = new Handler();
-	
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dish_layout);
-		
-		SysApplication.getInstance().addActivity(this); 
+
+		SysApplication.getInstance().addActivity(this);
 
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
@@ -45,24 +45,22 @@ public class DishActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		Intent intent = getIntent();
 		mPosition = intent.getIntExtra("position", 0);
-		
-		
+
 		mDishList = (ListView) findViewById(R.id.dish_list);
 		mDishListAdapter = new DishListAdapter(this, mHandler, mPosition);
 		mDishList.setAdapter(mDishListAdapter);
-		
+
 		mDishConfirmChoice = (Button) findViewById(R.id.dish_confirm_choice);
 		mDishTotalPrice = (TextView) findViewById(R.id.dish_price);
 		mDishTotalNum = (TextView) findViewById(R.id.dish_num_total);
-		
+
 		mDishTotalPrice.setText("$128");
-		mDishTotalNum.setText("10");
+		mDishTotalNum.setText("5");
 	}
-	
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -81,5 +79,20 @@ public class DishActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+	private long mExitTime;
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+
+			} else {
+				SysApplication.getInstance().exit();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

@@ -74,8 +74,10 @@ public class DishListAdapter extends BaseAdapter {
 
 			holder_image.dishImage = (ImageView) convertView
 					.findViewById(R.id.dish_img);
+			holder_image.dishText = (TextView) convertView.findViewById(R.id.dish_img_text);
 			holder_image.dishImage
 					.setImageResource(DataResourceUtils.plateImages[mPosition]);
+			holder_image.dishText.setText("5");
 			
 			convertView.setTag(holder_image);
 
@@ -110,6 +112,8 @@ public class DishListAdapter extends BaseAdapter {
 	class viewHolder_image {
 
 		private ImageView dishImage;
+		
+		private TextView dishText;
 	}
 
 	class viewHolder_dish {

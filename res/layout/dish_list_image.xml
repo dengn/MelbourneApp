@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -7,6 +7,18 @@
     <ImageView
         android:id="@+id/dish_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="200dp" 
+        android:scaleType="fitXY"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/dish_img_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+		android:layout_gravity="center"
+		android:scaleType="fitXY"
+        android:background="@drawable/circle_bg"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+</FrameLayout>
