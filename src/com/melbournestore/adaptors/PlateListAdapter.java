@@ -103,18 +103,19 @@ public class PlateListAdapter extends BaseAdapter {
 		rowView = inflater.inflate(R.layout.plate_list_item, null);
 		holder.names_view = (TextView) rowView.findViewById(R.id.plate_name);
 		holder.prices_view = (TextView) rowView.findViewById(R.id.plate_price);
-		holder.stocks_view = (TextView) rowView.findViewById(R.id.plate_like);
+		
 		holder.imgs_view = (ImageView) rowView.findViewById(R.id.plate_img);
 		holder.num_view = (TextView) rowView.findViewById(R.id.plate_number);
 
 		holder.like_number_view = (TextView) rowView
-				.findViewById(R.id.plate_like_number);
+				.findViewById(R.id.plate_like_number_stock);
 		holder.like_view = (ImageView) rowView
 				.findViewById(R.id.plate_like_heart);
 
 		holder.like_view.setImageResource(R.drawable.other_icon_like);
 
-		holder.like_number_view.setText(String.valueOf(like_nums[position]));
+		holder.like_number_view.setText(String.valueOf(like_nums[position])
+				+ "         今日库存" + plate_stocks[position] + "份");
 
 		holder.plus = (Button) rowView.findViewById(R.id.plate_plus);
 		holder.minus = (Button) rowView.findViewById(R.id.plate_minus);
@@ -125,7 +126,7 @@ public class PlateListAdapter extends BaseAdapter {
 		holder.names_view.setText(plate_names[position]);
 		holder.prices_view
 				.setText("$" + String.valueOf(plate_prices[position]));
-		holder.stocks_view.setText("今日库存" + plate_stocks[position] + "份");
+
 		holder.imgs_view.setImageResource(imageId[position]);
 
 		holder.num_view.setText(String.valueOf(plates_nums[position]));
@@ -146,9 +147,9 @@ public class PlateListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(mContext, DishActivity.class);
-				intent.putExtra("position",position);
+				intent.putExtra("position", position);
 				((Activity) mContext).startActivity(intent);
-				
+
 			}
 
 		});
@@ -164,7 +165,7 @@ public class PlateListAdapter extends BaseAdapter {
 
 					holder.like_number_view.setText(String
 							.valueOf(like_nums[position] + 1));
-					
+
 					likeClicked = true;
 				} else {
 					Toast.makeText(mContext, "亲，今天已经点过赞了。", Toast.LENGTH_SHORT)
