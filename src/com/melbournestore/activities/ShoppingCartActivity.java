@@ -79,6 +79,8 @@ public class ShoppingCartActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		getActionBar().setTitle("¹ºÎï³µ");
 
 		mConfirmOrders = (Button) findViewById(R.id.confirm_order);
 		mConfirmOrders.getBackground().setAlpha(80);

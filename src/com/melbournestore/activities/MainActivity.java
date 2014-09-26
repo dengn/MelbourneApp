@@ -103,6 +103,10 @@ public class MainActivity extends Activity {
     
     private Bitmap mProfile;
     
+    Fragment plate_fragment;
+    Fragment myorders_fragment;
+    Fragment googlemap_fragment;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +129,10 @@ public class MainActivity extends Activity {
         
         mProfile = null;
         
-
         
+		plate_fragment = new PlateFragment(this);
+		myorders_fragment = new MyOrdersFragment();
+		googlemap_fragment = new GoogleMapFragment(this);
         
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = DataResourceUtils.drawerItemsTitles;
@@ -310,7 +316,7 @@ public class MainActivity extends Activity {
     		
     	case 1:
     		
-    		Fragment plate_fragment = new PlateFragment(this);
+    		//Fragment plate_fragment = new PlateFragment(this);
             
             fragmentManager.beginTransaction().replace(R.id.content_frame, plate_fragment).commit();
             
@@ -321,7 +327,7 @@ public class MainActivity extends Activity {
     		break;
     	case 2:
     		
-    		Fragment myorders_fragment = new MyOrdersFragment();
+    		//Fragment myorders_fragment = new MyOrdersFragment();
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, myorders_fragment).commit();
             
@@ -332,7 +338,7 @@ public class MainActivity extends Activity {
     		break;
     	case 3:
     		
-    		Fragment googlemap_fragment = new GoogleMapFragment(this);
+    		//Fragment googlemap_fragment = new GoogleMapFragment(this);
     		fragmentManager.beginTransaction().replace(R.id.content_frame, googlemap_fragment).commit();
     		
             mDrawerList.setItemChecked(position, true);
