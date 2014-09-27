@@ -42,23 +42,23 @@ public class PlateFragment extends Fragment{
         
         //headerView.setVisibility(View.INVISIBLE);
         
-        category.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-//				switch (event.getAction()) { 
-//				case MotionEvent.ACTION_DOWN:  
-//					headerView.setVisibility(View.VISIBLE);
-//	                break;  
-//				case MotionEvent.ACTION_UP:
-//					headerView.setVisibility(View.INVISIBLE);
-//	                break; 
-//				}
-				return false;
-			}
-        	
-        });
+//        category.setOnTouchListener(new OnTouchListener(){
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				// TODO Auto-generated method stub
+////				switch (event.getAction()) { 
+////				case MotionEvent.ACTION_DOWN:  
+////					headerView.setVisibility(View.VISIBLE);
+////	                break;  
+////				case MotionEvent.ACTION_UP:
+////					headerView.setVisibility(View.INVISIBLE);
+////	                break; 
+////				}
+//				return false;
+//			}
+//        	
+//        });
         
         return rootView;
     }

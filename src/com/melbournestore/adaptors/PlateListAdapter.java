@@ -195,8 +195,10 @@ public class PlateListAdapter extends BaseAdapter {
 
 				// Log.d(TAG,"plus clicked. plate_stocks number: ");
 
-				holder.stocks_view.setText("今日库存"
-						+ String.valueOf(plate_stocks[position]) + "份");
+//				holder.stocks_view.setText("今日库存"
+//						+ String.valueOf(plate_stocks[position]) + "份");
+				holder.like_number_view.setText(String.valueOf(like_nums[position])
+						+ "         今日库存" + plate_stocks[position] + "份");
 				holder.num_view.setText(String.valueOf(plates_nums[position]));
 
 				setComponentsStatus(holder.plus, holder.minus, holder.num_view,
@@ -223,8 +225,10 @@ public class PlateListAdapter extends BaseAdapter {
 				plate_stocks[position] = plate_stocks[position] + 1;
 				plates_nums[position] = plates_nums[position] - 1;
 
-				holder.stocks_view.setText("今日库存"
-						+ String.valueOf(plate_stocks[position]) + "份");
+//				holder.stocks_view.setText("今日库存"
+//						+ String.valueOf(plate_stocks[position]) + "份");
+				holder.like_number_view.setText(String.valueOf(like_nums[position])
+						+ "         今日库存" + plate_stocks[position] + "份");
 				holder.num_view.setText(String.valueOf(plates_nums[position]));
 
 				setComponentsStatus(holder.plus, holder.minus, holder.num_view,
