@@ -35,6 +35,10 @@ public class PlateListAdapter extends BaseAdapter {
 
 	Context mContext;
 	int[] imageId;
+	
+	int mShopId;
+	
+	int mPlateId;
 
 	Handler mHandler;
 
@@ -44,7 +48,7 @@ public class PlateListAdapter extends BaseAdapter {
 
 	public PlateListAdapter(Context context, Handler handler, String[] names,
 			int[] prices, int[] stocks, int[] numbers, int[] imgs,
-			int[] like_numbers) {
+			int[] like_numbers, int shopId) {
 		// TODO Auto-generated constructor stub
 		plate_names = names;
 		plate_prices = prices;
@@ -54,6 +58,10 @@ public class PlateListAdapter extends BaseAdapter {
 		plate_stocks_max = stocks;
 
 		like_nums = like_numbers;
+		
+		mShopId = shopId;
+		
+		mPlateId = 0;
 
 		mContext = context;
 		mHandler = handler;
@@ -99,6 +107,9 @@ public class PlateListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		
+		mPlateId = position;
+		
 		final Holder holder = new Holder();
 		View rowView;
 		rowView = inflater.inflate(R.layout.plate_list_item, null);
@@ -149,6 +160,7 @@ public class PlateListAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(mContext, DishActivity.class);
 				intent.putExtra("position", position);
+				
 				// intent.putExtra("stock", plate_stocks[position]);
 				// intent.putExtra("stock_max", plate_stocks_max[position]);
 				// intent.putExtra("number", plates_nums[position]);
@@ -158,10 +170,11 @@ public class PlateListAdapter extends BaseAdapter {
 				Plate plate = new Plate(plate_prices[position],
 						plate_names[position], plates_nums[position],
 						plate_stocks[position], plate_stocks_max[position],
-						like_nums[position]);
+						like_nums[position],mShopId, mPlateId);
 
 				Gson gson = new Gson();
 				String plate_current = gson.toJson(plate);
+
 				SharedPreferenceUtils.saveCurrentChoice(mContext, plate_current);
 				
 				((Activity) mContext).startActivity(intent);

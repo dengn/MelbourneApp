@@ -8,19 +8,23 @@ public class Plate {
 	private int mStock;
 	private int mStockMax;
 	private int mLikeNum;
+	private int mShopId;
+	private int mPlateId;
 
 	public Plate() {
 
 	}
 
 	public Plate(int price, String name, int number, int stock, int stockMax,
-			int likeNum) {
+			int likeNum, int shopId, int plateId) {
 		mPrice = price;
 		mName = name;
 		mNumber = number;
 		mStock = stock;
 		mStockMax = stockMax;
 		mLikeNum = likeNum;
+		mShopId = shopId;
+		mPlateId = plateId;
 	}
 	
 	public String getName(){
@@ -41,6 +45,9 @@ public class Plate {
 	public int getLikeNum(){
 		return mLikeNum;
 	}
+	public int getShopId(){
+		return mShopId;
+	}
 	
 	public void setName(String name){
 		mName = name;
@@ -59,5 +66,11 @@ public class Plate {
 	}
 	public void setLikeNum(int likeNum){
 		mLikeNum = likeNum;
+	}
+	public void setShopId(int shopId){
+		mShopId = shopId;
+	}
+	public void setPlateId(int plateId){
+		mPlateId = plateId;
 	}
 }

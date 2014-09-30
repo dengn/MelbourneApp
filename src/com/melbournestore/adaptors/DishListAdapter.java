@@ -29,12 +29,15 @@ public class DishListAdapter extends BaseAdapter {
 	private int mStockMax;
 	private int mNum;
 	private int mLikeNum;
+	
+	private int mShopId;
+	private int mPlateId;
 
 	private static LayoutInflater inflater = null;
 
 	public DishListAdapter(Context context, Handler handler, int position,
 			String name, int price, int num, int stock, int stockMax,
-			int likeNum) {
+			int likeNum, int shopId, int plateId) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
@@ -47,13 +50,16 @@ public class DishListAdapter extends BaseAdapter {
 		mStockMax = stockMax;
 		mNum = num;
 		mLikeNum = likeNum;
+		
+		mShopId = shopId;
+		mPlateId = plateId;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public void refresh(String name, int price, int num, int stock,
-			int stockMax, int likeNum) {
+			int stockMax, int likeNum, int shopId, int plateId) {
 
 		mName = name;
 		mPrice = price;
@@ -61,6 +67,10 @@ public class DishListAdapter extends BaseAdapter {
 		mStockMax = stockMax;
 		mNum = num;
 		mLikeNum = likeNum;
+		
+		mShopId = shopId;
+		mPlateId = plateId;
+		
 		notifyDataSetChanged();
 	}
 
@@ -99,13 +109,12 @@ public class DishListAdapter extends BaseAdapter {
 					.findViewById(R.id.dish_img);
 			holder_image.dishText = (TextView) convertView
 					.findViewById(R.id.dish_img_text);
+			
+			holder_image.dishImage
+			.setImageResource(DataResourceUtils.plateImages[mShopId][mPosition]);
 			if (mNum <= 0) {
-				holder_image.dishImage
-				.setImageResource(DataResourceUtils.plateImages[mPosition]);
 				holder_image.dishText.setVisibility(View.INVISIBLE);
 			} else {
-				holder_image.dishImage
-						.setImageResource(DataResourceUtils.plateImages[mPosition]);
 				holder_image.dishText.setVisibility(View.VISIBLE);
 				holder_image.dishText.setText(String.valueOf(mNum));
 			}

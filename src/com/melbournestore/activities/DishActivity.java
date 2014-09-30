@@ -39,6 +39,8 @@ public class DishActivity extends Activity {
 	private int mStockMax;
 	private int mNum;
 	private int mLikeNum;
+	
+	private int mShopId;
 
 	private Handler mHandler = new Handler();
 
@@ -57,7 +59,7 @@ public class DishActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
-		mPosition = intent.getIntExtra("position", 0);
+		
 
 		String dish_info = SharedPreferenceUtils.getCurrentChoice(this);
 		Gson gson  = new Gson();
@@ -68,12 +70,13 @@ public class DishActivity extends Activity {
 		mStock = plate.getStock();
 		mStockMax = plate.getStockMax();
 		mLikeNum = plate.getLikeNum();
+		mShopId = plate.getShopId();
 		
 		getActionBar().setTitle(mName);
 		
 
 		mDishList = (ListView) findViewById(R.id.dish_list);
-		mDishListAdapter = new DishListAdapter(this, mHandler, mPosition, mName, mPrice, mNum, mStock, mStockMax, mLikeNum);
+		mDishListAdapter = new DishListAdapter(this, mHandler, mPosition, mName, mPrice, mNum, mStock, mStockMax, mLikeNum, mShopId, mPosition);
 		mDishList.setAdapter(mDishListAdapter);
 
 		mDishConfirmChoice = (Button) findViewById(R.id.dish_confirm_choice);

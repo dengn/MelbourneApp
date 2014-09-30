@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,22 +51,11 @@ public class PlateActivity extends Activity {
 
 
 
-	private String[] plateTitles = { "麻辣小龙虾", "蒜泥小龙虾", "泡椒小龙虾", "咖喱小龙虾",
-			"小龙虾炒年糕" };
-
-	private int[] platePrices = { 55, 55, 58, 58, 55 };
-	
-	
-	private int[] plateStocks = { 20, 20, 20, 10, 10 };
-	private int[] plateNumbers = { 0, 0, 1, 2, 2 };
-	
-	private int[] plateLikeNumbers = {100,101,458,258,254};
+	private int mShopId;
 
 	private int totalPrice = 0;
 
 	private int totalNum = 0;
-	
-	
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -77,9 +65,9 @@ public class PlateActivity extends Activity {
 			switch (msg.what) {
 			// plus = 1
 			case 1:
-				totalPrice += platePrices[position];
+				totalPrice += DataResourceUtils.platePrices[mShopId][position];
 				totalNum++;
-				//plateNumbers[position]++;
+				// plateNumbers[position]++;
 				mTotalPrice.setText("$" + String.valueOf(totalPrice));
 				mTotalNum.setText(String.valueOf(totalNum));
 				break;
@@ -89,9 +77,9 @@ public class PlateActivity extends Activity {
 
 				} else {
 
-					totalPrice -= platePrices[position];
+					totalPrice -= DataResourceUtils.platePrices[mShopId][position];
 					totalNum--;
-					//plateNumbers[position]--;
+					// plateNumbers[position]--;
 					mTotalPrice.setText("$" + String.valueOf(totalPrice));
 					mTotalNum.setText(String.valueOf(totalNum));
 				}
@@ -105,8 +93,8 @@ public class PlateActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plate_layout);
-		
-		SysApplication.getInstance().addActivity(this); 
+
+		SysApplication.getInstance().addActivity(this);
 
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
@@ -115,9 +103,11 @@ public class PlateActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		Intent intent = getIntent();
 		int category = intent.getIntExtra("Category", 0);
+
+		mShopId = category;
 
 		getActionBar().setTitle(DataResourceUtils.shopItems[category]);
 
@@ -139,8 +129,9 @@ public class PlateActivity extends Activity {
 		// }
 
 		mPlatesList.setAdapter(new PlateListAdapter(this, mHandler,
-				plateTitles, platePrices, plateStocks, plateNumbers,
-				DataResourceUtils.plateImages, plateLikeNumbers));
+				DataResourceUtils.plateNames[mShopId], DataResourceUtils.platePrices[mShopId], DataResourceUtils.plateStockMax[mShopId], DataResourceUtils.plateNumbers[mShopId],
+				DataResourceUtils.plateImages[mShopId], DataResourceUtils.plateLikeNumbers[mShopId],
+				mShopId));
 
 		mConfirmChoice = (Button) findViewById(R.id.confirm_choice);
 		mConfirmChoice.bringToFront();
@@ -151,9 +142,8 @@ public class PlateActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				
-				
-				Intent intent = new Intent(PlateActivity.this, ShoppingCartActivity.class);
+				Intent intent = new Intent(PlateActivity.this,
+						ShoppingCartActivity.class);
 				startActivity(intent);
 
 			}
@@ -161,14 +151,12 @@ public class PlateActivity extends Activity {
 		});
 
 		mTotalPrice = (TextView) findViewById(R.id.confirm_price);
-		totalPrice = MelbourneUtils.sum_price(platePrices, plateNumbers);
+		totalPrice = MelbourneUtils.sum_price(DataResourceUtils.platePrices[mShopId], DataResourceUtils.plateNumbers[mShopId]);
 		mTotalPrice.setText("$" + String.valueOf(totalPrice));
 
 		mTotalNum = (TextView) findViewById(R.id.plate_num_total);
-		totalNum = MelbourneUtils.sum(plateNumbers);
+		totalNum = MelbourneUtils.sum(DataResourceUtils.plateNumbers[mShopId]);
 		mTotalNum.setText(String.valueOf(totalNum));
-
-
 
 	}
 
@@ -202,20 +190,21 @@ public class PlateActivity extends Activity {
 	// }
 	// }
 	//
-	
-    private long mExitTime;
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                                    mExitTime = System.currentTimeMillis();
 
-                            } else {
-                            		SysApplication.getInstance().exit();  
-                            }
-                            return true;
-                    }
-                    return super.onKeyDown(keyCode, event);
-            }
+	private long mExitTime;
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+
+			} else {
+				SysApplication.getInstance().exit();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 }
