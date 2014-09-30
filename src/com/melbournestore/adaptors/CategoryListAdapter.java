@@ -80,7 +80,7 @@ public class CategoryListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(mContext, PlateActivity.class);
-				intent.putExtra("Category", position);
+				intent.putExtra("shopid", position);
 				mContext.startActivity(intent);
 			}
 		});

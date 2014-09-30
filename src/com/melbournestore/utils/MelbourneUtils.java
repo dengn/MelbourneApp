@@ -2,6 +2,8 @@ package com.melbournestore.utils;
 
 import java.io.File;
 
+import com.melbournestore.models.Shop;
+
 
 public class MelbourneUtils {
 
@@ -31,5 +33,24 @@ public class MelbourneUtils {
 		else
 			return false;
 
+	}
+	
+	public static final int sum_number_all(Shop[] shops){
+		int num_all = 0;
+		for(int i =0;i<shops.length;i++){
+			for(int j=0;j<shops[i].getPlates().length;j++){
+				num_all+=shops[i].getPlates()[j].getNumber();
+			}
+		}
+		return num_all;
+	}
+	public static final int sum_price_all(Shop[] shops){
+		int price_all = 0;
+		for(int i =0;i<shops.length;i++){
+			for(int j=0;j<shops[i].getPlates().length;j++){
+				price_all+=shops[i].getPlates()[j].getNumber()*shops[i].getPlates()[j].getPrice();
+			}
+		}
+		return price_all;
 	}
 }

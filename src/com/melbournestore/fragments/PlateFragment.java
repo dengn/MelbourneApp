@@ -38,7 +38,12 @@ public class PlateFragment extends Fragment{
         headerView = new CategoryListHeaderView(mContext);
         category.addHeaderView(headerView); 
         
-        category.setAdapter(new CategoryListAdapter(getActivity(), DataResourceUtils.shopItemsImages, DataResourceUtils.shopItems, DataResourceUtils.shopSubitems));
+        String[] shopSubItems = new String[DataResourceUtils.shopItemsImages.length];
+        for(int i=0;i<shopSubItems.length;i++)
+        {
+        	shopSubItems[i] = DataResourceUtils.plateNames[i][0]+"、 "+DataResourceUtils.plateNames[i][1]+"限时特卖中";
+        }
+        category.setAdapter(new CategoryListAdapter(getActivity(), DataResourceUtils.shopItemsImages, DataResourceUtils.shopItems, shopSubItems));
         
         //headerView.setVisibility(View.INVISIBLE);
         

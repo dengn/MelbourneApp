@@ -32,9 +32,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.adaptors.PlateListAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.DataResourceUtils;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.Plate;
+import com.melbournestore.models.Shop;
 import com.melbournestore.utils.MelbourneUtils;
 
 public class PlateActivity extends Activity {
@@ -42,14 +46,14 @@ public class PlateActivity extends Activity {
 	private static final String TAG = "Melbourne";
 
 	private ListView mPlatesList;
+	
+	private PlateListAdapter mPlateListAdapter;
 
 	private Button mConfirmChoice;
 
 	private TextView mTotalPrice;
 
 	private TextView mTotalNum;
-
-
 
 	private int mShopId;
 
@@ -65,9 +69,18 @@ public class PlateActivity extends Activity {
 			switch (msg.what) {
 			// plus = 1
 			case 1:
-				totalPrice += DataResourceUtils.platePrices[mShopId][position];
-				totalNum++;
+				//totalPrice += DataResourceUtils.platePrices[mShopId][position];
+				//totalNum++;
 				// plateNumbers[position]++;
+				
+				String shops_string1 = SharedPreferenceUtils.getCurrentChoice(PlateActivity.this);
+				Gson gson1  = new Gson();
+				Shop[] shops1 = gson1.fromJson(shops_string1, Shop[].class);
+				
+				totalNum = MelbourneUtils.sum_number_all(shops1);
+				totalPrice = MelbourneUtils.sum_price_all(shops1);
+				
+				
 				mTotalPrice.setText("$" + String.valueOf(totalPrice));
 				mTotalNum.setText(String.valueOf(totalNum));
 				break;
@@ -77,9 +90,17 @@ public class PlateActivity extends Activity {
 
 				} else {
 
-					totalPrice -= DataResourceUtils.platePrices[mShopId][position];
-					totalNum--;
+					//totalPrice -= DataResourceUtils.platePrices[mShopId][position];
+					//totalNum--;
 					// plateNumbers[position]--;
+					
+					String shops_string2 = SharedPreferenceUtils.getCurrentChoice(PlateActivity.this);
+					Gson gson2  = new Gson();
+					Shop[] shops2 = gson2.fromJson(shops_string2, Shop[].class);
+					
+					totalNum = MelbourneUtils.sum_number_all(shops2);
+					totalPrice = MelbourneUtils.sum_price_all(shops2);
+					
 					mTotalPrice.setText("$" + String.valueOf(totalPrice));
 					mTotalNum.setText(String.valueOf(totalNum));
 				}
@@ -105,33 +126,28 @@ public class PlateActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
-		int category = intent.getIntExtra("Category", 0);
+		mShopId = intent.getIntExtra("shopid", 0);
 
-		mShopId = category;
+		
 
-		getActionBar().setTitle(DataResourceUtils.shopItems[category]);
+		getActionBar().setTitle(DataResourceUtils.shopItems[mShopId]);
+		
+		String shops_string = SharedPreferenceUtils.getCurrentChoice(this);
+		Gson gson  = new Gson();
+		Shop[] shops = gson.fromJson(shops_string, Shop[].class);
+		
+		totalNum = MelbourneUtils.sum_number_all(shops);
+		totalPrice = MelbourneUtils.sum_price_all(shops);
+		
+		Plate[] plates = shops[mShopId].getPlates();
+
+
 
 		mPlatesList = (ListView) findViewById(R.id.plates_list);
 
-		// String[] platePrices_string = new String[platePrices.length];
-		// for(int i=0;i<platePrices.length;i++){
-		// platePrices_string[i]="$"+String.valueOf(platePrices[i]);
-		// }
-		//
-		// String[] plateStocks_string = new String[plateStocks.length];
-		// for(int i=0;i<plateStocks.length;i++){
-		// plateStocks_string[i]="½ñÈÕ¿â´æ"+String.valueOf(plateStocks[i]+"·Ý");
-		// }
-		//
-		// String[] plateNumbers_string = new String[plateNumbers.length];
-		// for(int i=0;i<plateNumbers.length;i++){
-		// plateNumbers_string[i]=String.valueOf(plateNumbers[i]);
-		// }
 
-		mPlatesList.setAdapter(new PlateListAdapter(this, mHandler,
-				DataResourceUtils.plateNames[mShopId], DataResourceUtils.platePrices[mShopId], DataResourceUtils.plateStockMax[mShopId], DataResourceUtils.plateNumbers[mShopId],
-				DataResourceUtils.plateImages[mShopId], DataResourceUtils.plateLikeNumbers[mShopId],
-				mShopId));
+		mPlateListAdapter = new PlateListAdapter(this, mHandler,plates);
+		mPlatesList.setAdapter(mPlateListAdapter);
 
 		mConfirmChoice = (Button) findViewById(R.id.confirm_choice);
 		mConfirmChoice.bringToFront();
@@ -151,14 +167,33 @@ public class PlateActivity extends Activity {
 		});
 
 		mTotalPrice = (TextView) findViewById(R.id.confirm_price);
-		totalPrice = MelbourneUtils.sum_price(DataResourceUtils.platePrices[mShopId], DataResourceUtils.plateNumbers[mShopId]);
 		mTotalPrice.setText("$" + String.valueOf(totalPrice));
 
 		mTotalNum = (TextView) findViewById(R.id.plate_num_total);
-		totalNum = MelbourneUtils.sum(DataResourceUtils.plateNumbers[mShopId]);
 		mTotalNum.setText(String.valueOf(totalNum));
 
 	}
+	
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		
+		String shops_string = SharedPreferenceUtils.getCurrentChoice(this);
+		Gson gson  = new Gson();
+		Shop[] shops = gson.fromJson(shops_string, Shop[].class);
+		Plate[] plates = shops[mShopId].getPlates();
+		
+		mPlateListAdapter.refresh(plates);
+		mPlatesList.setAdapter(mPlateListAdapter);
+		
+		totalNum = MelbourneUtils.sum_number_all(shops);
+		totalPrice = MelbourneUtils.sum_price_all(shops);
+		
+		mTotalNum.setText(String.valueOf(totalNum));
+		mTotalPrice.setText("$" + String.valueOf(totalPrice));
+	}
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -190,6 +225,15 @@ public class PlateActivity extends Activity {
 	// }
 	// }
 	//
+
+	private Plate[] getDataFromPreference() {
+
+		String data = SharedPreferenceUtils.getCurrentChoice(this);
+		Gson gson = new Gson();
+		Plate[] plates = gson.fromJson(data, Plate[].class);
+		return plates;
+
+	}
 
 	private long mExitTime;
 

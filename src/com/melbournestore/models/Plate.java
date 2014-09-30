@@ -5,24 +5,25 @@ public class Plate {
 	private int mPrice;
 	private String mName;
 	private int mNumber;
-	private int mStock;
 	private int mStockMax;
 	private int mLikeNum;
+	private int mImageId;
 	private int mShopId;
 	private int mPlateId;
+	
 
 	public Plate() {
 
 	}
 
-	public Plate(int price, String name, int number, int stock, int stockMax,
-			int likeNum, int shopId, int plateId) {
+	public Plate(int price, String name, int number, int stockMax,
+			int likeNum, int imageId, int shopId, int plateId) {
 		mPrice = price;
 		mName = name;
 		mNumber = number;
-		mStock = stock;
 		mStockMax = stockMax;
 		mLikeNum = likeNum;
+		mImageId = imageId;
 		mShopId = shopId;
 		mPlateId = plateId;
 	}
@@ -36,11 +37,11 @@ public class Plate {
 	public int getPrice(){
 		return mPrice;
 	}
-	public int getStock(){
-		return mStock;
-	}
 	public int getStockMax(){
 		return mStockMax;
+	}
+	public int getImageId(){
+		return mImageId;
 	}
 	public int getLikeNum(){
 		return mLikeNum;
@@ -48,6 +49,10 @@ public class Plate {
 	public int getShopId(){
 		return mShopId;
 	}
+	public int getPlateId(){
+		return mPlateId;
+	}
+	
 	
 	public void setName(String name){
 		mName = name;
@@ -58,14 +63,14 @@ public class Plate {
 	public void setNumber(int number){
 		mNumber = number;
 	}
-	public void setStock(int stock){
-		mStock = stock;
-	}
 	public void setStockMax(int stockMax){
 		mStockMax = stockMax;
 	}
 	public void setLikeNum(int likeNum){
 		mLikeNum = likeNum;
+	}
+	public void setImageId(int imageId){
+		mImageId = imageId;
 	}
 	public void setShopId(int shopId){
 		mShopId = shopId;
@@ -73,4 +78,5 @@ public class Plate {
 	public void setPlateId(int plateId){
 		mPlateId = plateId;
 	}
+
 }

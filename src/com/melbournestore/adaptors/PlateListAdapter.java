@@ -21,60 +21,42 @@ import com.melbournestore.activities.DishActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.models.Plate;
+import com.melbournestore.models.Shop;
 
 public class PlateListAdapter extends BaseAdapter {
-	String[] plate_names;
-	int[] plate_prices;
-	int[] plate_stocks;
-
-	int[] plate_stocks_max;
-
-	int[] plates_nums;
-
-	int[] like_nums;
 
 	Context mContext;
-	int[] imageId;
-	
-	int mShopId;
-	
-	int mPlateId;
 
 	Handler mHandler;
+	
+	Plate[] mPlates;
+
 
 	private static LayoutInflater inflater = null;
 
 	private boolean likeClicked = false;
 
-	public PlateListAdapter(Context context, Handler handler, String[] names,
-			int[] prices, int[] stocks, int[] numbers, int[] imgs,
-			int[] like_numbers, int shopId) {
+	public PlateListAdapter(Context context, Handler handler, Plate[] plates) {
 		// TODO Auto-generated constructor stub
-		plate_names = names;
-		plate_prices = prices;
-		plate_stocks = stocks;
-		plates_nums = numbers;
-
-		plate_stocks_max = stocks;
-
-		like_nums = like_numbers;
-		
-		mShopId = shopId;
-		
-		mPlateId = 0;
 
 		mContext = context;
 		mHandler = handler;
+		
+		mPlates = plates;
 
-		imageId = imgs;
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+	
+	public void refresh(Plate[] plates){
+		mPlates = plates;
+		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return plate_names.length;
+		return mPlates.length;
 	}
 
 	@Override
@@ -107,9 +89,8 @@ public class PlateListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		
-		mPlateId = position;
-		
+
+
 		final Holder holder = new Holder();
 		View rowView;
 		rowView = inflater.inflate(R.layout.plate_list_item, null);
@@ -126,8 +107,8 @@ public class PlateListAdapter extends BaseAdapter {
 
 		holder.like_view.setImageResource(R.drawable.other_icon_like);
 
-		holder.like_number_view.setText(String.valueOf(like_nums[position])
-				+ "         今日库存" + plate_stocks[position] + "份");
+		holder.like_number_view.setText(String.valueOf(mPlates[position].getLikeNum())
+				+ "         今日库存" + mPlates[position].getStockMax() + "份");
 
 		holder.plus = (Button) rowView.findViewById(R.id.plate_plus);
 		holder.minus = (Button) rowView.findViewById(R.id.plate_minus);
@@ -135,13 +116,13 @@ public class PlateListAdapter extends BaseAdapter {
 		setComponentsStatus(holder.plus, holder.minus, holder.num_view,
 				position);
 
-		holder.names_view.setText(plate_names[position]);
+		holder.names_view.setText(mPlates[position].getName());
 		holder.prices_view
-				.setText("$" + String.valueOf(plate_prices[position]));
+				.setText("$" + String.valueOf(mPlates[position].getPrice()));
 
-		holder.imgs_view.setImageResource(imageId[position]);
+		holder.imgs_view.setImageResource(mPlates[position].getImageId());
 
-		holder.num_view.setText(String.valueOf(plates_nums[position]));
+		holder.num_view.setText(String.valueOf(mPlates[position].getNumber()));
 		// rowView.setOnClickListener(new OnClickListener() {
 		// @Override
 		// public void onClick(View v) {
@@ -158,24 +139,21 @@ public class PlateListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(mContext, DishActivity.class);
-				intent.putExtra("position", position);
-				
-				// intent.putExtra("stock", plate_stocks[position]);
-				// intent.putExtra("stock_max", plate_stocks_max[position]);
-				// intent.putExtra("number", plates_nums[position]);
-				// intent.putExtra("price", plate_prices[position]);
-				// intent.putExtra("name", plate_names[position]);
-				// intent.putExtra("like_num", like_nums[position]);
-				Plate plate = new Plate(plate_prices[position],
-						plate_names[position], plates_nums[position],
-						plate_stocks[position], plate_stocks_max[position],
-						like_nums[position],mShopId, mPlateId);
 
+
+
+				int shopId = mPlates[position].getShopId();
+				String shop_string = SharedPreferenceUtils.getCurrentChoice(mContext);
 				Gson gson = new Gson();
-				String plate_current = gson.toJson(plate);
+				Shop[] shops = gson.fromJson(shop_string, Shop[].class);
+				shops[shopId].setPlates(mPlates);
+				SharedPreferenceUtils
+						.saveCurrentChoice(mContext, gson.toJson(shops));
+				
 
-				SharedPreferenceUtils.saveCurrentChoice(mContext, plate_current);
+				Intent intent = new Intent(mContext, DishActivity.class);
+				intent.putExtra("plateId", position);
+				intent.putExtra("shopId", shopId);
 				
 				((Activity) mContext).startActivity(intent);
 
@@ -193,7 +171,20 @@ public class PlateListAdapter extends BaseAdapter {
 							.setImageResource(R.drawable.other_icon_liked);
 
 					holder.like_number_view.setText(String
-							.valueOf(like_nums[position] + 1));
+							.valueOf(mPlates[position].getLikeNum() + 1)
+							+ "         今日库存"
+							+ String.valueOf(mPlates[position].getStockMax()) + "份");
+					
+					mPlates[position].setLikeNum(mPlates[position].getLikeNum() + 1);
+					
+					
+					int shopId = mPlates[position].getShopId();
+					String shop_string = SharedPreferenceUtils.getCurrentChoice(mContext);
+					Gson gson = new Gson();
+					Shop[] shops = gson.fromJson(shop_string, Shop[].class);
+					shops[shopId].setPlates(mPlates);
+					SharedPreferenceUtils
+							.saveCurrentChoice(mContext, gson.toJson(shops));
 
 					likeClicked = true;
 				} else {
@@ -219,18 +210,20 @@ public class PlateListAdapter extends BaseAdapter {
 
 				mHandler.sendMessage(message);
 
-				plate_stocks[position] = plate_stocks[position] - 1;
-				plates_nums[position] = plates_nums[position] + 1;
 
-				// Log.d(TAG,"plus clicked. plate_stocks number: ");
 
-				// holder.stocks_view.setText("今日库存"
-				// + String.valueOf(plate_stocks[position]) + "份");
-				holder.like_number_view.setText(String
-						.valueOf(like_nums[position])
-						+ "         今日库存"
-						+ plate_stocks[position] + "份");
-				holder.num_view.setText(String.valueOf(plates_nums[position]));
+				mPlates[position].setNumber(mPlates[position].getNumber()+1);
+				
+				int shopId = mPlates[position].getShopId();
+				String shop_string = SharedPreferenceUtils.getCurrentChoice(mContext);
+				Gson gson = new Gson();
+				Shop[] shops = gson.fromJson(shop_string, Shop[].class);
+				shops[shopId].setPlates(mPlates);
+				SharedPreferenceUtils
+						.saveCurrentChoice(mContext, gson.toJson(shops));
+				
+
+				holder.num_view.setText(String.valueOf(mPlates[position].getNumber()));
 
 				setComponentsStatus(holder.plus, holder.minus, holder.num_view,
 						position);
@@ -253,16 +246,19 @@ public class PlateListAdapter extends BaseAdapter {
 
 				mHandler.sendMessage(message);
 
-				plate_stocks[position] = plate_stocks[position] + 1;
-				plates_nums[position] = plates_nums[position] - 1;
 
-				// holder.stocks_view.setText("今日库存"
-				// + String.valueOf(plate_stocks[position]) + "份");
-				holder.like_number_view.setText(String
-						.valueOf(like_nums[position])
-						+ "         今日库存"
-						+ plate_stocks[position] + "份");
-				holder.num_view.setText(String.valueOf(plates_nums[position]));
+				mPlates[position].setNumber(mPlates[position].getNumber()-1);
+				
+				int shopId = mPlates[position].getShopId();
+				String shop_string = SharedPreferenceUtils.getCurrentChoice(mContext);
+				Gson gson = new Gson();
+				Shop[] shops = gson.fromJson(shop_string, Shop[].class);
+				shops[shopId].setPlates(mPlates);
+				SharedPreferenceUtils
+						.saveCurrentChoice(mContext, gson.toJson(shops));
+
+
+				holder.num_view.setText(String.valueOf(mPlates[position].getNumber()));
 
 				setComponentsStatus(holder.plus, holder.minus, holder.num_view,
 						position);
@@ -275,10 +271,10 @@ public class PlateListAdapter extends BaseAdapter {
 
 	private void setComponentsStatus(Button plusButton, Button minusButton,
 			TextView numView, int position) {
-		int stock_num = plate_stocks[position];
-		int plate_num = plates_nums[position];
+		int stock_num = mPlates[position].getStockMax();
+		int plate_num = mPlates[position].getNumber();
 
-		if (stock_num <= 0) {
+		if (plate_num >= stock_num) {
 			plusButton.setEnabled(false);
 		} else {
 			plusButton.setEnabled(true);

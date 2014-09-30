@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -18,6 +19,8 @@ import com.melbournestore.adaptors.DishListAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.models.Plate;
+import com.melbournestore.models.Shop;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class DishActivity extends Activity {
 
@@ -31,18 +34,65 @@ public class DishActivity extends Activity {
 
 	private TextView mDishTotalNum;
 
-	private int mPosition;
-	
 	private String mName;
 	private int mPrice;
-	private int mStock;
 	private int mStockMax;
 	private int mNum;
 	private int mLikeNum;
-	
-	private int mShopId;
 
-	private Handler mHandler = new Handler();
+	private int mShopId;
+	private int mPlateId;
+
+	private int mTotalPrice;
+	private int mTotalNum;
+
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+				// plus = 1
+
+				String shops_string1 = SharedPreferenceUtils
+						.getCurrentChoice(DishActivity.this);
+				Gson gson1 = new Gson();
+				Shop[] shops1 = gson1.fromJson(shops_string1, Shop[].class);
+				Plate plate1 = shops1[mShopId].getPlates()[mPlateId];
+				
+				mDishListAdapter.refresh(plate1);
+				mDishList.setAdapter(mDishListAdapter);
+
+				mTotalNum = MelbourneUtils.sum_number_all(shops1);
+				mTotalPrice = MelbourneUtils.sum_price_all(shops1);
+
+				mDishTotalNum.setText(String.valueOf(mTotalNum));
+				mDishTotalPrice.setText("$" + String.valueOf(mTotalPrice));
+
+				break;
+			case 2:
+				// minus = 2
+
+				String shops_string2 = SharedPreferenceUtils
+						.getCurrentChoice(DishActivity.this);
+				Gson gson2 = new Gson();
+				Shop[] shops2 = gson2.fromJson(shops_string2, Shop[].class);
+				Plate plate2 = shops2[mShopId].getPlates()[mPlateId];
+				
+				mDishListAdapter.refresh(plate2);
+				mDishList.setAdapter(mDishListAdapter);
+
+
+				mTotalNum = MelbourneUtils.sum_number_all(shops2);
+				mTotalPrice = MelbourneUtils.sum_price_all(shops2);
+
+				mDishTotalNum.setText(String.valueOf(mTotalNum));
+				mDishTotalPrice.setText("$" + String.valueOf(mTotalPrice));
+
+				break;
+
+			}
+		}
+	};
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,32 +109,32 @@ public class DishActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
-		
+		mShopId = intent.getIntExtra("shopId", 0);
+		mPlateId = intent.getIntExtra("plateId", 0);
 
-		String dish_info = SharedPreferenceUtils.getCurrentChoice(this);
-		Gson gson  = new Gson();
-		Plate plate = gson.fromJson(dish_info, Plate.class);
+		String shop_info = SharedPreferenceUtils.getCurrentChoice(this);
+		Gson gson = new Gson();
+		Shop[] shops = gson.fromJson(shop_info, Shop[].class);
+		Plate plate = shops[mShopId].getPlates()[mPlateId];
+
 		mName = plate.getName();
-		mPrice = plate.getPrice();
-		mNum = plate.getNumber();
-		mStock = plate.getStock();
-		mStockMax = plate.getStockMax();
-		mLikeNum = plate.getLikeNum();
-		mShopId = plate.getShopId();
-		
+
 		getActionBar().setTitle(mName);
-		
 
 		mDishList = (ListView) findViewById(R.id.dish_list);
-		mDishListAdapter = new DishListAdapter(this, mHandler, mPosition, mName, mPrice, mNum, mStock, mStockMax, mLikeNum, mShopId, mPosition);
+		mDishListAdapter = new DishListAdapter(this, mHandler, plate);
 		mDishList.setAdapter(mDishListAdapter);
 
 		mDishConfirmChoice = (Button) findViewById(R.id.dish_confirm_choice);
 		mDishTotalPrice = (TextView) findViewById(R.id.dish_price);
 		mDishTotalNum = (TextView) findViewById(R.id.dish_num_total);
 
-		mDishTotalPrice.setText("$128");
-		mDishTotalNum.setText("5");
+		mTotalNum = MelbourneUtils.sum_number_all(shops);
+		mTotalPrice = MelbourneUtils.sum_price_all(shops);
+
+		mDishTotalNum.setText(String.valueOf(mTotalNum));
+		mDishTotalPrice.setText("$" + String.valueOf(mTotalPrice));
+
 	}
 
 	@Override

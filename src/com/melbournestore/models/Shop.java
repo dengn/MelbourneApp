@@ -9,12 +9,15 @@ public class Shop {
 	private int seq;
 	private String image;
 	private String update_time;
-	
-	public Shop(){
-		
+	private Plate[] plates;
+
+	public Shop() {
+
 	}
-	
-	public Shop(int id, String name, String desc, String addr, String contact_number, int seq, String image, String update_time){
+
+	public Shop(int id, String name, String desc, String addr,
+			String contact_number, int seq, String image, String update_time,
+			Plate[] plates) {
 		this.id = id;
 		this.name = name;
 		this.desc = desc;
@@ -23,56 +26,78 @@ public class Shop {
 		this.seq = seq;
 		this.image = image;
 		this.update_time = update_time;
+		this.plates = plates;
 	}
-	
-	public int getId(){
+
+	public int getId() {
 		return id;
 	}
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	public String getDesc(){
+
+	public String getDesc() {
 		return desc;
 	}
-	public String getAddr(){
+
+	public String getAddr() {
 		return addr;
 	}
-	public String getContactNumber(){
+
+	public String getContactNumber() {
 		return contact_number;
 	}
-	public int getSeq(){
+
+	public int getSeq() {
 		return seq;
 	}
-	public String getImage(){
+
+	public String getImage() {
 		return image;
 	}
-	public String getUpdateTime(){
+
+	public String getUpdateTime() {
 		return update_time;
 	}
-	
-	public void setId(int id){
+
+	public Plate[] getPlates() {
+		return plates;
+	}
+
+	public void setId(int id) {
 		this.id = id;
 	}
-	public void setName(String name){
+
+	public void setName(String name) {
 		this.name = name;
 	}
-	public void setDesc(String desc){
+
+	public void setDesc(String desc) {
 		this.desc = desc;
 	}
-	public void setAddr(String addr){
+
+	public void setAddr(String addr) {
 		this.addr = addr;
 	}
-	public void setContactNumber(String contact_number){
+
+	public void setContactNumber(String contact_number) {
 		this.contact_number = contact_number;
 	}
-	public void setSeq(int seq){
+
+	public void setSeq(int seq) {
 		this.seq = seq;
 	}
-	public void setImage(String image){
+
+	public void setImage(String image) {
 		this.image = image;
 	}
-	public void setUpdateTime(String update_time){
+
+	public void setUpdateTime(String update_time) {
 		this.update_time = update_time;
 	}
-}
 
+	public void setPlates(Plate[] plates) {
+		this.plates = plates;
+	}
+}

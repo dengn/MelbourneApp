@@ -15,8 +15,6 @@ public class DataResourceUtils {
 			R.drawable.sidebar_icon_photoshow, R.drawable.sidebar_icon_aboutus };
 
 	public static final String[] shopItems = { "龙虾叔叔", "黑丸嫩仙草", "水饺妞妞" };
-	public static final String[] shopSubitems = { "麻辣小龙虾、香辣小龙虾限时特卖中",
-			"A套餐、B套餐限时特卖中", "水饺、煎饺限时特卖中" };
 
 	public static final int[] shopItemsImages = { R.drawable.pic1,
 			R.drawable.pic2, R.drawable.pic3 };

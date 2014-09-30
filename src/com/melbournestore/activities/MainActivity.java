@@ -27,378 +27,416 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.adaptors.DrawerListAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.DataResourceUtils;
+import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.fragments.GoogleMapFragment;
 import com.melbournestore.fragments.MyOrdersFragment;
 import com.melbournestore.fragments.PlateFragment;
+import com.melbournestore.models.Plate;
+import com.melbournestore.models.Shop;
 
 /**
- * This example illustrates a common usage of the DrawerLayout widget
- * in the Android support library.
+ * This example illustrates a common usage of the DrawerLayout widget in the
+ * Android support library.
  * <p/>
- * <p>When a navigation (left) drawer is present, the host activity should detect presses of
- * the action bar's Up affordance as a signal to open and close the navigation drawer. The
- * ActionBarDrawerToggle facilitates this behavior.
- * Items within the drawer should fall into one of two categories:</p>
+ * <p>
+ * When a navigation (left) drawer is present, the host activity should detect
+ * presses of the action bar's Up affordance as a signal to open and close the
+ * navigation drawer. The ActionBarDrawerToggle facilitates this behavior. Items
+ * within the drawer should fall into one of two categories:
+ * </p>
  * <p/>
  * <ul>
- * <li><strong>View switches</strong>. A view switch follows the same basic policies as
- * list or tab navigation in that a view switch does not create navigation history.
- * This pattern should only be used at the root activity of a task, leaving some form
- * of Up navigation active for activities further down the navigation hierarchy.</li>
- * <li><strong>Selective Up</strong>. The drawer allows the user to choose an alternate
- * parent for Up navigation. This allows a user to jump across an app's navigation
- * hierarchy at will. The application should treat this as it treats Up navigation from
- * a different task, replacing the current task stack using TaskStackBuilder or similar.
- * This is the only form of navigation drawer that should be used outside of the root
- * activity of a task.</li>
+ * <li><strong>View switches</strong>. A view switch follows the same basic
+ * policies as list or tab navigation in that a view switch does not create
+ * navigation history. This pattern should only be used at the root activity of
+ * a task, leaving some form of Up navigation active for activities further down
+ * the navigation hierarchy.</li>
+ * <li><strong>Selective Up</strong>. The drawer allows the user to choose an
+ * alternate parent for Up navigation. This allows a user to jump across an
+ * app's navigation hierarchy at will. The application should treat this as it
+ * treats Up navigation from a different task, replacing the current task stack
+ * using TaskStackBuilder or similar. This is the only form of navigation drawer
+ * that should be used outside of the root activity of a task.</li>
  * </ul>
  * <p/>
- * <p>Right side drawers should be used for actions, not navigation. This follows the pattern
- * established by the Action Bar that navigation should be to the left and actions to the right.
- * An action should be an operation performed on the current contents of the window,
- * for example enabling or disabling a data overlay on top of the current content.</p>
+ * <p>
+ * Right side drawers should be used for actions, not navigation. This follows
+ * the pattern established by the Action Bar that navigation should be to the
+ * left and actions to the right. An action should be an operation performed on
+ * the current contents of the window, for example enabling or disabling a data
+ * overlay on top of the current content.
+ * </p>
  */
 public class MainActivity extends Activity {
-	
+
 	private static final String TAG = "Melbourne";
-	
+
 	private static final int LOGIN_CODE = 1;
-	
+
 	private static final int MY_ACCOUNT_CODE = 7;
-	
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    
-    private DrawerListAdapter mDrawerListAdapter;
-    
-    
-    private ActionBarDrawerToggle mDrawerToggle;
 
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private String[] mMenuTitles;
-    
-    private Handler mHandler = new Handler();
-    
-    private boolean isLoggedIn;
-    
-    private String loginNumber;
-    
-    private Bitmap mProfile;
-    
-    Fragment plate_fragment;
-    Fragment myorders_fragment;
-    Fragment googlemap_fragment;
-    
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-        SysApplication.getInstance().addActivity(this); 
-        
-        
-//        Intent intent = getIntent();
-//        if(intent.getParcelableExtra("profile")!=null){
-//        	mProfile = intent.getParcelableExtra("profile");
-//        }
-//        if(intent.getBooleanExtra("logout",false)){
-//        	isLoggedIn = true;
-//        }
-        
-        
-        isLoggedIn = SysApplication.getLoginStatus();
-        
-        mProfile = null;
-        
-        
+	private DrawerListAdapter mDrawerListAdapter;
+
+	private ActionBarDrawerToggle mDrawerToggle;
+
+	private CharSequence mDrawerTitle;
+	private CharSequence mTitle;
+	private String[] mMenuTitles;
+
+	private Handler mHandler = new Handler();
+
+	private boolean isLoggedIn;
+
+	private String loginNumber;
+
+	private Bitmap mProfile;
+
+	Fragment plate_fragment;
+	Fragment myorders_fragment;
+	Fragment googlemap_fragment;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		SysApplication.getInstance().addActivity(this);
+
+		// Intent intent = getIntent();
+		// if(intent.getParcelableExtra("profile")!=null){
+		// mProfile = intent.getParcelableExtra("profile");
+		// }
+		// if(intent.getBooleanExtra("logout",false)){
+		// isLoggedIn = true;
+		// }
+
+		setUpCurrentChoiceData();
+
+		isLoggedIn = SysApplication.getLoginStatus();
+
+		mProfile = null;
+
 		plate_fragment = new PlateFragment(this);
 		myorders_fragment = new MyOrdersFragment();
 		googlemap_fragment = new GoogleMapFragment(this);
-        
-        mTitle = mDrawerTitle = getTitle();
-        mMenuTitles = DataResourceUtils.drawerItemsTitles;
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+		mTitle = mDrawerTitle = getTitle();
+		mMenuTitles = DataResourceUtils.drawerItemsTitles;
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+		// set a custom shadow that overlays the main content when the drawer
+		// opens
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+				GravityCompat.START);
 
 		// set up the drawer's list view with items and click listener
-//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-//                R.layout.drawer_list_item, mMenuTitles));
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        loginNumber = "";
-        
-        mDrawerListAdapter = new DrawerListAdapter(MainActivity.this, isLoggedIn, loginNumber, mHandler, mProfile);
-        
-        mDrawerList.setAdapter(mDrawerListAdapter);
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        
+		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+		// R.layout.drawer_list_item, mMenuTitles));
+		// mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		loginNumber = "";
 
+		mDrawerListAdapter = new DrawerListAdapter(MainActivity.this,
+				isLoggedIn, loginNumber, mHandler, mProfile);
 
-        // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+		mDrawerList.setAdapter(mDrawerListAdapter);
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the sliding drawer and the action bar app icon
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-                ) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description for accessibility */
+		R.string.drawer_close /* "close drawer" description for accessibility */
+		) {
+			public void onDrawerClosed(View view) {
+				getActionBar().setTitle(mTitle);
+				invalidateOptionsMenu(); // creates call to
+											// onPrepareOptionsMenu()
+			}
 
-        if (savedInstanceState == null) {
-            selectItem(1);
-        }
-    }
+			public void onDrawerOpened(View drawerView) {
+				getActionBar().setTitle(mDrawerTitle);
+				invalidateOptionsMenu(); // creates call to
+											// onPrepareOptionsMenu()
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+		if (savedInstanceState == null) {
+			selectItem(1);
+		}
+	}
 
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-         // The action bar home/up action should open or close the drawer.
-         // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle action buttons
-        switch(item.getItemId()) {
-        case R.id.action_websearch:
-//            // create intent to perform web search for this planet
-//            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-//            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-//            // catch event that there's no activity to handle intent
-//            if (intent.resolveActivity(getPackageManager()) != null) {
-//                startActivity(intent);
-//            } else {
-//                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-//            }
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
+	/* Called whenever we call invalidateOptionsMenu() */
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// If the nav drawer is open, hide action items related to the content
+		// view
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		return super.onPrepareOptionsMenu(menu);
+	}
 
-    
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	
-        mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
-        mDrawerList.setAdapter(mDrawerListAdapter);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// The action bar home/up action should open or close the drawer.
+		// ActionBarDrawerToggle will take care of this.
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		// Handle action buttons
+		switch (item.getItemId()) {
+		case R.id.action_websearch:
+			// // create intent to perform web search for this planet
+			// Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+			// intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+			// // catch event that there's no activity to handle intent
+			// if (intent.resolveActivity(getPackageManager()) != null) {
+			// startActivity(intent);
+			// } else {
+			// Toast.makeText(this, R.string.app_not_available,
+			// Toast.LENGTH_LONG).show();
+			// }
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
-        selectItem(1);
-    	
-        if (requestCode == LOGIN_CODE) {
-            if(resultCode == RESULT_OK){
-            	//get the ID of the client
-            	
-            	SysApplication.setLoginStatus(true);
-            	
-                String phoneNumber=data.getStringExtra("number");
-                isLoggedIn = SysApplication.getLoginStatus();
-                loginNumber = phoneNumber;
-                mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
-                mDrawerList.setAdapter(mDrawerListAdapter);
-                mDrawerLayout.openDrawer(mDrawerList);
-                
-                selectItem(1);
-            }
-            if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        }
-        else if(requestCode == MY_ACCOUNT_CODE) {
-        	if(resultCode == RESULT_OK){
-            	//get the profile photo
-                
-                if(data.getParcelableExtra("profile")!=null){
-                	mProfile = data.getParcelableExtra("profile");
-                }
-                if(data.getBooleanExtra("logout",false)){
-                	isLoggedIn = SysApplication.getLoginStatus();
-                }
-        		
-                //mProfile = data.getParcelableExtra("profile");
-                
-                
-                
-                mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
-                mDrawerList.setAdapter(mDrawerListAdapter);
-                mDrawerLayout.openDrawer(mDrawerList);
-                
-                selectItem(1);
-            }
-        }
-    }//onActivityResult
-    
-    
-    
-    /* The click listner for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        	//Log.d(TAG, String.valueOf(position)+" drawer item clicked");
-        }
-    }
-    
-   
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-    private void selectItem(int position) {
-    	
-    	FragmentManager fragmentManager = getFragmentManager();
-        // update the main content by replacing fragments
-    	switch(position){
-    	case 0:
-//            mDrawerList.setItemChecked(position, true);
-//            setTitle(mMenuTitles[position]);
-    		
-    		//Not logged in yet
-    		if(!isLoggedIn){
-    			Intent intent = new Intent(this, LoginActivity.class);
-    			startActivityForResult(intent, LOGIN_CODE);
-    		}
-    		else{
-    			Intent intent = new Intent(this, MyAccountActivity.class);
-    			intent.putExtra("profile", mProfile);
-    			intent.putExtra("number", loginNumber);
-    			startActivityForResult(intent, MY_ACCOUNT_CODE);
-    		}
-    		
-            mDrawerLayout.closeDrawer(mDrawerList);
-    		break;
-    		
-    	case 1:
-    		
-    		//Fragment plate_fragment = new PlateFragment(this);
-            
-            fragmentManager.beginTransaction().replace(R.id.content_frame, plate_fragment).commit();
-            
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            setTitle(mMenuTitles[position-1]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-    		break;
-    	case 2:
-    		
-    		//Fragment myorders_fragment = new MyOrdersFragment();
+		mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
+		mDrawerList.setAdapter(mDrawerListAdapter);
 
-            fragmentManager.beginTransaction().replace(R.id.content_frame, myorders_fragment).commit();
-            
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            setTitle(mMenuTitles[position-1]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-    		break;
-    	case 3:
-    		
-    		//Fragment googlemap_fragment = new GoogleMapFragment(this);
-    		fragmentManager.beginTransaction().replace(R.id.content_frame, googlemap_fragment).commit();
-    		
-            mDrawerList.setItemChecked(position, true);
-            setTitle(mMenuTitles[position-1]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-    		break;
-    	case 4:
-            mDrawerList.setItemChecked(position, true);
-            setTitle(mMenuTitles[position-1]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-    		break;
-    	case 5:
-            mDrawerList.setItemChecked(position, true);
-            setTitle(mMenuTitles[position-1]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-    		break;
-    	}
-    	
-    }
+		selectItem(1);
 
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
+		if (requestCode == LOGIN_CODE) {
+			if (resultCode == RESULT_OK) {
+				// get the ID of the client
 
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
+				SysApplication.setLoginStatus(true);
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
+				String phoneNumber = data.getStringExtra("number");
+				isLoggedIn = SysApplication.getLoginStatus();
+				loginNumber = phoneNumber;
+				mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler,
+						mProfile);
+				mDrawerList.setAdapter(mDrawerListAdapter);
+				mDrawerLayout.openDrawer(mDrawerList);
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
+				selectItem(1);
+			}
+			if (resultCode == RESULT_CANCELED) {
+				// Write your code if there's no result
+			}
+		} else if (requestCode == MY_ACCOUNT_CODE) {
+			if (resultCode == RESULT_OK) {
+				// get the profile photo
 
-    
-    private long mExitTime;
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                            if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                                    mExitTime = System.currentTimeMillis();
+				if (data.getParcelableExtra("profile") != null) {
+					mProfile = data.getParcelableExtra("profile");
+				}
+				if (data.getBooleanExtra("logout", false)) {
+					isLoggedIn = SysApplication.getLoginStatus();
+				}
 
-                            } else {
-                            		SysApplication.getInstance().exit();  
-                            }
-                            return true;
-                    }
-                    return super.onKeyDown(keyCode, event);
-            }
-    
-    
+				// mProfile = data.getParcelableExtra("profile");
+
+				mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler,
+						mProfile);
+				mDrawerList.setAdapter(mDrawerListAdapter);
+				mDrawerLayout.openDrawer(mDrawerList);
+
+				selectItem(1);
+			}
+		}
+	}// onActivityResult
+
+	/* The click listner for ListView in the navigation drawer */
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			selectItem(position);
+			// Log.d(TAG, String.valueOf(position)+" drawer item clicked");
+		}
+	}
+
+	private void selectItem(int position) {
+
+		FragmentManager fragmentManager = getFragmentManager();
+		// update the main content by replacing fragments
+		switch (position) {
+		case 0:
+			// mDrawerList.setItemChecked(position, true);
+			// setTitle(mMenuTitles[position]);
+
+			// Not logged in yet
+			if (!isLoggedIn) {
+				Intent intent = new Intent(this, LoginActivity.class);
+				startActivityForResult(intent, LOGIN_CODE);
+			} else {
+				Intent intent = new Intent(this, MyAccountActivity.class);
+				intent.putExtra("profile", mProfile);
+				intent.putExtra("number", loginNumber);
+				startActivityForResult(intent, MY_ACCOUNT_CODE);
+			}
+
+			mDrawerLayout.closeDrawer(mDrawerList);
+			break;
+
+		case 1:
+
+			// Fragment plate_fragment = new PlateFragment(this);
+
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, plate_fragment).commit();
+
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			setTitle(mMenuTitles[position - 1]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+			break;
+		case 2:
+
+			// Fragment myorders_fragment = new MyOrdersFragment();
+
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, myorders_fragment).commit();
+
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			setTitle(mMenuTitles[position - 1]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+			break;
+		case 3:
+
+			// Fragment googlemap_fragment = new GoogleMapFragment(this);
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, googlemap_fragment).commit();
+
+			mDrawerList.setItemChecked(position, true);
+			setTitle(mMenuTitles[position - 1]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+			break;
+		case 4:
+			mDrawerList.setItemChecked(position, true);
+			setTitle(mMenuTitles[position - 1]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+			break;
+		case 5:
+			mDrawerList.setItemChecked(position, true);
+			setTitle(mMenuTitles[position - 1]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+			break;
+		}
+
+	}
+
+	@Override
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getActionBar().setTitle(mTitle);
+	}
+
+	/**
+	 * When using the ActionBarDrawerToggle, you must call it during
+	 * onPostCreate() and onConfigurationChanged()...
+	 */
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	private void setUpCurrentChoiceData() {
+		Shop[] shops = new Shop[DataResourceUtils.shopItems.length];
+
+		for (int i = 0; i < shops.length; i++) {
+
+			Shop shop = new Shop();
+
+			Plate[] plates = new Plate[DataResourceUtils.plateNames[i].length];
+
+			for (int j = 0; j < plates.length; j++) {
+				Plate plate = new Plate();
+
+				plate.setName(DataResourceUtils.plateNames[i][j]);
+				plate.setPrice(DataResourceUtils.platePrices[i][j]);
+				plate.setNumber(0);
+				plate.setStockMax(DataResourceUtils.plateStockMax[i][j]);
+				plate.setLikeNum(DataResourceUtils.plateLikeNumbers[i][j]);
+				plate.setImageId(DataResourceUtils.plateImages[i][j]);
+				plate.setShopId(i);
+				plate.setPlateId(j);
+
+				plates[j] = plate;
+			}
+			shop.setPlates(plates);
+			shops[i] = shop;
+		}
+
+		Gson gson = new Gson();
+		String shopsJson = gson.toJson(shops);
+
+		SharedPreferenceUtils.saveCurrentChoice(this, shopsJson);
+
+	}
+
+	private long mExitTime;
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+
+			} else {
+				SysApplication.getInstance().exit();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
 }
