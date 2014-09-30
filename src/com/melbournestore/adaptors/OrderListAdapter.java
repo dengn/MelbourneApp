@@ -122,7 +122,16 @@ public class OrderListAdapter extends BaseAdapter{
 
 				mHandler.sendMessage(message);
 				
-				orderNumbers[position]--;
+				
+				
+				if(orderNumbers[position]<=0){
+					holder.minus.setEnabled(false);
+					orderNumbers[position] =0;
+				}
+				else{
+					holder.minus.setEnabled(true);
+					orderNumbers[position]--;
+				}
 
 				holder.numbers_view.setText(String.valueOf(orderNumbers[position]));
 				

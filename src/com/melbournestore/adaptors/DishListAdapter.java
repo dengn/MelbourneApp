@@ -23,21 +23,44 @@ public class DishListAdapter extends BaseAdapter {
 
 	private int mPosition;
 
+	private String mName;
+	private int mPrice;
+	private int mStock;
+	private int mStockMax;
+	private int mNum;
+	private int mLikeNum;
+
 	private static LayoutInflater inflater = null;
 
-	public DishListAdapter(Context context, Handler handler, int position) {
+	public DishListAdapter(Context context, Handler handler, int position,
+			String name, int price, int num, int stock, int stockMax,
+			int likeNum) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
 		mHandler = handler;
 		mPosition = position;
 
+		mName = name;
+		mPrice = price;
+		mStock = stock;
+		mStockMax = stockMax;
+		mNum = num;
+		mLikeNum = likeNum;
+
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void refresh() {
+	public void refresh(String name, int price, int num, int stock,
+			int stockMax, int likeNum) {
 
+		mName = name;
+		mPrice = price;
+		mStock = stock;
+		mStockMax = stockMax;
+		mNum = num;
+		mLikeNum = likeNum;
 		notifyDataSetChanged();
 	}
 
@@ -74,11 +97,19 @@ public class DishListAdapter extends BaseAdapter {
 
 			holder_image.dishImage = (ImageView) convertView
 					.findViewById(R.id.dish_img);
-			holder_image.dishText = (TextView) convertView.findViewById(R.id.dish_img_text);
-			holder_image.dishImage
-					.setImageResource(DataResourceUtils.plateImages[mPosition]);
-			holder_image.dishText.setText("5");
-			
+			holder_image.dishText = (TextView) convertView
+					.findViewById(R.id.dish_img_text);
+			if (mNum <= 0) {
+				holder_image.dishImage
+				.setImageResource(DataResourceUtils.plateImages[mPosition]);
+				holder_image.dishText.setVisibility(View.INVISIBLE);
+			} else {
+				holder_image.dishImage
+						.setImageResource(DataResourceUtils.plateImages[mPosition]);
+				holder_image.dishText.setVisibility(View.VISIBLE);
+				holder_image.dishText.setText(String.valueOf(mNum));
+			}
+
 			convertView.setTag(holder_image);
 
 			break;
@@ -89,19 +120,25 @@ public class DishListAdapter extends BaseAdapter {
 
 			holder_dish.price = (TextView) convertView
 					.findViewById(R.id.dish_price);
-			holder_dish.like = (ImageView) convertView.findViewById(R.id.dish_like);
-			holder_dish.like_num = (TextView) convertView.findViewById(R.id.dish_like_number);
-			holder_dish.stock = (TextView) convertView.findViewById(R.id.dish_stock);
-			holder_dish.plus = (Button) convertView.findViewById(R.id.dish_plus);
-			holder_dish.minus = (Button) convertView.findViewById(R.id.dish_minus);
-			
-			holder_dish.price.setText("$55");
+			holder_dish.like = (ImageView) convertView
+					.findViewById(R.id.dish_like);
+			holder_dish.like_num = (TextView) convertView
+					.findViewById(R.id.dish_like_number);
+			holder_dish.stock = (TextView) convertView
+					.findViewById(R.id.dish_stock);
+			holder_dish.plus = (Button) convertView
+					.findViewById(R.id.dish_plus);
+			holder_dish.minus = (Button) convertView
+					.findViewById(R.id.dish_minus);
+
+			holder_dish.price.setText(String.valueOf(mPrice));
 			holder_dish.like.setImageResource(R.drawable.other_icon_like);
-			holder_dish.like_num.setText("0");
-			holder_dish.stock.setText("今日库存还有7份");
-			
+
+			holder_dish.like_num.setText(String.valueOf(mLikeNum));
+			holder_dish.stock.setText("今日库存" + String.valueOf(mStock) + "份");
+
 			convertView.setTag(holder_dish);
-			
+
 			break;
 
 		}
@@ -112,7 +149,7 @@ public class DishListAdapter extends BaseAdapter {
 	class viewHolder_image {
 
 		private ImageView dishImage;
-		
+
 		private TextView dishText;
 	}
 

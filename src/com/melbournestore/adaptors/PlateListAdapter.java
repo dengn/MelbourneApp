@@ -16,10 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.melbournestore.activities.ChooseAddressActivity;
+import com.google.gson.Gson;
 import com.melbournestore.activities.DishActivity;
 import com.melbournestore.activities.R;
-import com.melbournestore.activities.SubmitOrderActivity;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.Plate;
 
 public class PlateListAdapter extends BaseAdapter {
 	String[] plate_names;
@@ -103,7 +104,7 @@ public class PlateListAdapter extends BaseAdapter {
 		rowView = inflater.inflate(R.layout.plate_list_item, null);
 		holder.names_view = (TextView) rowView.findViewById(R.id.plate_name);
 		holder.prices_view = (TextView) rowView.findViewById(R.id.plate_price);
-		
+
 		holder.imgs_view = (ImageView) rowView.findViewById(R.id.plate_img);
 		holder.num_view = (TextView) rowView.findViewById(R.id.plate_number);
 
@@ -148,6 +149,21 @@ public class PlateListAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(mContext, DishActivity.class);
 				intent.putExtra("position", position);
+				// intent.putExtra("stock", plate_stocks[position]);
+				// intent.putExtra("stock_max", plate_stocks_max[position]);
+				// intent.putExtra("number", plates_nums[position]);
+				// intent.putExtra("price", plate_prices[position]);
+				// intent.putExtra("name", plate_names[position]);
+				// intent.putExtra("like_num", like_nums[position]);
+				Plate plate = new Plate(plate_prices[position],
+						plate_names[position], plates_nums[position],
+						plate_stocks[position], plate_stocks_max[position],
+						like_nums[position]);
+
+				Gson gson = new Gson();
+				String plate_current = gson.toJson(plate);
+				SharedPreferenceUtils.saveCurrentChoice(mContext, plate_current);
+				
 				((Activity) mContext).startActivity(intent);
 
 			}
@@ -195,10 +211,12 @@ public class PlateListAdapter extends BaseAdapter {
 
 				// Log.d(TAG,"plus clicked. plate_stocks number: ");
 
-//				holder.stocks_view.setText("今日库存"
-//						+ String.valueOf(plate_stocks[position]) + "份");
-				holder.like_number_view.setText(String.valueOf(like_nums[position])
-						+ "         今日库存" + plate_stocks[position] + "份");
+				// holder.stocks_view.setText("今日库存"
+				// + String.valueOf(plate_stocks[position]) + "份");
+				holder.like_number_view.setText(String
+						.valueOf(like_nums[position])
+						+ "         今日库存"
+						+ plate_stocks[position] + "份");
 				holder.num_view.setText(String.valueOf(plates_nums[position]));
 
 				setComponentsStatus(holder.plus, holder.minus, holder.num_view,
@@ -225,10 +243,12 @@ public class PlateListAdapter extends BaseAdapter {
 				plate_stocks[position] = plate_stocks[position] + 1;
 				plates_nums[position] = plates_nums[position] - 1;
 
-//				holder.stocks_view.setText("今日库存"
-//						+ String.valueOf(plate_stocks[position]) + "份");
-				holder.like_number_view.setText(String.valueOf(like_nums[position])
-						+ "         今日库存" + plate_stocks[position] + "份");
+				// holder.stocks_view.setText("今日库存"
+				// + String.valueOf(plate_stocks[position]) + "份");
+				holder.like_number_view.setText(String
+						.valueOf(like_nums[position])
+						+ "         今日库存"
+						+ plate_stocks[position] + "份");
 				holder.num_view.setText(String.valueOf(plates_nums[position]));
 
 				setComponentsStatus(holder.plus, holder.minus, holder.num_view,

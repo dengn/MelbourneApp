@@ -13,8 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.adaptors.DishListAdapter;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.Plate;
 
 public class DishActivity extends Activity {
 
@@ -29,6 +32,13 @@ public class DishActivity extends Activity {
 	private TextView mDishTotalNum;
 
 	private int mPosition;
+	
+	private String mName;
+	private int mPrice;
+	private int mStock;
+	private int mStockMax;
+	private int mNum;
+	private int mLikeNum;
 
 	private Handler mHandler = new Handler();
 
@@ -49,8 +59,21 @@ public class DishActivity extends Activity {
 		Intent intent = getIntent();
 		mPosition = intent.getIntExtra("position", 0);
 
+		String dish_info = SharedPreferenceUtils.getCurrentChoice(this);
+		Gson gson  = new Gson();
+		Plate plate = gson.fromJson(dish_info, Plate.class);
+		mName = plate.getName();
+		mPrice = plate.getPrice();
+		mNum = plate.getNumber();
+		mStock = plate.getStock();
+		mStockMax = plate.getStockMax();
+		mLikeNum = plate.getLikeNum();
+		
+		getActionBar().setTitle(mName);
+		
+
 		mDishList = (ListView) findViewById(R.id.dish_list);
-		mDishListAdapter = new DishListAdapter(this, mHandler, mPosition);
+		mDishListAdapter = new DishListAdapter(this, mHandler, mPosition, mName, mPrice, mNum, mStock, mStockMax, mLikeNum);
 		mDishList.setAdapter(mDishListAdapter);
 
 		mDishConfirmChoice = (Button) findViewById(R.id.dish_confirm_choice);

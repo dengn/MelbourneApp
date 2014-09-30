@@ -12,6 +12,12 @@ public class SharedPreferenceUtils {
 		return pref.getString("current_choice", "");  
 	}
 	
+	public static boolean saveCurrentChoice(Context context, String info) {  
+        SharedPreferences pref = context.getSharedPreferences(  
+                "current_choice", 0);  
+        return pref.edit().putString("current_choice", info).commit();  
+    }  
+	
 	// The SharedPrefrence file to store Shopping cart items.
 	public static String getShoppingCart(Context context){
 		SharedPreferences pref = context.getSharedPreferences(  

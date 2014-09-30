@@ -115,6 +115,11 @@ public class PlateActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		Intent intent = getIntent();
+		int category = intent.getIntExtra("Category", 0);
+
+		getActionBar().setTitle(DataResourceUtils.shopItems[category]);
 
 		mPlatesList = (ListView) findViewById(R.id.plates_list);
 
@@ -163,9 +168,7 @@ public class PlateActivity extends Activity {
 		totalNum = MelbourneUtils.sum(plateNumbers);
 		mTotalNum.setText(String.valueOf(totalNum));
 
-		Intent intent = getIntent();
-		int category = intent.getIntExtra("Category", 0);
-		Log.d(TAG, "category: " + String.valueOf(category));
+
 
 	}
 
