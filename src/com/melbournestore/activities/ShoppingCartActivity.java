@@ -1,17 +1,11 @@
 package com.melbournestore.activities;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -22,9 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.adaptors.OrderListAdapter;
 import com.melbournestore.application.SysApplication;
-import com.melbournestore.utils.BitmapUtils;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.Plate;
+import com.melbournestore.models.Shop;
 import com.melbournestore.utils.MelbourneUtils;
 
 public class ShoppingCartActivity extends Activity {
@@ -36,13 +33,11 @@ public class ShoppingCartActivity extends Activity {
 	private TextView mTotalPrice;
 
 	private ListView mOrderList;
+	
+	private OrderListAdapter mOrderListAdapter;
 
-	private int priceTotal;
+	private int totalPrice;
 
-	private String[] orderNames = { "麻辣小龙虾", "蒜泥小龙虾", "泡椒小龙虾", "咖喱小龙虾",
-			"小龙虾炒年糕" };
-	private int[] orderPrices = { 55, 55, 58, 58, 55 };
-	private int[] orderNumbers = { 1, 1, 1, 2, 2 };
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -52,13 +47,28 @@ public class ShoppingCartActivity extends Activity {
 			switch (msg.what) {
 			// plus = 1
 			case 1:
-				priceTotal += orderPrices[position];
-				mTotalPrice.setText("$" + String.valueOf(priceTotal));
+				//totalPrice += orderPrices[position];
+				
+				String shops_string1 = SharedPreferenceUtils.getCurrentChoice(ShoppingCartActivity.this);
+				Gson gson1  = new Gson();
+				Shop[] shops1 = gson1.fromJson(shops_string1, Shop[].class);
+				
+				totalPrice = MelbourneUtils.sum_price_all(shops1);
+				
+				
+				mTotalPrice.setText("$" + String.valueOf(totalPrice));
 				break;
 			// minus = 2
 			case 2:
-				priceTotal -= orderPrices[position];
-				mTotalPrice.setText("$" + String.valueOf(priceTotal));
+				//totalPrice -= orderPrices[position];
+				
+				String shops_string2 = SharedPreferenceUtils.getCurrentChoice(ShoppingCartActivity.this);
+				Gson gson2  = new Gson();
+				Shop[] shops2 = gson2.fromJson(shops_string2, Shop[].class);
+				
+				totalPrice = MelbourneUtils.sum_price_all(shops2);
+				
+				mTotalPrice.setText("$" + String.valueOf(totalPrice));
 				break;
 
 			}
@@ -81,6 +91,20 @@ public class ShoppingCartActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		getActionBar().setTitle("购物车");
+		
+		
+		
+		String shops_string = SharedPreferenceUtils.getCurrentChoice(this);
+		Gson gson  = new Gson();
+		Shop[] shops = gson.fromJson(shops_string, Shop[].class);
+		
+		
+		
+		totalPrice = MelbourneUtils.sum_price_all(shops);
+		
+	
+		Plate[] plates_chosen = MelbourneUtils.getPlatesChosen(shops);
+		
 
 		mConfirmOrders = (Button) findViewById(R.id.confirm_order);
 		mConfirmOrders.getBackground().setAlpha(80);
@@ -88,11 +112,12 @@ public class ShoppingCartActivity extends Activity {
 		mTotalPrice = (TextView) findViewById(R.id.price_total);
 
 		mOrderList = (ListView) findViewById(R.id.shopping_list);
-		mOrderList.setAdapter(new OrderListAdapter(this, mHandler, orderNames,
-				orderPrices, orderNumbers));
+		
+		mOrderListAdapter = new OrderListAdapter(this, mHandler, plates_chosen);
+		mOrderList.setAdapter(mOrderListAdapter);
 
-		priceTotal = MelbourneUtils.sum_price(orderPrices, orderNumbers);
-		mTotalPrice.setText("共计费用：$" + String.valueOf(priceTotal));
+
+		mTotalPrice.setText("共计费用：$" + String.valueOf(totalPrice));
 
 		mConfirmOrders.setOnClickListener(new OnClickListener() {
 
@@ -104,7 +129,7 @@ public class ShoppingCartActivity extends Activity {
 				if (isLoggedIn) {
 					Intent intent = new Intent(ShoppingCartActivity.this,
 							SubmitOrderActivity.class);
-					intent.putExtra("total_price", priceTotal);
+					intent.putExtra("total_price", totalPrice);
 
 					startActivity(intent);
 				} else {

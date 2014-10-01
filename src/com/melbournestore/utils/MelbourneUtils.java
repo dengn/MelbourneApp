@@ -1,7 +1,9 @@
 package com.melbournestore.utils;
 
 import java.io.File;
+import java.util.ArrayList;
 
+import com.melbournestore.models.Plate;
 import com.melbournestore.models.Shop;
 
 
@@ -52,5 +54,23 @@ public class MelbourneUtils {
 			}
 		}
 		return price_all;
+	}
+	
+	public static final Plate[] getPlatesChosen(Shop[] shops){
+		
+		ArrayList<Plate> plates_chosen = new ArrayList<Plate>();
+		
+		for(int i=0;i<shops.length;i++){
+			for(int j=0;j<shops[i].getPlates().length;j++){
+				if(shops[i].getPlates()[j].getNumber()>0){
+					plates_chosen.add(shops[i].getPlates()[j]);
+				}
+			}
+		}
+		
+		Plate[] plates = plates_chosen.toArray(new Plate[0]);
+		
+		return plates;
+		
 	}
 }
