@@ -27,7 +27,6 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +46,8 @@ import com.melbournestore.fragments.MyOrdersFragment;
 import com.melbournestore.fragments.PlateFragment;
 import com.melbournestore.models.Plate;
 import com.melbournestore.models.Shop;
+import com.melbournestore.models.User;
+import com.melbournestore.utils.MelbourneUtils;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the
@@ -129,6 +130,8 @@ public class MainActivity extends Activity {
 
 		setUpCurrentChoiceData();
 
+		setUpLoginUser();
+
 		isLoggedIn = SysApplication.getLoginStatus();
 
 		mProfile = null;
@@ -151,7 +154,6 @@ public class MainActivity extends Activity {
 		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 		// R.layout.drawer_list_item, mMenuTitles));
 		// mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		loginNumber = "";
 
 		mDrawerListAdapter = new DrawerListAdapter(MainActivity.this,
 				isLoggedIn, loginNumber, mHandler, mProfile);
@@ -188,6 +190,11 @@ public class MainActivity extends Activity {
 		if (savedInstanceState == null) {
 			selectItem(1);
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 	}
 
 	@Override
@@ -421,6 +428,25 @@ public class MainActivity extends Activity {
 
 		SharedPreferenceUtils.saveCurrentChoice(this, shopsJson);
 
+	}
+
+	private void setUpLoginUser() {
+
+		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
+		Gson gson  = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+		
+		User active_user = new User();
+		
+		int found_value = MelbourneUtils.getActiveUser(users);
+		if(found_value>=0){
+			active_user = users[found_value];
+			loginNumber = active_user.getPhoneNumber();
+		}
+		else{
+			loginNumber = "";
+		}
+		
 	}
 
 	private long mExitTime;

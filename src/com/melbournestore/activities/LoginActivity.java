@@ -1,12 +1,13 @@
 package com.melbournestore.activities;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -18,7 +19,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.Shop;
+import com.melbournestore.models.User;
 
 public class LoginActivity extends Activity{
 	
@@ -28,7 +33,7 @@ public class LoginActivity extends Activity{
 	private TextView loginTextAgreement;
 	private Button loginButton;
 	
-	
+	private String mPhoneNumber;
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +109,33 @@ public class LoginActivity extends Activity{
 			                      }).show(); 
 				}
 				else{
+					
+					mPhoneNumber = loginNumber.getText().toString();
+					
+					String users_string = SharedPreferenceUtils.getLoginUser(LoginActivity.this);
+					Gson gson  = new Gson();
+					User[] users = gson.fromJson(users_string, User[].class);
+					
+					if(users.length>0){
+						for(int i=0;i<users.length;i++){
+							if(users[i].getPhoneNumber().equals(mPhoneNumber)){
+								users[i].setActive(true);
+								break;
+							}
+						}
+						SharedPreferenceUtils.saveLoginUser(LoginActivity.this, gson.toJson(users));
+						
+					}
+					else{
+						User user = new User();
+						user.setActive(true);
+						user.setPhoneNumber(mPhoneNumber);
+						users[0] = user;
+						SharedPreferenceUtils.saveLoginUser(LoginActivity.this, gson.toJson(users));
+					}
+					
+
+					
 					Intent returnIntent = new Intent();
 					returnIntent.putExtra("number",loginNumber.getText().toString());
 					setResult(RESULT_OK,returnIntent);

@@ -18,6 +18,20 @@ public class SharedPreferenceUtils {
         return pref.edit().putString("current_choice", info).commit();  
     }  
 	
+	// The SharedPrefrence file to store User login info
+	public static String getLoginUser(Context context){
+		SharedPreferences pref = context.getSharedPreferences(  
+                "user_login", 0); 
+		return pref.getString("user_login", "");  
+	}
+	
+	public static boolean saveLoginUser(Context context, String info) {  
+        SharedPreferences pref = context.getSharedPreferences(  
+                "user_login", 0);  
+        return pref.edit().putString("user_login", info).commit();  
+    }  
+	
+	
 	// The SharedPrefrence file to store Shopping cart items.
 	public static String getShoppingCart(Context context){
 		SharedPreferences pref = context.getSharedPreferences(  

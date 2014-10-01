@@ -9,6 +9,8 @@ import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -134,6 +136,21 @@ public class DishActivity extends Activity {
 
 		mDishTotalNum.setText(String.valueOf(mTotalNum));
 		mDishTotalPrice.setText("$" + String.valueOf(mTotalPrice));
+		
+		
+		mDishConfirmChoice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				Intent intent = new Intent(DishActivity.this,
+						ShoppingCartActivity.class);
+				startActivity(intent);
+
+			}
+
+		});
 
 	}
 
