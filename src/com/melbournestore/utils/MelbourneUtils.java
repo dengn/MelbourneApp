@@ -105,4 +105,16 @@ public class MelbourneUtils {
 		}
 
 	}
+	
+	public static final User[] setUsersDeactive(User[] users){
+		if(users.length > 0){
+			for (int i = 0; i < users.length; i++) {
+				users[i].setActive(false);
+			}
+			return users;
+		}
+		else{
+			return users;
+		}
+	}
 }

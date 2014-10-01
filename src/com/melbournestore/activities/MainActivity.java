@@ -154,9 +154,13 @@ public class MainActivity extends Activity {
 		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 		// R.layout.drawer_list_item, mMenuTitles));
 		// mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		
+		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
+		Gson gson  = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
 
 		mDrawerListAdapter = new DrawerListAdapter(MainActivity.this,
-				isLoggedIn, loginNumber, mHandler, mProfile);
+				mHandler, users);
 
 		mDrawerList.setAdapter(mDrawerListAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -241,23 +245,23 @@ public class MainActivity extends Activity {
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
 
-		mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler, mProfile);
-		mDrawerList.setAdapter(mDrawerListAdapter);
+
 
 		selectItem(1);
 
 		if (requestCode == LOGIN_CODE) {
 			if (resultCode == RESULT_OK) {
 				// get the ID of the client
+				
+				
+				String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
+				Gson gson  = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
 
-				SysApplication.setLoginStatus(true);
-
-				String phoneNumber = data.getStringExtra("number");
-				isLoggedIn = SysApplication.getLoginStatus();
-				loginNumber = phoneNumber;
-				mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler,
-						mProfile);
+				
+				mDrawerListAdapter.refresh(users);
 				mDrawerList.setAdapter(mDrawerListAdapter);
 				mDrawerLayout.openDrawer(mDrawerList);
 
@@ -270,17 +274,13 @@ public class MainActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				// get the profile photo
 
-				if (data.getParcelableExtra("profile") != null) {
-					mProfile = data.getParcelableExtra("profile");
-				}
-				if (data.getBooleanExtra("logout", false)) {
-					isLoggedIn = SysApplication.getLoginStatus();
-				}
+				
+				String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
+				Gson gson  = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				
 
-				// mProfile = data.getParcelableExtra("profile");
-
-				mDrawerListAdapter.refresh(isLoggedIn, loginNumber, mHandler,
-						mProfile);
+				mDrawerListAdapter.refresh(users);
 				mDrawerList.setAdapter(mDrawerListAdapter);
 				mDrawerLayout.openDrawer(mDrawerList);
 
@@ -302,6 +302,12 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 
+		
+		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
+		Gson gson  = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+		
+		
 		FragmentManager fragmentManager = getFragmentManager();
 		// update the main content by replacing fragments
 		switch (position) {
@@ -310,13 +316,11 @@ public class MainActivity extends Activity {
 			// setTitle(mMenuTitles[position]);
 
 			// Not logged in yet
-			if (!isLoggedIn) {
+			if (MelbourneUtils.getActiveUser(users)<0) {
 				Intent intent = new Intent(this, LoginActivity.class);
 				startActivityForResult(intent, LOGIN_CODE);
 			} else {
 				Intent intent = new Intent(this, MyAccountActivity.class);
-				intent.putExtra("profile", mProfile);
-				intent.putExtra("number", loginNumber);
 				startActivityForResult(intent, MY_ACCOUNT_CODE);
 			}
 

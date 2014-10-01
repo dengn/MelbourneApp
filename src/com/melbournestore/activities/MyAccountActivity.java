@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.app.NavUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -27,11 +28,15 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.adaptors.MyAccountListAdapter;
 import com.melbournestore.adaptors.MyAccountListAddressAdapter;
 import com.melbournestore.adaptors.MyAccountListCouponAdapter;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.User;
 import com.melbournestore.utils.BitmapUtils;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class MyAccountActivity extends Activity {
 
@@ -55,11 +60,9 @@ public class MyAccountActivity extends Activity {
 
 	private PopupWindow mpopupWindow;
 
-	private String mAddress;
-
-	private Bitmap mProfile;
 	
-	private String mNumber;
+	private User mActiveUser;
+
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -97,13 +100,13 @@ public class MyAccountActivity extends Activity {
 		
 		getActionBar().setTitle("ÎÒµÄ");
 
-		Intent intent = getIntent();
-
-		mAddress = "";
-
-		mProfile = intent.getParcelableExtra("profile");
+		//Intent intent = getIntent();
 		
-		mNumber = intent.getStringExtra("number");
+		String users_string = SharedPreferenceUtils.getLoginUser(MyAccountActivity.this);
+		Gson gson  = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+		mActiveUser = users[MelbourneUtils.getActiveUser(users)];
+
 
 		mLogout = (Button) findViewById(R.id.logout);
 		mLogout.getBackground().setAlpha(80);
@@ -117,7 +120,13 @@ public class MyAccountActivity extends Activity {
 //				startActivity(intent);
 //				finish();
 				
-				SysApplication.setLoginStatus(false);
+				//SysApplication.setLoginStatus(false);
+				
+				String users_string = SharedPreferenceUtils.getLoginUser(MyAccountActivity.this);
+				Gson gson  = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				
+				SharedPreferenceUtils.saveLoginUser(MyAccountActivity.this, gson.toJson(MelbourneUtils.setUsersDeactive(users)));
 				
 				Intent returnIntent = new Intent();
 				returnIntent.putExtra("logout",true);
@@ -131,11 +140,10 @@ public class MyAccountActivity extends Activity {
 		mMyAccountListAddress = (ListView) findViewById(R.id.myaccount_list_address);
 		mMyAccountListCoupon = (ListView) findViewById(R.id.myaccount_list_coupon);
 		
-		mMyAccountListAdapter = new MyAccountListAdapter(this, mHandler,
-				mProfile, mNumber);
+		mMyAccountListAdapter = new MyAccountListAdapter(this, mHandler, mActiveUser);
 		mMyAccountList.setAdapter(mMyAccountListAdapter);
 		
-		mMyAccountListAdapterAddress = new MyAccountListAddressAdapter(this, mHandler, mAddress);
+		mMyAccountListAdapterAddress = new MyAccountListAddressAdapter(this, mHandler, mActiveUser);
 		mMyAccountListAddress.setAdapter(mMyAccountListAdapterAddress);
 		
 		mMyAccountListAdapterCoupon = new MyAccountListCouponAdapter(this, mHandler);
@@ -154,9 +162,14 @@ public class MyAccountActivity extends Activity {
 			// use NavUtils in the Support Package to ensure proper handling of
 			// Up.
 
-			Intent returnIntent = new Intent();
-			returnIntent.putExtra("profile", mProfile);
-			setResult(RESULT_OK, returnIntent);
+//			Intent returnIntent = new Intent();
+//			returnIntent.putExtra("profile", mProfile);
+//			setResult(RESULT_OK, returnIntent);
+//			finish();
+			
+			Intent upIntent = NavUtils.getParentActivityIntent(this);
+			upIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			startActivity(upIntent);
 			finish();
 			return true;
 		}

@@ -1,12 +1,14 @@
 package com.melbournestore.models;
 
+import android.graphics.Bitmap;
+
 public class User {
 
 	private String phone_number;
 	private String unit_no;
 	private String street;
 	private Suburb suburb;
-	private String head_icon;
+	private Bitmap head_icon;
 	private boolean active;
 
 	public User() {
@@ -14,7 +16,7 @@ public class User {
 	}
 
 	public User(String phone_number, String unit_no, String street,
-			Suburb suburb, String head_icon, boolean active) {
+			Suburb suburb, Bitmap head_icon, boolean active) {
 		this.phone_number = phone_number;
 		this.unit_no = unit_no;
 		this.suburb = suburb;
@@ -39,7 +41,7 @@ public class User {
 		return suburb;
 	}
 
-	public String getHeadIcon() {
+	public Bitmap getHeadIcon() {
 		return head_icon;
 	}
 
@@ -63,7 +65,7 @@ public class User {
 		this.suburb = suburb;
 	}
 
-	public void setHeadIcon(String head_icon) {
+	public void setHeadIcon(Bitmap head_icon) {
 		this.head_icon = head_icon;
 	}
 

@@ -13,43 +13,36 @@ import android.widget.TextView;
 
 import com.melbournestore.activities.R;
 import com.melbournestore.db.DataResourceUtils;
+import com.melbournestore.models.User;
 import com.melbournestore.utils.CircleImageView;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class DrawerListAdapter extends BaseAdapter {
 
-	boolean mIsLoggedIn;
 
 	Handler mHandler;
 
-	Bitmap mProfile;
-
 	Context mContext;
+	
+	User[] mUsers;
 
-	String mLoginNumber;
 
 	private static LayoutInflater inflater = null;
 
-	public DrawerListAdapter(Context context, boolean isLoggedIn,
-			String loginNumber, Handler handler, Bitmap profile) {
+	public DrawerListAdapter(Context context, Handler handler, User[] users) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
 		mHandler = handler;
-		mIsLoggedIn = isLoggedIn;
-		mLoginNumber = loginNumber;
-		mProfile = profile;
+		mUsers = users;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void refresh(boolean isLoggedIn, String loginNumber,
-			Handler handler, Bitmap profile) {
+	public void refresh(User[] users) {
 
-		mHandler = handler;
-		mIsLoggedIn = isLoggedIn;
-		mLoginNumber = loginNumber;
-		mProfile = profile;
+		mUsers = users;
 		notifyDataSetChanged();
 	}
 
@@ -90,17 +83,26 @@ public class DrawerListAdapter extends BaseAdapter {
 
 			holder_login.phone_number.setTextColor(Color.WHITE);
 
-			if (!mIsLoggedIn) {
+			
+			int active_value = MelbourneUtils.getActiveUser(mUsers);
+			
+			
+			if (active_value<0) {
 				holder_login.phone_number.setText("Î´µÇÂ¼");
 				holder_login.profile
 						.setImageResource(R.drawable.sidebar_userphoto_default);
 			} else {
-				holder_login.phone_number.setText(mLoginNumber);
-				if (mProfile == null) {
+				
+				User active_user = mUsers[active_value];
+				
+				holder_login.phone_number.setText(active_user.getPhoneNumber());
+				
+				Bitmap profile = active_user.getHeadIcon();
+				if (profile == null) {
 					holder_login.profile
 							.setImageResource(R.drawable.profile_userphoto);
 				}else{
-					holder_login.profile.setImageBitmap(mProfile);
+					holder_login.profile.setImageBitmap(profile);
 				}
 			}
 
