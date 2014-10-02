@@ -32,18 +32,16 @@ public class SharedPreferenceUtils {
     }  
 	
 	
-	// The SharedPrefrence file to store Shopping cart items.
-	public static String getShoppingCart(Context context){
-		SharedPreferences pref = context.getSharedPreferences(  
-                "shopping_cart", 0); 
-		return pref.getString("shopping_cart", "");  		
-	}
-	
 	// The SharedPrefrence file to store Orders.
-	public static String getOrders(Context context){
+	public static String getCurrentOrder(Context context){
 		SharedPreferences pref = context.getSharedPreferences(  
-                "orders", 0); 
-		return pref.getString("orders", "");  		
+                "current_order", 0); 
+		return pref.getString("current_order", "");  		
 	}
+	public static boolean saveCurrentOrder(Context context, String info) {  
+        SharedPreferences pref = context.getSharedPreferences(  
+                "current_order", 0);  
+        return pref.edit().putString("current_order", info).commit();  
+    }  
 }
 

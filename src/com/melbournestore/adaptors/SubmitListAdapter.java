@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.activities.SubmitOrderActivity;
+import com.melbournestore.models.Order_user;
 import com.melbournestore.models.User;
 
 public class SubmitListAdapter extends BaseAdapter{
@@ -32,27 +33,27 @@ public class SubmitListAdapter extends BaseAdapter{
 	Context mContext;
 
 	User mActiveUser;
-	String mTime;
+	Order_user mCurrentOrder;
 	
 	private static LayoutInflater inflater = null;
 	
-	public SubmitListAdapter(Context context, Handler handler,  User activeUser, String time) {
+	public SubmitListAdapter(Context context, Handler handler,  User activeUser, Order_user currentOrder) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
 		mHandler = handler;
 		mActiveUser = activeUser;
-		mTime = time;
+		mCurrentOrder = currentOrder;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void refresh(User activeUser, String time){
+	public void refresh(User activeUser, Order_user currentOrder){
 
 		mActiveUser = activeUser;
-		mTime = time;
+		mCurrentOrder = currentOrder;
 		notifyDataSetChanged();
 	}
 
@@ -159,7 +160,7 @@ public class SubmitListAdapter extends BaseAdapter{
         	
         	holder_checkbox.title.setText("‘ÀÀÕ ±º‰");
         	holder_checkbox.info.setHint("∑∂Œß20:00 - 24:00");
-        	holder_checkbox.info.setText(mTime);
+        	holder_checkbox.info.setText(mCurrentOrder.getDeliveryTime());
         	holder_checkbox.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_checkbox);

@@ -44,6 +44,7 @@ import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.fragments.GoogleMapFragment;
 import com.melbournestore.fragments.MyOrdersFragment;
 import com.melbournestore.fragments.PlateFragment;
+import com.melbournestore.models.Order_user;
 import com.melbournestore.models.Plate;
 import com.melbournestore.models.Shop;
 import com.melbournestore.models.User;
@@ -120,8 +121,9 @@ public class MainActivity extends Activity {
 
 		SysApplication.getInstance().addActivity(this);
 
+		setUpCurrentChoice();
 
-		setUpCurrentChoiceData();
+		setUpCurrentOrder();
 
 		setUpLoginUser();
 
@@ -143,13 +145,14 @@ public class MainActivity extends Activity {
 		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 		// R.layout.drawer_list_item, mMenuTitles));
 		// mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		
-		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
-		Gson gson  = new Gson();
+
+		String users_string = SharedPreferenceUtils
+				.getLoginUser(MainActivity.this);
+		Gson gson = new Gson();
 		User[] users = gson.fromJson(users_string, User[].class);
 
-		mDrawerListAdapter = new DrawerListAdapter(MainActivity.this,
-				mHandler, users);
+		mDrawerListAdapter = new DrawerListAdapter(MainActivity.this, mHandler,
+				users);
 
 		mDrawerList.setAdapter(mDrawerListAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -188,11 +191,12 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
-		Gson gson  = new Gson();
+
+		String users_string = SharedPreferenceUtils
+				.getLoginUser(MainActivity.this);
+		Gson gson = new Gson();
 		User[] users = gson.fromJson(users_string, User[].class);
-		
+
 		mDrawerListAdapter.refresh(users);
 		mDrawerList.setAdapter(mDrawerListAdapter);
 	}
@@ -241,22 +245,18 @@ public class MainActivity extends Activity {
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
-
-
 
 		selectItem(1);
 
 		if (requestCode == LOGIN_CODE) {
 			if (resultCode == RESULT_OK) {
 				// get the ID of the client
-				
-				
-				String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
-				Gson gson  = new Gson();
+
+				String users_string = SharedPreferenceUtils
+						.getLoginUser(MainActivity.this);
+				Gson gson = new Gson();
 				User[] users = gson.fromJson(users_string, User[].class);
 
-				
 				mDrawerListAdapter.refresh(users);
 				mDrawerList.setAdapter(mDrawerListAdapter);
 				mDrawerLayout.openDrawer(mDrawerList);
@@ -270,11 +270,10 @@ public class MainActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				// get the profile photo
 
-				
-				String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
-				Gson gson  = new Gson();
+				String users_string = SharedPreferenceUtils
+						.getLoginUser(MainActivity.this);
+				Gson gson = new Gson();
 				User[] users = gson.fromJson(users_string, User[].class);
-				
 
 				mDrawerListAdapter.refresh(users);
 				mDrawerList.setAdapter(mDrawerListAdapter);
@@ -298,10 +297,6 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 
-		
-
-		
-		
 		FragmentManager fragmentManager = getFragmentManager();
 		// update the main content by replacing fragments
 		switch (position) {
@@ -309,12 +304,13 @@ public class MainActivity extends Activity {
 			// mDrawerList.setItemChecked(position, true);
 			// setTitle(mMenuTitles[position]);
 
-			String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
-			Gson gson  = new Gson();
+			String users_string = SharedPreferenceUtils
+					.getLoginUser(MainActivity.this);
+			Gson gson = new Gson();
 			User[] users = gson.fromJson(users_string, User[].class);
-			
+
 			// Not logged in yet
-			if (MelbourneUtils.getActiveUser(users)<0) {
+			if (MelbourneUtils.getActiveUser(users) < 0) {
 				Intent intent = new Intent(this, LoginActivity.class);
 				startActivityForResult(intent, LOGIN_CODE);
 			} else {
@@ -398,7 +394,7 @@ public class MainActivity extends Activity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	private void setUpCurrentChoiceData() {
+	private void setUpCurrentChoice() {
 		Shop[] shops = new Shop[DataResourceUtils.shopItems.length];
 
 		for (int i = 0; i < shops.length; i++) {
@@ -431,21 +427,34 @@ public class MainActivity extends Activity {
 		SharedPreferenceUtils.saveCurrentChoice(this, shopsJson);
 
 	}
-	
-	private void setUpLoginUser() {
 
-		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
-		Gson gson  = new Gson();
-		User[] users = gson.fromJson(users_string, User[].class);
+	private void setUpCurrentOrder() {
+
+		Gson gson = new Gson();
+		Order_user order = new Order_user();
 		
-		if(users==null){
-			users=new User[0];
-		}
+		order.setDeliveryTime("");
+		order.setRemark("");
 		
-		SharedPreferenceUtils.saveLoginUser(MainActivity.this, gson.toJson(users));
-		
+		SharedPreferenceUtils.saveCurrentOrder(this, gson.toJson(order));
+
 	}
 
+	private void setUpLoginUser() {
+
+		String users_string = SharedPreferenceUtils
+				.getLoginUser(MainActivity.this);
+		Gson gson = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+
+		if (users == null) {
+			users = new User[0];
+		}
+
+		SharedPreferenceUtils.saveLoginUser(MainActivity.this,
+				gson.toJson(users));
+
+	}
 
 	private long mExitTime;
 

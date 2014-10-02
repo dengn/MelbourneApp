@@ -9,18 +9,20 @@ public class User {
 	private String street;
 	private String suburb;
 	private boolean active;
+	private Order_user[] orders;
 
 	public User() {
 
 	}
 
 	public User(String phone_number, String unit_no, String street,
-			String suburb, boolean active) {
+			String suburb, boolean active, Order_user[] orders) {
 		this.phone_number = phone_number;
 		this.unit_no = unit_no;
 		this.suburb = suburb;
 		this.street = street;
 		this.active = active;
+		this.orders = orders;
 	}
 
 	public String getPhoneNumber() {
@@ -43,6 +45,12 @@ public class User {
 		return active;
 	}
 
+	public Order_user[] getOrders() {
+		return orders;
+	}
+	
+	
+
 	public void setPhoneNumber(String phone_number) {
 		this.phone_number = phone_number;
 	}
@@ -61,5 +69,9 @@ public class User {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public void setOrders(Order_user[] orders) {
+		this.orders = orders;
 	}
 }
