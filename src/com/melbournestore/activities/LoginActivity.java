@@ -1,6 +1,7 @@
 package com.melbournestore.activities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -22,7 +23,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.SharedPreferenceUtils;
-import com.melbournestore.models.Shop;
 import com.melbournestore.models.User;
 
 public class LoginActivity extends Activity{
@@ -117,19 +117,38 @@ public class LoginActivity extends Activity{
 					User[] users = gson.fromJson(users_string, User[].class);
 					
 					if(users.length>0){
+						boolean user_found = false;
 						for(int i=0;i<users.length;i++){
 							if(users[i].getPhoneNumber().equals(mPhoneNumber)){
 								users[i].setActive(true);
+								user_found = true;
 								break;
 							}
 						}
+						if(!user_found){
+							ArrayList<User> user_array = new ArrayList<User>(Arrays.asList(users));
+							User user = new User();
+							user.setActive(true);
+							user.setPhoneNumber(mPhoneNumber);
+							user.setUnitNo("");
+							user.setStreet("");
+							user.setSuburb("");
+							user_array.add(user);
+							users = user_array.toArray(new User[0]);
+						}
+						
 						SharedPreferenceUtils.saveLoginUser(LoginActivity.this, gson.toJson(users));
 						
 					}
 					else{
+						users = new User[1];
 						User user = new User();
 						user.setActive(true);
 						user.setPhoneNumber(mPhoneNumber);
+						user.setUnitNo("");
+						user.setStreet("");
+						user.setSuburb("");
+						
 						users[0] = user;
 						SharedPreferenceUtils.saveLoginUser(LoginActivity.this, gson.toJson(users));
 					}

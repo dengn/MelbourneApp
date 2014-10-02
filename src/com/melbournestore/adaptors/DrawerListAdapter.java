@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.melbournestore.activities.R;
 import com.melbournestore.db.DataResourceUtils;
 import com.melbournestore.models.User;
+import com.melbournestore.utils.BitmapUtils;
 import com.melbournestore.utils.CircleImageView;
 import com.melbournestore.utils.MelbourneUtils;
 
@@ -97,7 +98,7 @@ public class DrawerListAdapter extends BaseAdapter {
 				
 				holder_login.phone_number.setText(active_user.getPhoneNumber());
 				
-				Bitmap profile = active_user.getHeadIcon();
+				Bitmap profile = BitmapUtils.getMyBitMap(active_user.getPhoneNumber());
 				if (profile == null) {
 					holder_login.profile
 							.setImageResource(R.drawable.profile_userphoto);

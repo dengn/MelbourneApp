@@ -3,10 +3,7 @@ package com.melbournestore.adaptors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +15,7 @@ import android.widget.TextView;
 import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.MyAccountActivity;
 import com.melbournestore.activities.R;
+import com.melbournestore.models.User;
 
 public class MyAccountListAddressAdapter extends BaseAdapter {
 
@@ -25,24 +23,24 @@ public class MyAccountListAddressAdapter extends BaseAdapter {
 
 	private Handler mHandler;
 
-	private String mAddress;
+	private User mActiveUser;
 
 	private static LayoutInflater inflater = null;
 
 	public MyAccountListAddressAdapter(Context context, Handler handler,
-			String address) {
+			User activeUser) {
 		// TODO Auto-generated constructor stub
-
 		mContext = context;
 		mHandler = handler;
-		mAddress = address;
+		
+		mActiveUser = activeUser;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void refresh(String address) {
-		mAddress = address;
+	public void refresh(User activeUser) {
+		mActiveUser = activeUser;
 
 		notifyDataSetChanged();
 	}
@@ -69,7 +67,6 @@ public class MyAccountListAddressAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 
-
 		viewHolder_address holder_address = null;
 
 		holder_address = new viewHolder_address();
@@ -84,7 +81,10 @@ public class MyAccountListAddressAdapter extends BaseAdapter {
 				.findViewById(R.id.myaccount_address_rightarrow);
 
 		holder_address.title.setText("ÀÕªıµÿ÷∑");
-		holder_address.address.setText(mAddress);
+
+		String address = mActiveUser.getUnitNo() + ","
+				+ mActiveUser.getStreet() + "," + mActiveUser.getSuburb();
+		holder_address.address.setText(address);
 		holder_address.rightArrow
 				.setImageResource(R.drawable.other_icon_rightarrow);
 
@@ -107,8 +107,6 @@ public class MyAccountListAddressAdapter extends BaseAdapter {
 
 	}
 
-
-
 	class viewHolder_address {
 
 		private TextView title;
@@ -117,7 +115,5 @@ public class MyAccountListAddressAdapter extends BaseAdapter {
 
 		private ImageView rightArrow;
 	}
-
-
 
 }

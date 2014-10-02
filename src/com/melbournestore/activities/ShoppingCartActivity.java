@@ -22,10 +22,11 @@ import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.models.Plate;
 import com.melbournestore.models.Shop;
+import com.melbournestore.models.User;
 import com.melbournestore.utils.MelbourneUtils;
 
 public class ShoppingCartActivity extends Activity {
-	
+
 	public static final int LOGIN_CODE = 8;
 
 	private Button mConfirmOrders;
@@ -33,11 +34,10 @@ public class ShoppingCartActivity extends Activity {
 	private TextView mTotalPrice;
 
 	private ListView mOrderList;
-	
+
 	private OrderListAdapter mOrderListAdapter;
 
 	private int totalPrice;
-
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -47,27 +47,28 @@ public class ShoppingCartActivity extends Activity {
 			switch (msg.what) {
 			// plus = 1
 			case 1:
-				//totalPrice += orderPrices[position];
-				
-				String shops_string1 = SharedPreferenceUtils.getCurrentChoice(ShoppingCartActivity.this);
-				Gson gson1  = new Gson();
+				// totalPrice += orderPrices[position];
+
+				String shops_string1 = SharedPreferenceUtils
+						.getCurrentChoice(ShoppingCartActivity.this);
+				Gson gson1 = new Gson();
 				Shop[] shops1 = gson1.fromJson(shops_string1, Shop[].class);
-				
+
 				totalPrice = MelbourneUtils.sum_price_all(shops1);
-				
-				
+
 				mTotalPrice.setText("$" + String.valueOf(totalPrice));
 				break;
 			// minus = 2
 			case 2:
-				//totalPrice -= orderPrices[position];
-				
-				String shops_string2 = SharedPreferenceUtils.getCurrentChoice(ShoppingCartActivity.this);
-				Gson gson2  = new Gson();
+				// totalPrice -= orderPrices[position];
+
+				String shops_string2 = SharedPreferenceUtils
+						.getCurrentChoice(ShoppingCartActivity.this);
+				Gson gson2 = new Gson();
 				Shop[] shops2 = gson2.fromJson(shops_string2, Shop[].class);
-				
+
 				totalPrice = MelbourneUtils.sum_price_all(shops2);
-				
+
 				mTotalPrice.setText("$" + String.valueOf(totalPrice));
 				break;
 
@@ -89,33 +90,26 @@ public class ShoppingCartActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		getActionBar().setTitle("购物车");
-		
-		
-		
+
 		String shops_string = SharedPreferenceUtils.getCurrentChoice(this);
-		Gson gson  = new Gson();
+		Gson gson = new Gson();
 		Shop[] shops = gson.fromJson(shops_string, Shop[].class);
-		
-		
-		
+
 		totalPrice = MelbourneUtils.sum_price_all(shops);
-		
-	
+
 		Plate[] plates_chosen = MelbourneUtils.getPlatesChosen(shops);
-		
 
 		mConfirmOrders = (Button) findViewById(R.id.confirm_order);
 		mConfirmOrders.getBackground().setAlpha(80);
-		
+
 		mTotalPrice = (TextView) findViewById(R.id.price_total);
 
 		mOrderList = (ListView) findViewById(R.id.shopping_list);
-		
+
 		mOrderListAdapter = new OrderListAdapter(this, mHandler, plates_chosen);
 		mOrderList.setAdapter(mOrderListAdapter);
-
 
 		mTotalPrice.setText("共计费用：$" + String.valueOf(totalPrice));
 
@@ -125,8 +119,13 @@ public class ShoppingCartActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				boolean isLoggedIn = SysApplication.getLoginStatus();
-				if (isLoggedIn) {
+				String users_string = SharedPreferenceUtils
+						.getLoginUser(ShoppingCartActivity.this);
+				Gson gson = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				int active_value = MelbourneUtils.getActiveUser(users);
+
+				if (active_value >= 0) {
 					Intent intent = new Intent(ShoppingCartActivity.this,
 							SubmitOrderActivity.class);
 					intent.putExtra("total_price", totalPrice);
@@ -135,7 +134,7 @@ public class ShoppingCartActivity extends Activity {
 				} else {
 					Intent intent = new Intent(ShoppingCartActivity.this,
 							LoginActivity.class);
-					//intent.putExtra("total_price", priceTotal);
+					// intent.putExtra("total_price", priceTotal);
 
 					startActivityForResult(intent, LOGIN_CODE);
 				}
@@ -144,9 +143,7 @@ public class ShoppingCartActivity extends Activity {
 
 		});
 	}
-	
-	
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check which request we're responding to
@@ -164,8 +161,6 @@ public class ShoppingCartActivity extends Activity {
 		}
 
 	}
-	
-	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

@@ -120,21 +120,10 @@ public class MainActivity extends Activity {
 
 		SysApplication.getInstance().addActivity(this);
 
-		// Intent intent = getIntent();
-		// if(intent.getParcelableExtra("profile")!=null){
-		// mProfile = intent.getParcelableExtra("profile");
-		// }
-		// if(intent.getBooleanExtra("logout",false)){
-		// isLoggedIn = true;
-		// }
 
 		setUpCurrentChoiceData();
 
 		setUpLoginUser();
-
-		isLoggedIn = SysApplication.getLoginStatus();
-
-		mProfile = null;
 
 		plate_fragment = new PlateFragment(this);
 		myorders_fragment = new MyOrdersFragment();
@@ -199,6 +188,13 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
+		Gson gson  = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+		
+		mDrawerListAdapter.refresh(users);
+		mDrawerList.setAdapter(mDrawerListAdapter);
 	}
 
 	@Override
@@ -303,9 +299,7 @@ public class MainActivity extends Activity {
 	private void selectItem(int position) {
 
 		
-		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
-		Gson gson  = new Gson();
-		User[] users = gson.fromJson(users_string, User[].class);
+
 		
 		
 		FragmentManager fragmentManager = getFragmentManager();
@@ -315,6 +309,10 @@ public class MainActivity extends Activity {
 			// mDrawerList.setItemChecked(position, true);
 			// setTitle(mMenuTitles[position]);
 
+			String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
+			Gson gson  = new Gson();
+			User[] users = gson.fromJson(users_string, User[].class);
+			
 			// Not logged in yet
 			if (MelbourneUtils.getActiveUser(users)<0) {
 				Intent intent = new Intent(this, LoginActivity.class);
@@ -433,25 +431,21 @@ public class MainActivity extends Activity {
 		SharedPreferenceUtils.saveCurrentChoice(this, shopsJson);
 
 	}
-
+	
 	private void setUpLoginUser() {
 
 		String users_string = SharedPreferenceUtils.getLoginUser(MainActivity.this);
 		Gson gson  = new Gson();
 		User[] users = gson.fromJson(users_string, User[].class);
 		
-		User active_user = new User();
+		if(users==null){
+			users=new User[0];
+		}
 		
-		int found_value = MelbourneUtils.getActiveUser(users);
-		if(found_value>=0){
-			active_user = users[found_value];
-			loginNumber = active_user.getPhoneNumber();
-		}
-		else{
-			loginNumber = "";
-		}
+		SharedPreferenceUtils.saveLoginUser(MainActivity.this, gson.toJson(users));
 		
 	}
+
 
 	private long mExitTime;
 

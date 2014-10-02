@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -60,8 +61,6 @@ public class MyAccountActivity extends Activity {
 
 	private PopupWindow mpopupWindow;
 
-	
-	private User mActiveUser;
 
 
 	private Handler mHandler = new Handler() {
@@ -105,7 +104,8 @@ public class MyAccountActivity extends Activity {
 		String users_string = SharedPreferenceUtils.getLoginUser(MyAccountActivity.this);
 		Gson gson  = new Gson();
 		User[] users = gson.fromJson(users_string, User[].class);
-		mActiveUser = users[MelbourneUtils.getActiveUser(users)];
+		User activeUser = users[MelbourneUtils.getActiveUser(users)];
+		
 
 
 		mLogout = (Button) findViewById(R.id.logout);
@@ -135,15 +135,17 @@ public class MyAccountActivity extends Activity {
 			}
 			
 		});
+		
+		
 
 		mMyAccountList = (ListView) findViewById(R.id.myaccount_list);
 		mMyAccountListAddress = (ListView) findViewById(R.id.myaccount_list_address);
 		mMyAccountListCoupon = (ListView) findViewById(R.id.myaccount_list_coupon);
 		
-		mMyAccountListAdapter = new MyAccountListAdapter(this, mHandler, mActiveUser);
+		mMyAccountListAdapter = new MyAccountListAdapter(this, mHandler, activeUser);
 		mMyAccountList.setAdapter(mMyAccountListAdapter);
 		
-		mMyAccountListAdapterAddress = new MyAccountListAddressAdapter(this, mHandler, mActiveUser);
+		mMyAccountListAdapterAddress = new MyAccountListAddressAdapter(this, mHandler, activeUser);
 		mMyAccountListAddress.setAdapter(mMyAccountListAdapterAddress);
 		
 		mMyAccountListAdapterCoupon = new MyAccountListCouponAdapter(this, mHandler);
@@ -186,8 +188,13 @@ public class MyAccountActivity extends Activity {
 
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
-				mAddress = data.getStringExtra("address");
-				mMyAccountListAdapterAddress.refresh(mAddress);
+				
+				String users_string = SharedPreferenceUtils.getLoginUser(MyAccountActivity.this);
+				Gson gson  = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				User activeUser = users[MelbourneUtils.getActiveUser(users)];
+				
+				mMyAccountListAdapterAddress.refresh(activeUser);
 				mMyAccountListAddress.setAdapter(mMyAccountListAdapterAddress);
 			}
 			break;
@@ -199,10 +206,23 @@ public class MyAccountActivity extends Activity {
 					Bitmap bitmap = MediaStore.Images.Media.getBitmap(
 							this.getContentResolver(), originalUri);
 					
-					mProfile = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
+					
+					String users_string = SharedPreferenceUtils.getLoginUser(MyAccountActivity.this);
+					Gson gson  = new Gson();
+					User[] users = gson.fromJson(users_string, User[].class);
+					User activeUser1 = users[MelbourneUtils.getActiveUser(users)];
+					
+					
+					Bitmap scaledBitmap = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
 
-					mMyAccountListAdapter.refresh(mProfile, mNumber);
+					BitmapUtils.saveMyBitmap(activeUser1.getPhoneNumber(), scaledBitmap);
+
+					
+					mMyAccountListAdapter.refresh(activeUser1);
 					mMyAccountList.setAdapter(mMyAccountListAdapter);
+					
+					SharedPreferenceUtils.saveLoginUser(MyAccountActivity.this, gson.toJson(users));
+					
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -218,10 +238,25 @@ public class MyAccountActivity extends Activity {
 				Bundle bundle = data.getExtras();
 				Bitmap bitmap = (Bitmap) bundle.get("data");
 				
-				mProfile = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
+				String users_string = SharedPreferenceUtils.getLoginUser(MyAccountActivity.this);
+				Gson gson  = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				User activeUser2 = users[MelbourneUtils.getActiveUser(users)];
 				
-				mMyAccountListAdapter.refresh(mProfile, mNumber);
+				Bitmap scaledBitmap = BitmapUtils.scaleDownBitmap(bitmap, 100, getBaseContext());
+
+				try {
+					BitmapUtils.saveMyBitmap(activeUser2.getPhoneNumber(), scaledBitmap);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				
+				mMyAccountListAdapter.refresh(activeUser2);
 				mMyAccountList.setAdapter(mMyAccountListAdapter);
+				
+				SharedPreferenceUtils.saveLoginUser(MyAccountActivity.this, gson.toJson(users));
 			}
 			break;
 		}

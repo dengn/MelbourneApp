@@ -8,6 +8,8 @@ import com.melbournestore.models.Shop;
 import com.melbournestore.models.User;
 
 public class MelbourneUtils {
+	
+
 
 	public static final int sum(int[] array) {
 		int sum = 0;

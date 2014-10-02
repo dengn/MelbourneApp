@@ -1,8 +1,6 @@
 package com.melbournestore.adaptors;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,9 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.melbournestore.activities.ChooseAddressActivity;
-import com.melbournestore.activities.MyAccountActivity;
 import com.melbournestore.activities.R;
+import com.melbournestore.models.User;
+import com.melbournestore.utils.BitmapUtils;
 
 public class MyAccountListAdapter extends BaseAdapter {
 
@@ -26,29 +24,24 @@ public class MyAccountListAdapter extends BaseAdapter {
 
 	private Handler mHandler;
 
-	private Bitmap mProfile;
-
-	private String mNumber;
+	private User mActiveUser;
 
 	private static LayoutInflater inflater = null;
 
-	public MyAccountListAdapter(Context context, Handler handler,
-			Bitmap profile, String number) {
+	public MyAccountListAdapter(Context context, Handler handler, User activeUser) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
 		mHandler = handler;
-		mProfile = profile;
-		mNumber = number;
+		mActiveUser = activeUser;
 
 		
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void refresh(Bitmap profile, String number) {
-		mProfile = profile;
-		mNumber = number;
+	public void refresh(User activeUser) {
+		mActiveUser = activeUser;
 		notifyDataSetChanged();
 	}
 
@@ -90,14 +83,14 @@ public class MyAccountListAdapter extends BaseAdapter {
 					.findViewById(R.id.myaccount_profile_number);
 
 			// set images
-			if (mProfile == null) {
+			if (BitmapUtils.getMyBitMap(mActiveUser.getPhoneNumber()) == null) {
 				holder_profile.profile
 						.setImageResource(R.drawable.profile_userphoto);
 			} else {
-				holder_profile.profile.setImageBitmap(mProfile);
+				holder_profile.profile.setImageBitmap(BitmapUtils.getMyBitMap(mActiveUser.getPhoneNumber()));
 			}
 
-			holder_profile.number.setText(mNumber);
+			holder_profile.number.setText(mActiveUser.getPhoneNumber());
 
 			holder_profile.profile.setOnClickListener(new OnClickListener() {
 

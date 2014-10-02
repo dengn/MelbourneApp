@@ -6,17 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.adaptors.ChooseAddressListAdapter;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.Suburb;
+import com.melbournestore.models.User;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class ChooseAddressActivity extends Activity {
 
@@ -139,6 +142,18 @@ public class ChooseAddressActivity extends Activity {
 			finish();
 			return true;
 		case R.id.finish:
+			
+			
+			String users_string = SharedPreferenceUtils.getLoginUser(ChooseAddressActivity.this);
+			Gson gson  = new Gson();
+			User[] users = gson.fromJson(users_string, User[].class);
+			User active_user = users[MelbourneUtils.getActiveUser(users)];
+			active_user.setUnitNo(addr_unit);
+			active_user.setStreet(addr_street);
+			active_user.setSuburb(addr_suburb);
+			
+			SharedPreferenceUtils.saveLoginUser(ChooseAddressActivity.this, gson.toJson(users));
+			
 			
 			Intent returnIntent = new Intent();
 			returnIntent.putExtra("address",addr_unit+","+addr_street+","+addr_suburb);
