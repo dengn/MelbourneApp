@@ -98,13 +98,7 @@ public class MyAccountListAdapter extends BaseAdapter {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Message message = new Message();
-					Bundle b = new Bundle();
-					// send the action to do
-					// action = 1 open popup
-					b.putInt("action", 1);
-					message.setData(b);
 
-					// plus = 1
 					message.what = 1;
 
 					mHandler.sendMessage(message);

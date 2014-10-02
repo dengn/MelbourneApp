@@ -2,6 +2,8 @@ package com.melbournestore.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -126,6 +128,20 @@ public class ShoppingCartActivity extends Activity {
 				int active_value = MelbourneUtils.getActiveUser(users);
 
 				if (active_value >= 0) {
+					
+					if(totalPrice==0){
+						new AlertDialog.Builder(ShoppingCartActivity.this)
+						.setMessage("请选择菜品")
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											DialogInterface dialoginterface,
+											int i) {
+
+									}
+								}).show();
+					}
+					
 					Intent intent = new Intent(ShoppingCartActivity.this,
 							SubmitOrderActivity.class);
 					intent.putExtra("total_price", totalPrice);

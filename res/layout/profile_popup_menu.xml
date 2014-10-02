@@ -67,10 +67,10 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/detail_menu_margin_top"
             android:layout_marginTop="@dimen/detail_menu_margin_top"
-            android:background="@color/blue"
+            android:background="@color/white"
             android:text="取消"
             android:textSize="27sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/blue" />
     </LinearLayout>
 
 </RelativeLayout>

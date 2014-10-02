@@ -25,23 +25,22 @@ import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.models.User;
 
-public class LoginActivity extends Activity{
-	
+public class LoginActivity extends Activity {
+
 	private TextView loginText;
 	private EditText loginNumber;
 	private CheckBox loginCheckbox;
 	private TextView loginTextAgreement;
 	private Button loginButton;
-	
+
 	private String mPhoneNumber;
-	
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
-		
-		SysApplication.getInstance().addActivity(this); 
-		
+
+		SysApplication.getInstance().addActivity(this);
+
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
 
@@ -49,84 +48,89 @@ public class LoginActivity extends Activity{
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		getActionBar().setTitle("用户登录");
-		
+
 		loginText = (TextView) findViewById(R.id.login_notice);
 		loginText.setText("请使用手机号码登录");
 
 		loginNumber = (EditText) findViewById(R.id.login_number);
 		loginNumber.setHint("澳大利亚10位号码");
-		
+
 		loginCheckbox = (CheckBox) findViewById(R.id.login_aggrement_checkbox);
 		loginCheckbox.setText("");
-		
+
 		loginTextAgreement = (TextView) findViewById(R.id.login_text_agreement);
-		loginTextAgreement.setText("同意<"+Html.fromHtml("<u>"+"墨尔本送餐服务协议"+"</u>")+">");
-		
-		loginTextAgreement.setOnClickListener(new OnClickListener(){
+		loginTextAgreement.setText("同意<"
+				+ Html.fromHtml("<u>" + "墨尔本送餐服务协议" + "</u>") + ">");
+
+		loginTextAgreement.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(LoginActivity.this, DeliveryAgreementActivity.class);
+				Intent intent = new Intent(LoginActivity.this,
+						DeliveryAgreementActivity.class);
 				startActivity(intent);
 			}
-			
+
 		});
-		
+
 		loginButton = (Button) findViewById(R.id.login_button);
 		loginButton.getBackground().setAlpha(80);
 		loginButton.setText("登录");
-		
-		loginButton.setOnClickListener(new OnClickListener(){
+
+		loginButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
-				
-				if(!loginCheckbox.isChecked()){
-					new AlertDialog.Builder(LoginActivity.this)  
-			        .setMessage("请同意墨尔本送餐服务协议")   
-			        .setPositiveButton("确定",   
-			        new DialogInterface.OnClickListener(){  
-			                  public void onClick(DialogInterface dialoginterface, int i){   
-			                                 //按钮事件   
-			                            Toast.makeText(LoginActivity.this, "确定",Toast.LENGTH_LONG).show();  
-			                              }   
-			                      }).show();  
-				}
-				else if((loginNumber.getText().length()!=10)||!loginNumber.getText().toString().subSequence(0, 2).equals("04")){
-					new AlertDialog.Builder(LoginActivity.this)  
-			        .setMessage("手机号码不是澳洲手机\n请输入04开头号码")   
-			        .setPositiveButton("确定",   
-			        new DialogInterface.OnClickListener(){  
-			                  public void onClick(DialogInterface dialoginterface, int i){   
-			                                 //按钮事件   
-			                            Toast.makeText(LoginActivity.this, "确定",Toast.LENGTH_LONG).show();  
-			                              }   
-			                      }).show(); 
-				}
-				else{
-					
+
+				if (!loginCheckbox.isChecked()) {
+					new AlertDialog.Builder(LoginActivity.this)
+							.setMessage("请同意墨尔本送餐服务协议")
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialoginterface,
+												int i) {
+
+										}
+									}).show();
+				} else if ((loginNumber.getText().length() != 10)
+						|| !loginNumber.getText().toString().subSequence(0, 2)
+								.equals("04")) {
+					new AlertDialog.Builder(LoginActivity.this)
+							.setMessage("手机号码不是澳洲手机\n请输入04开头号码")
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialoginterface,
+												int i) {
+
+										}
+									}).show();
+				} else {
+
 					mPhoneNumber = loginNumber.getText().toString();
-					
-					String users_string = SharedPreferenceUtils.getLoginUser(LoginActivity.this);
-					Gson gson  = new Gson();
+
+					String users_string = SharedPreferenceUtils
+							.getLoginUser(LoginActivity.this);
+					Gson gson = new Gson();
 					User[] users = gson.fromJson(users_string, User[].class);
-					
-					if(users.length>0){
+
+					if (users.length > 0) {
 						boolean user_found = false;
-						for(int i=0;i<users.length;i++){
-							if(users[i].getPhoneNumber().equals(mPhoneNumber)){
+						for (int i = 0; i < users.length; i++) {
+							if (users[i].getPhoneNumber().equals(mPhoneNumber)) {
 								users[i].setActive(true);
 								user_found = true;
 								break;
 							}
 						}
-						if(!user_found){
-							ArrayList<User> user_array = new ArrayList<User>(Arrays.asList(users));
+						if (!user_found) {
+							ArrayList<User> user_array = new ArrayList<User>(
+									Arrays.asList(users));
 							User user = new User();
 							user.setActive(true);
 							user.setPhoneNumber(mPhoneNumber);
@@ -136,11 +140,11 @@ public class LoginActivity extends Activity{
 							user_array.add(user);
 							users = user_array.toArray(new User[0]);
 						}
-						
-						SharedPreferenceUtils.saveLoginUser(LoginActivity.this, gson.toJson(users));
-						
-					}
-					else{
+
+						SharedPreferenceUtils.saveLoginUser(LoginActivity.this,
+								gson.toJson(users));
+
+					} else {
 						users = new User[1];
 						User user = new User();
 						user.setActive(true);
@@ -148,25 +152,25 @@ public class LoginActivity extends Activity{
 						user.setUnitNo("");
 						user.setStreet("");
 						user.setSuburb("");
-						
-						users[0] = user;
-						SharedPreferenceUtils.saveLoginUser(LoginActivity.this, gson.toJson(users));
-					}
-					
 
-					
+						users[0] = user;
+						SharedPreferenceUtils.saveLoginUser(LoginActivity.this,
+								gson.toJson(users));
+					}
+
 					Intent returnIntent = new Intent();
-					returnIntent.putExtra("number",loginNumber.getText().toString());
-					setResult(RESULT_OK,returnIntent);
+					returnIntent.putExtra("number", loginNumber.getText()
+							.toString());
+					setResult(RESULT_OK, returnIntent);
 					finish();
 
 				}
 			}
-			
+
 		});
-		
+
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -177,15 +181,15 @@ public class LoginActivity extends Activity{
 			// activity and
 			// use NavUtils in the Support Package to ensure proper handling of
 			// Up.
-//			Intent upIntent = NavUtils.getParentActivityIntent(this);
-//			upIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//			startActivity(upIntent);
+			// Intent upIntent = NavUtils.getParentActivityIntent(this);
+			// upIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			// startActivity(upIntent);
 			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private long mExitTime;
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -6,20 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.melbournestore.activities.ChooseAddressActivity;
-import com.melbournestore.activities.DeliveryNoticeActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.activities.SubmitOrderActivity;
+import com.melbournestore.models.User;
 
 public class SubmitListAdapter extends BaseAdapter{
 	
@@ -33,28 +31,27 @@ public class SubmitListAdapter extends BaseAdapter{
 	Handler mHandler;
 	Context mContext;
 
-	
-	String mAddress;
+	User mActiveUser;
 	String mTime;
 	
 	private static LayoutInflater inflater = null;
 	
-	public SubmitListAdapter(Context context, Handler handler,  String address, String time) {
+	public SubmitListAdapter(Context context, Handler handler,  User activeUser, String time) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
 		mHandler = handler;
-		mAddress = address;
+		mActiveUser = activeUser;
 		mTime = time;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void refresh(String address, String time){
+	public void refresh(User activeUser, String time){
 
-		mAddress = address;
+		mActiveUser = activeUser;
 		mTime = time;
 		notifyDataSetChanged();
 	}
@@ -110,7 +107,7 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_text.info = (TextView)convertView.findViewById(R.id.phone_info);
         	
         	holder_text.title.setText("电话号码");
-        	holder_text.info.setText("0485245801");
+        	holder_text.info.setText(mActiveUser.getPhoneNumber());
         	
         	convertView.setTag(holder_text);
         	
@@ -125,9 +122,15 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_activity.info = (TextView)convertView.findViewById(R.id.address_info);
         	holder_activity.rightArrow = (ImageView) convertView.findViewById(R.id.address_rightarrow);
         	
-        	
-        	holder_activity.title.setText("运送地址"+mAddress);
+    		String address = "";
+    		
+    		if(!mActiveUser.getUnitNo().equals("")||!mActiveUser.getStreet().equals("")||!mActiveUser.getSuburb().equals("")){
+    			address = mActiveUser.getUnitNo() + ","
+    					+ mActiveUser.getStreet() + "," + mActiveUser.getSuburb();
+    		}
+        	holder_activity.title.setText("运送地址");
         	holder_activity.info.setHint("详细地址");
+        	holder_activity.info.setText(address);
         	holder_activity.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_activity);
@@ -154,8 +157,9 @@ public class SubmitListAdapter extends BaseAdapter{
         	holder_checkbox.rightArrow = (ImageView) convertView.findViewById(R.id.time_rightarrow);
         	
         	
-        	holder_checkbox.title.setText("运送时间"+mTime);
+        	holder_checkbox.title.setText("运送时间");
         	holder_checkbox.info.setHint("范围20:00 - 24:00");
+        	holder_checkbox.info.setText(mTime);
         	holder_checkbox.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
         	
         	convertView.setTag(holder_checkbox);

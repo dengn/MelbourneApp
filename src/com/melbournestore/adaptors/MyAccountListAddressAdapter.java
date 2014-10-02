@@ -82,8 +82,13 @@ public class MyAccountListAddressAdapter extends BaseAdapter {
 
 		holder_address.title.setText("ÀÕªıµÿ÷∑");
 
-		String address = mActiveUser.getUnitNo() + ","
-				+ mActiveUser.getStreet() + "," + mActiveUser.getSuburb();
+		String address = "";
+		
+		if(!mActiveUser.getUnitNo().equals("")||!mActiveUser.getStreet().equals("")||!mActiveUser.getSuburb().equals("")){
+			address = mActiveUser.getUnitNo() + ","
+					+ mActiveUser.getStreet() + "," + mActiveUser.getSuburb();
+		}
+		
 		holder_address.address.setText(address);
 		holder_address.rightArrow
 				.setImageResource(R.drawable.other_icon_rightarrow);

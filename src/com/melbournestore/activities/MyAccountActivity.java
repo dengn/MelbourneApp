@@ -66,15 +66,12 @@ public class MyAccountActivity extends Activity {
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			Bundle b = msg.getData();
-			int action = b.getInt("action");
 			switch (msg.what) {
 
 			case 1:
 				// Popup Menu
-				if (action == 1) {
-					showPopMenu();
-				}
+				showPopMenu();
+
 
 				break;
 

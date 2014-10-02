@@ -27,10 +27,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.adaptors.SubmitListAdapter;
 import com.melbournestore.adaptors.SubmitListCouponAdapter;
 import com.melbournestore.adaptors.SubmitListMemoAdapter;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.User;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class SubmitOrderActivity extends Activity {
 
@@ -49,7 +53,7 @@ public class SubmitOrderActivity extends Activity {
 	private SubmitListCouponAdapter mSubmitListCouponAdapter;
 
 	private String mDeliveryAddress;
-	
+
 	private String mDeliveryTime;
 
 	int priceTotal;
@@ -95,7 +99,7 @@ public class SubmitOrderActivity extends Activity {
 		mDeliveryAddress = "";
 
 		mDeliveryTime = "";
-		
+
 		Intent intent = getIntent();
 		priceTotal = intent.getIntExtra("total_price", 0);
 
@@ -120,13 +124,19 @@ public class SubmitOrderActivity extends Activity {
 		mSubmitMemoList = (ListView) findViewById(R.id.submit_memo_list);
 		mSubmitCouponList = (ListView) findViewById(R.id.submit_coupon_list);
 
-		mSubmitListAdapter = new SubmitListAdapter(this, mHandler, 
-				mDeliveryAddress, mDeliveryTime);
+		String users_string = SharedPreferenceUtils
+				.getLoginUser(SubmitOrderActivity.this);
+		Gson gson = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+		User activeUser = users[MelbourneUtils.getActiveUser(users)];
+
+		mSubmitListAdapter = new SubmitListAdapter(this, mHandler, activeUser,
+				mDeliveryTime);
 		mSubmitList.setAdapter(mSubmitListAdapter);
-		
+
 		mSubmitListMemoAdapter = new SubmitListMemoAdapter(this, mHandler);
 		mSubmitMemoList.setAdapter(mSubmitListMemoAdapter);
-		
+
 		mSubmitListCouponAdapter = new SubmitListCouponAdapter(this, mHandler);
 		mSubmitCouponList.setAdapter(mSubmitListCouponAdapter);
 
@@ -143,8 +153,14 @@ public class SubmitOrderActivity extends Activity {
 
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
-				mDeliveryAddress = data.getStringExtra("address");
-				mSubmitListAdapter.refresh(mDeliveryAddress, mDeliveryTime);
+				
+				String users_string = SharedPreferenceUtils.getLoginUser(SubmitOrderActivity.this);
+				Gson gson  = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				User activeUser = users[MelbourneUtils.getActiveUser(users)];
+				
+				
+				mSubmitListAdapter.refresh(activeUser, mDeliveryTime);
 				mSubmitList.setAdapter(mSubmitListAdapter);
 			}
 		}
@@ -174,13 +190,13 @@ public class SubmitOrderActivity extends Activity {
 
 		DatePicker datePicker = (DatePicker) view
 				.findViewById(R.id.delivery_time_picker);
-		Button deliveryTimeConfirm = (Button) view.findViewById(R.id.delivery_time_confirm);
-		
+		Button deliveryTimeConfirm = (Button) view
+				.findViewById(R.id.delivery_time_confirm);
+
 		mDeliveryTime = "2013.08.20 18:00";
-		
+
 		datePicker.init(2013, 8, 20, new OnDateChangedListener() {
 
-			
 			@Override
 			public void onDateChanged(DatePicker view, int year,
 					int monthOfYear, int dayOfMonth) {
@@ -189,22 +205,27 @@ public class SubmitOrderActivity extends Activity {
 				calendar.set(year, monthOfYear, dayOfMonth);
 				SimpleDateFormat format = new SimpleDateFormat(
 						"yyyyƒÍMM‘¬dd»’  HH:mm");
-				
+
 				mDeliveryTime = format.format(calendar.getTime());
 			}
 		});
-		
-		deliveryTimeConfirm.setOnClickListener(new OnClickListener(){
+
+		deliveryTimeConfirm.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				mSubmitListAdapter.refresh(mDeliveryAddress, mDeliveryTime);
+				String users_string = SharedPreferenceUtils.getLoginUser(SubmitOrderActivity.this);
+				Gson gson  = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				User activeUser = users[MelbourneUtils.getActiveUser(users)];
+
+				mSubmitListAdapter.refresh(activeUser, mDeliveryTime);
 				mSubmitList.setAdapter(mSubmitListAdapter);
 				mTimePickerPopup.dismiss();
 			}
-			
+
 		});
 
 		view.setOnClickListener(new OnClickListener() {
@@ -215,12 +236,12 @@ public class SubmitOrderActivity extends Activity {
 				mTimePickerPopup.dismiss();
 			}
 		});
-		
+
 		LinearLayout delivery_time_popup = (LinearLayout) view
 				.findViewById(R.id.delivery_time_popup);
 		delivery_time_popup.startAnimation(AnimationUtils.loadAnimation(
 				getApplicationContext(), R.anim.push_bottom_in));
-		
+
 		if (mTimePickerPopup == null) {
 			mTimePickerPopup = new PopupWindow(this);
 			mTimePickerPopup.setWidth(LayoutParams.MATCH_PARENT);
