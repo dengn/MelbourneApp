@@ -1,7 +1,9 @@
 package com.melbournestore.utils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.melbournestore.models.Plate;
 import com.melbournestore.models.Shop;
@@ -57,6 +59,14 @@ public class MelbourneUtils {
 				price_all += shops[i].getPlates()[j].getNumber()
 						* shops[i].getPlates()[j].getPrice();
 			}
+		}
+		return price_all;
+	}
+	
+	public static final int sum_price_all(Plate[] plates){
+		int price_all = 0;
+		for(int i=0;i<plates.length;i++){
+			price_all+=plates[i].getNumber()*plates[i].getPrice();
 		}
 		return price_all;
 	}
@@ -118,6 +128,22 @@ public class MelbourneUtils {
 		else{
 			return users;
 		}
+	}
+	
+	public static final String getCompleteAddress(User user){
+		String address ="";
+		if(!user.getUnitNo().equals("")||!user.getStreet().equals("")||!user.getSuburb().equals("")){
+			address = user.getUnitNo() + ","
+					+ user.getStreet() + "," + user.getSuburb();
+		}
+		return address;
+	}
+	
+	public static final String getSystemTime(){
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        return formattedDate;
 	}
 	
 	

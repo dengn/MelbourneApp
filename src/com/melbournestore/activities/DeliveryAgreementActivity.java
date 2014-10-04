@@ -31,6 +31,8 @@ public class DeliveryAgreementActivity extends Activity {
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		getActionBar().setTitle("墨尔本送餐服务协议");
+		
 		textAgreement1 = (TextView) findViewById(R.id.delivery_text_agreement1);
 		textAgreement1.setText("使用条款和隐私政策");
 		

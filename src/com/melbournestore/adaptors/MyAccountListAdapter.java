@@ -122,7 +122,13 @@ public class MyAccountListAdapter extends BaseAdapter {
 					.findViewById(R.id.myaccount_coupon);
 
 			holder_like.like.setText("0\nÏ²»¶");
-			holder_like.order.setText("0\n¶©µ¥");
+			if(mActiveUser.getOrders()==null){
+				holder_like.order.setText("0\n¶©µ¥");
+			}
+			else{
+				holder_like.order.setText(String.valueOf(mActiveUser.getOrders().length)+"\n¶©µ¥");
+			}
+			
 			holder_like.coupon.setText("0\nÓÅ»ÝÈ¯");
 
 			convertView.setTag(holder_like);

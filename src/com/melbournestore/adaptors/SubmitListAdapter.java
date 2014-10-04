@@ -19,6 +19,7 @@ import com.melbournestore.activities.R;
 import com.melbournestore.activities.SubmitOrderActivity;
 import com.melbournestore.models.Order_user;
 import com.melbournestore.models.User;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class SubmitListAdapter extends BaseAdapter{
 	
@@ -125,10 +126,8 @@ public class SubmitListAdapter extends BaseAdapter{
         	
     		String address = "";
     		
-    		if(!mActiveUser.getUnitNo().equals("")||!mActiveUser.getStreet().equals("")||!mActiveUser.getSuburb().equals("")){
-    			address = mActiveUser.getUnitNo() + ","
-    					+ mActiveUser.getStreet() + "," + mActiveUser.getSuburb();
-    		}
+    		address = MelbourneUtils.getCompleteAddress(mActiveUser);
+    		
         	holder_activity.title.setText("‘ÀÀÕµÿ÷∑");
         	holder_activity.info.setHint("œÍœ∏µÿ÷∑");
         	holder_activity.info.setText(address);

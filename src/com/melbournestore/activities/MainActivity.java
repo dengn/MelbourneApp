@@ -86,6 +86,8 @@ import com.melbournestore.utils.MelbourneUtils;
 public class MainActivity extends Activity {
 
 	private static final String TAG = "Melbourne";
+	
+	private static final boolean DEBUG = false;
 
 	private static final int LOGIN_CODE = 1;
 
@@ -120,10 +122,16 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		SysApplication.getInstance().addActivity(this);
+		
+		if(DEBUG){
+			SharedPreferenceUtils.SharedPreferenceClearCurrentChoice(this);
+			SharedPreferenceUtils.SharedPreferenceClearCurrentOrder(this);
+			SharedPreferenceUtils.SharedPreferenceLoginUser(this);
+		}
 
-		setUpCurrentChoice();
+		SharedPreferenceUtils.setUpCurrentChoice(this);
 
-		setUpCurrentOrder();
+		SharedPreferenceUtils.setUpCurrentOrder(this);
 
 		setUpLoginUser();
 

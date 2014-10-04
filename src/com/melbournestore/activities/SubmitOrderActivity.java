@@ -1,6 +1,8 @@
 package com.melbournestore.activities;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import android.app.ActionBar;
@@ -34,6 +36,8 @@ import com.melbournestore.adaptors.SubmitListMemoAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.models.Order_user;
+import com.melbournestore.models.Plate;
+import com.melbournestore.models.Shop;
 import com.melbournestore.models.User;
 import com.melbournestore.utils.MelbourneUtils;
 
@@ -52,7 +56,6 @@ public class SubmitOrderActivity extends Activity {
 	private SubmitListAdapter mSubmitListAdapter;
 	private SubmitListMemoAdapter mSubmitListMemoAdapter;
 	private SubmitListCouponAdapter mSubmitListCouponAdapter;
-
 
 	int priceTotal;
 
@@ -76,12 +79,15 @@ public class SubmitOrderActivity extends Activity {
 			case 2:
 				Bundle b2 = msg.getData();
 				String memo = b2.getString("memo");
-				
-				String current_order = SharedPreferenceUtils.getCurrentOrder(SubmitOrderActivity.this);
+
+				String current_order = SharedPreferenceUtils
+						.getCurrentOrder(SubmitOrderActivity.this);
 				Gson gson = new Gson();
-				Order_user currentOrder = gson.fromJson(current_order, Order_user.class);
+				Order_user currentOrder = gson.fromJson(current_order,
+						Order_user.class);
 				currentOrder.setRemark(memo);
-				SharedPreferenceUtils.saveCurrentOrder(SubmitOrderActivity.this, gson.toJson(currentOrder));
+				SharedPreferenceUtils.saveCurrentOrder(
+						SubmitOrderActivity.this, gson.toJson(currentOrder));
 
 			}
 
@@ -102,7 +108,8 @@ public class SubmitOrderActivity extends Activity {
 		// that touching the
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
-
+		
+		getActionBar().setTitle("Ã·Ωª∂©µ•");
 
 		Intent intent = getIntent();
 		priceTotal = intent.getIntExtra("total_price", 0);
@@ -115,10 +122,47 @@ public class SubmitOrderActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
+				String users_string = SharedPreferenceUtils
+						.getLoginUser(SubmitOrderActivity.this);
+				Gson gson = new Gson();
+				User[] users = gson.fromJson(users_string, User[].class);
+				User activeUser = users[MelbourneUtils.getActiveUser(users)];
+
+				String current_order = SharedPreferenceUtils
+						.getCurrentOrder(SubmitOrderActivity.this);
+				Order_user currentOrder = gson.fromJson(current_order,
+						Order_user.class);
+
+				String current_choice = SharedPreferenceUtils
+						.getCurrentChoice(SubmitOrderActivity.this);
+				Shop[] shops = gson.fromJson(current_choice, Shop[].class);
+				Plate[] plates = MelbourneUtils.getPlatesChosen(shops);
+				currentOrder.setPlates(plates);
+
+				if (activeUser.getOrders() == null) {
+					Order_user[] userOrder = new Order_user[1];
+					userOrder[0] = currentOrder;
+					activeUser.setOrders(userOrder);
+				} else if (activeUser.getOrders().length == 0) {
+					Order_user[] userOrder = new Order_user[1];
+					userOrder[0] = currentOrder;
+					activeUser.setOrders(userOrder);
+				} else {
+					ArrayList<Order_user> userOrder_array = new ArrayList<Order_user>(
+							Arrays.asList(activeUser.getOrders()));
+					userOrder_array.add(currentOrder);
+					activeUser.setOrders(userOrder_array
+							.toArray(new Order_user[0]));
+				}
+				currentOrder.setCreateTime(MelbourneUtils.getSystemTime());
 				
-				
-				
-				
+				SharedPreferenceUtils.saveCurrentOrder(SubmitOrderActivity.this,
+						gson.toJson(currentOrder));
+
+				SharedPreferenceUtils.saveLoginUser(SubmitOrderActivity.this,
+						gson.toJson(users));
+
 				Intent intent = new Intent(SubmitOrderActivity.this,
 						OrderSubmittedActivity.class);
 				startActivity(intent);
@@ -137,17 +181,18 @@ public class SubmitOrderActivity extends Activity {
 		Gson gson = new Gson();
 		User[] users = gson.fromJson(users_string, User[].class);
 		User activeUser = users[MelbourneUtils.getActiveUser(users)];
-		
-		
-		String current_order = SharedPreferenceUtils.getCurrentOrder(SubmitOrderActivity.this);
-		Order_user currentOrder = gson.fromJson(current_order, Order_user.class);
-		
+
+		String current_order = SharedPreferenceUtils
+				.getCurrentOrder(SubmitOrderActivity.this);
+		Order_user currentOrder = gson
+				.fromJson(current_order, Order_user.class);
 
 		mSubmitListAdapter = new SubmitListAdapter(this, mHandler, activeUser,
 				currentOrder);
 		mSubmitList.setAdapter(mSubmitListAdapter);
 
-		mSubmitListMemoAdapter = new SubmitListMemoAdapter(this, mHandler, currentOrder);
+		mSubmitListMemoAdapter = new SubmitListMemoAdapter(this, mHandler,
+				currentOrder);
 		mSubmitMemoList.setAdapter(mSubmitListMemoAdapter);
 
 		mSubmitListCouponAdapter = new SubmitListCouponAdapter(this, mHandler);
@@ -166,15 +211,18 @@ public class SubmitOrderActivity extends Activity {
 
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
-				
-				String users_string = SharedPreferenceUtils.getLoginUser(SubmitOrderActivity.this);
-				Gson gson  = new Gson();
+
+				String users_string = SharedPreferenceUtils
+						.getLoginUser(SubmitOrderActivity.this);
+				Gson gson = new Gson();
 				User[] users = gson.fromJson(users_string, User[].class);
 				User activeUser = users[MelbourneUtils.getActiveUser(users)];
-				
-				String current_order = SharedPreferenceUtils.getCurrentOrder(SubmitOrderActivity.this);
-				Order_user currentOrder = gson.fromJson(current_order, Order_user.class);
-				
+
+				String current_order = SharedPreferenceUtils
+						.getCurrentOrder(SubmitOrderActivity.this);
+				Order_user currentOrder = gson.fromJson(current_order,
+						Order_user.class);
+
 				mSubmitListAdapter.refresh(activeUser, currentOrder);
 				mSubmitList.setAdapter(mSubmitListAdapter);
 			}
@@ -207,11 +255,12 @@ public class SubmitOrderActivity extends Activity {
 				.findViewById(R.id.delivery_time_picker);
 		Button deliveryTimeConfirm = (Button) view
 				.findViewById(R.id.delivery_time_confirm);
-		
-		String current_order = SharedPreferenceUtils.getCurrentOrder(SubmitOrderActivity.this);
+
+		String current_order = SharedPreferenceUtils
+				.getCurrentOrder(SubmitOrderActivity.this);
 		Gson gson = new Gson();
-		final Order_user currentOrder = gson.fromJson(current_order, Order_user.class);
-		
+		final Order_user currentOrder = gson.fromJson(current_order,
+				Order_user.class);
 
 		currentOrder.setDeliveryTime("2013.08.20 18:00");
 
@@ -235,13 +284,15 @@ public class SubmitOrderActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
-				String users_string = SharedPreferenceUtils.getLoginUser(SubmitOrderActivity.this);
-				Gson gson  = new Gson();
+
+				String users_string = SharedPreferenceUtils
+						.getLoginUser(SubmitOrderActivity.this);
+				Gson gson = new Gson();
 				User[] users = gson.fromJson(users_string, User[].class);
 				User activeUser = users[MelbourneUtils.getActiveUser(users)];
-				
-				SharedPreferenceUtils.saveCurrentOrder(SubmitOrderActivity.this, gson.toJson(currentOrder));
+
+				SharedPreferenceUtils.saveCurrentOrder(
+						SubmitOrderActivity.this, gson.toJson(currentOrder));
 
 				mSubmitListAdapter.refresh(activeUser, currentOrder);
 				mSubmitList.setAdapter(mSubmitListAdapter);

@@ -16,6 +16,7 @@ import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.MyAccountActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.models.User;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class MyAccountListAddressAdapter extends BaseAdapter {
 
@@ -84,10 +85,7 @@ public class MyAccountListAddressAdapter extends BaseAdapter {
 
 		String address = "";
 		
-		if(!mActiveUser.getUnitNo().equals("")||!mActiveUser.getStreet().equals("")||!mActiveUser.getSuburb().equals("")){
-			address = mActiveUser.getUnitNo() + ","
-					+ mActiveUser.getStreet() + "," + mActiveUser.getSuburb();
-		}
+		address = MelbourneUtils.getCompleteAddress(mActiveUser);
 		
 		holder_address.address.setText(address);
 		holder_address.rightArrow

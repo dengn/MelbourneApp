@@ -25,6 +25,8 @@ public class DeliveryNoticeActivity extends Activity{
 		
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
+		
+		getActionBar().setTitle("ÅÉËÍËµÃ÷");
 
 		// Specify that the Home button should show an "Up" caret, indicating
 		// that touching the

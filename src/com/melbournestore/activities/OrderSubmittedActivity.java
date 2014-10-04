@@ -10,7 +10,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.melbournestore.application.SysApplication;
+import com.melbournestore.db.DataResourceUtils;
+import com.melbournestore.db.SharedPreferenceUtils;
+import com.melbournestore.models.Order_user;
+import com.melbournestore.models.Plate;
+import com.melbournestore.models.User;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class OrderSubmittedActivity extends Activity {
 	private TextView notice_info1;
@@ -30,11 +37,48 @@ public class OrderSubmittedActivity extends Activity {
 		// button will take the user one step up in the application's hierarchy.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		getActionBar().setTitle("订单已提交");
+		
 		
 		notice_info1 = (TextView) findViewById(R.id.order_submitted_info1);
 		notice_info2 = (TextView) findViewById(R.id.order_submitted_info2);
 		
-		notice_info1.setText("");
+		
+		String order_info ="";
+		
+		
+		String users_string = SharedPreferenceUtils
+				.getLoginUser(OrderSubmittedActivity.this);
+		
+		Gson gson = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+		User activeUser = users[MelbourneUtils.getActiveUser(users)];
+		
+		String current_order = SharedPreferenceUtils.getCurrentOrder(OrderSubmittedActivity.this);
+		Order_user order = gson.fromJson(current_order, Order_user.class);
+		
+		Plate[] plates= order.getPlates();
+		
+		for(int i=0;i<plates.length;i++){
+			order_info+=DataResourceUtils.shopItems[plates[i].getShopId()]+"\n";
+			order_info+=plates[i].getName()+" "+String.valueOf(plates[i].getNumber())+"份  $"+String.valueOf(plates[i].getNumber()*plates[i].getPrice())+"\n";
+			
+			
+		}
+		
+		order_info+="其他\n";
+		order_info+="派送费"+String.valueOf(order.getDeliveryFee())+"\n";
+		
+		order_info+="总计费用: $"+String.valueOf(MelbourneUtils.sum_price_all(plates)+order.getDeliveryFee()+"\n");
+
+		order_info+="送货电话: "+activeUser.getPhoneNumber()+"\n";
+		order_info+="送货地址: "+MelbourneUtils.getCompleteAddress(activeUser)+"\n";
+		order_info+="送货时间: "+order.getDeliveryTime()+"\n";
+		order_info+="偏好: "+order.getRemark()+"\n";
+		order_info+="订单号码: \n";
+		order_info+="订单时间: "+order.getCreateTime()+"\n";
+		
+		notice_info1.setText(order_info);
 		notice_info2.setText("");
 	}
 	
@@ -48,6 +92,12 @@ public class OrderSubmittedActivity extends Activity {
 			// activity and
 			// use NavUtils in the Support Package to ensure proper handling of
 			// Up.
+			
+			
+
+			SharedPreferenceUtils.setUpCurrentChoice(this);
+			SharedPreferenceUtils.setUpCurrentOrder(this);
+			
 			Intent upIntent = NavUtils.getParentActivityIntent(this);
 			upIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(upIntent);
