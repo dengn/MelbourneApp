@@ -155,6 +155,7 @@ public class SubmitOrderActivity extends Activity {
 					activeUser.setOrders(userOrder_array
 							.toArray(new Order_user[0]));
 				}
+				currentOrder.setStatus(0);
 				currentOrder.setCreateTime(MelbourneUtils.getSystemTime());
 				
 				SharedPreferenceUtils.saveCurrentOrder(SubmitOrderActivity.this,

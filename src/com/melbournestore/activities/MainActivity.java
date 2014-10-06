@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
 		setUpLoginUser();
 
 		plate_fragment = new PlateFragment(this);
-		myorders_fragment = new MyOrdersFragment();
+		myorders_fragment = new MyOrdersFragment(this);
 		googlemap_fragment = new GoogleMapFragment(this);
 
 		mTitle = mDrawerTitle = getTitle();

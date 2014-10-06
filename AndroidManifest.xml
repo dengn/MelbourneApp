@@ -11,7 +11,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,7 +31,6 @@
     <!-- Required to show current location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    
     <uses-permission android:name="com.melbounrnestore.activities.permission.MAPS_RECEIVE" />
 
     <!-- Required OpenGL ES 2.0. for Maps V2 -->
@@ -94,6 +93,9 @@
         <activity
             android:name=".DishActivity"
             android:parentActivityName=".PlateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CurrentOrderActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SplashScreen"
