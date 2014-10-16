@@ -33,11 +33,13 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 
 	private static LayoutInflater inflater = null;
 
-	public ChooseAddressListAdapter(Context context, Handler handler, String suburb) {
+	public ChooseAddressListAdapter(Context context, Handler handler, String unit, String street, String suburb) {
 		// TODO Auto-generated constructor stub
 
 		mContext = context;
 		mHandler = handler;
+		addr_unit = unit;
+		addr_street = street;
 		addr_suburb = suburb;
 
 		inflater = (LayoutInflater) context
@@ -76,6 +78,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 
 		viewHolder_edittext holder_edittext = null;
 		viewHolder_activity holder_activity = null;
+		viewHolder_textView holder_textview = null;
 
 		switch (position) {
 		case 0:
@@ -85,7 +88,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	holder_edittext.title = (TextView)convertView.findViewById(R.id.unit_title);
         	holder_edittext.text = (EditText)convertView.findViewById(R.id.unit_info);
         	
-        	holder_edittext.title.setText("Unit/No.");
+        	holder_edittext.title.setText("Ω÷∫≈");
         	
         	holder_edittext.text.setText(addr_unit);
         	
@@ -121,7 +124,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	holder_edittext.title = (TextView)convertView.findViewById(R.id.street_title);
         	holder_edittext.text = (EditText)convertView.findViewById(R.id.street_info);
         	
-        	holder_edittext.title.setText("Street");
+        	holder_edittext.title.setText("Ω÷√˚");
         	
         	holder_edittext.text.setHint("King Street");
         	
@@ -162,7 +165,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	
         	
         	
-        	holder_activity.title.setText("Suburb");
+        	holder_activity.title.setText("«¯”Ú");
         	holder_activity.info.setText(addr_suburb);
         	holder_activity.info.setHint("City");
         	holder_activity.rightArrow.setImageResource(R.drawable.other_icon_rightarrow);
@@ -180,6 +183,21 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         		
         	});
 			break;
+		case 3:
+			holder_textview = new viewHolder_textView();
+        	convertView = inflater.inflate(R.layout.choose_address_postcode, parent, false);
+        	
+        	holder_textview.title = (TextView)convertView.findViewById(R.id.postcode_title);
+        	holder_textview.info = (TextView)convertView.findViewById(R.id.postcode_info);
+        	
+        	holder_textview.title.setText("” ±‡");
+        	holder_textview.info.setText("3757");
+        	
+        	convertView.setTag(holder_activity);
+        	
+        	break;
+        	
+        	
 		}
 
 		return convertView;
@@ -200,6 +218,13 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 		private TextView info;
 
 		private ImageView rightArrow;
+	}
+	
+	class viewHolder_textView {
+		
+		private TextView title;
+		
+		private TextView info;
 	}
 
 }

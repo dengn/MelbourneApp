@@ -61,11 +61,13 @@
         <activity
             android:name=".SubmitOrderActivity"
             android:parentActivityName=".ShoppingCartActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" 
+            android:windowSoftInputMode="adjustPan|stateHidden"/><!-- 防止android软键盘出现把原来的布局顶上去 -->>
         <activity
             android:name=".ChooseAddressActivity"
             android:parentActivityName=".SubmitOrderActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" 
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity
             android:name=".DeliveryNoticeActivity"
             android:parentActivityName=".SubmitOrderActivity"

@@ -69,15 +69,22 @@ public class ChooseAddressActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		getActionBar().setTitle("ÀÕªıµÿ÷∑");
+		
+		
+		String users_string = SharedPreferenceUtils
+				.getLoginUser(ChooseAddressActivity.this);
+		Gson gson = new Gson();
+		User[] users = gson.fromJson(users_string, User[].class);
+		User activeUser = users[MelbourneUtils.getActiveUser(users)];
 
-		addr_unit = "";
-		addr_street = "";
-		addr_suburb = "";
+		addr_unit = activeUser.getUnitNo();
+		addr_street = activeUser.getStreet();
+		addr_suburb = activeUser.getSuburb();
 
 		chooseAddr_list = (ListView) findViewById(R.id.chooseAddr_list);
 
 		mChooseAddressListAdapter = new ChooseAddressListAdapter(this,
-				mHandler, addr_suburb);
+				mHandler, addr_unit, addr_street, addr_suburb);
 		chooseAddr_list.setAdapter(mChooseAddressListAdapter);
 
 	}
