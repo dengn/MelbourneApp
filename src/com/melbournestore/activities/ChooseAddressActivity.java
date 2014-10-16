@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.melbournestore.adaptors.ChooseAddressListAdapter;
+import com.melbournestore.adaptors.ChooseAddressSuburbListAdapter;
 import com.melbournestore.application.SysApplication;
 import com.melbournestore.db.SharedPreferenceUtils;
 import com.melbournestore.models.User;
@@ -28,7 +29,11 @@ public class ChooseAddressActivity extends Activity {
 
 	private ListView chooseAddr_list;
 
+	private ListView chooseAddrSuburb_list;
+	
 	private ChooseAddressListAdapter mChooseAddressListAdapter;
+	
+	private ChooseAddressSuburbListAdapter mChooseAddressSuburbListAdapter;
 
 	private String addr_unit;
 	private String addr_street;
@@ -86,6 +91,12 @@ public class ChooseAddressActivity extends Activity {
 		mChooseAddressListAdapter = new ChooseAddressListAdapter(this,
 				mHandler, addr_unit, addr_street, addr_suburb);
 		chooseAddr_list.setAdapter(mChooseAddressListAdapter);
+		
+		chooseAddrSuburb_list = (ListView) findViewById(R.id.chooseAddr_suburb);
+		
+		mChooseAddressSuburbListAdapter = new ChooseAddressSuburbListAdapter(this,
+				mHandler, addr_suburb);
+		chooseAddrSuburb_list.setAdapter(mChooseAddressSuburbListAdapter);
 
 	}
 

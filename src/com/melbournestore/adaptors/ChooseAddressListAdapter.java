@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.activities.SuburbActivity;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class ChooseAddressListAdapter extends BaseAdapter {
 	
@@ -57,7 +58,7 @@ public class ChooseAddressListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -191,9 +192,9 @@ public class ChooseAddressListAdapter extends BaseAdapter {
         	holder_textview.info = (TextView)convertView.findViewById(R.id.postcode_info);
         	
         	holder_textview.title.setText("” ±‡");
-        	holder_textview.info.setText("3757");
+        	holder_textview.info.setText(MelbourneUtils.getPostcode(addr_suburb));
         	
-        	convertView.setTag(holder_activity);
+        	convertView.setTag(holder_textview);
         	
         	break;
         	

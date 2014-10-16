@@ -187,5 +187,17 @@ public class MelbourneUtils {
 		
 		return user;
 	}
+	
+	public static final String getPostcode(String suburb){
+		return "12345";
+	}
+	
+	public static final String getSuburbRegion(String suburb){
+		return "±±";
+	}
+	
+	public static final String getSuburbDeliveryPrice(String suburb){
+		return "≈‰ÀÕ∑—: $10";
+	}
 
 }
