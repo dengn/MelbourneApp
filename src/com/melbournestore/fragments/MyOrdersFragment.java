@@ -14,11 +14,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.google.gson.Gson;
+import com.melbournestore.activities.ChatActivity;
 import com.melbournestore.activities.CurrentOrderActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.adaptors.MyOrderListAdapter;
@@ -88,6 +88,8 @@ public class MyOrdersFragment extends Fragment{
 		switch (item.getItemId()) {
 		case R.id.chat:
 
+			Intent intent = new Intent(getActivity(), ChatActivity.class);
+			startActivity(intent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -252,5 +252,15 @@ public class MelbourneUtils {
 			return 0;
 		}
 	}
+	
+	public static final String[] getAllPlateNames(){
+
+		
+		String plates[] = new String[DataResourceUtils.plateNames[0].length+DataResourceUtils.plateNames[1].length+DataResourceUtils.plateNames[2].length];		
+		System.arraycopy(DataResourceUtils.plateNames[0],0,plates,0,DataResourceUtils.plateNames[0].length);
+		System.arraycopy(DataResourceUtils.plateNames[1],0,plates,DataResourceUtils.plateNames[0].length,DataResourceUtils.plateNames[1].length);
+		System.arraycopy(DataResourceUtils.plateNames[2],0,plates,DataResourceUtils.plateNames[0].length+DataResourceUtils.plateNames[1].length,DataResourceUtils.plateNames[2].length);
+		return plates;
+	}
 
 }
