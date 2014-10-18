@@ -213,6 +213,7 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -222,8 +223,12 @@ public class MainActivity extends Activity {
 		// If the nav drawer is open, hide action items related to the content
 		// view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		
+		menu.findItem(R.id.web_search).setVisible(false);
+
+
 		return super.onPrepareOptionsMenu(menu);
+		
 	}
 
 	@Override
@@ -233,23 +238,21 @@ public class MainActivity extends Activity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle action buttons
 		switch (item.getItemId()) {
-		case R.id.action_websearch:
-			// // create intent to perform web search for this planet
-			// Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-			// intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-			// // catch event that there's no activity to handle intent
-			// if (intent.resolveActivity(getPackageManager()) != null) {
-			// startActivity(intent);
-			// } else {
-			// Toast.makeText(this, R.string.app_not_available,
-			// Toast.LENGTH_LONG).show();
-			// }
+		case R.id.web_search:
 			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+
+	    case R.id.search_plate:
+	        // Not implemented here
+	        return false;
+	    case R.id.chat:
+	        // Not implemented here
+	        return false;
+	    default:
+	    	return super.onOptionsItemSelected(item);
+	    }
+
+
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

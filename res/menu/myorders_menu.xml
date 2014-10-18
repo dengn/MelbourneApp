@@ -15,8 +15,8 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/web_search"
-          android:icon="@drawable/action_search"
+    <item android:id="@+id/chat"
+          android:icon="@drawable/chat_logo"
           android:title=""
           android:showAsAction="ifRoom|withText" />
 </menu>
