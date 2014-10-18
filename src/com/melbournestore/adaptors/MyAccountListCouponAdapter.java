@@ -1,14 +1,19 @@
 package com.melbournestore.adaptors;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.melbournestore.activities.MyAccountActivity;
+import com.melbournestore.activities.MyCouponActivity;
 import com.melbournestore.activities.R;
 
 public class MyAccountListCouponAdapter extends BaseAdapter {
@@ -70,6 +75,19 @@ public class MyAccountListCouponAdapter extends BaseAdapter {
 		holder_coupon.title.setText("Œ“µƒ”≈ª›»Ø");
 		holder_coupon.rightArrow
 				.setImageResource(R.drawable.other_icon_rightarrow);
+		
+		convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(mContext,
+						MyCouponActivity.class);
+				((Activity) mContext).startActivity(intent);
+			}
+
+		});
+
 
 		convertView.setTag(holder_coupon);
 

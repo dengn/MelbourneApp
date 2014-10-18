@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.DeliveryNoticeActivity;
+import com.melbournestore.activities.MyCouponActivity;
 import com.melbournestore.activities.R;
 import com.melbournestore.activities.SubmitOrderActivity;
 
@@ -128,6 +129,18 @@ public class SubmitListCouponAdapter extends BaseAdapter{
         	holder_coupon.title.setText(" π”√”≈ª›»Ø");
     		holder_coupon.rightArrow
 			.setImageResource(R.drawable.other_icon_rightarrow);
+    		
+    		convertView.setOnClickListener(new OnClickListener() {
+
+    			@Override
+    			public void onClick(View v) {
+    				// TODO Auto-generated method stub
+    				Intent intent = new Intent(mContext,
+    						MyCouponActivity.class);
+    				((Activity) mContext).startActivity(intent);
+    			}
+
+    		});
         	
         	convertView.setTag(holder_coupon);
         	break;
