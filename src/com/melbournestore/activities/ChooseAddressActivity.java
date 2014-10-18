@@ -125,7 +125,9 @@ public class ChooseAddressActivity extends Activity {
 				addr_suburb = suburb;
 				mChooseAddressListAdapter.refresh(addr_unit, addr_street,
 						addr_suburb);
+				mChooseAddressSuburbListAdapter.refresh(addr_suburb);
 				chooseAddr_list.setAdapter(mChooseAddressListAdapter);
+				chooseAddrSuburb_list.setAdapter(mChooseAddressSuburbListAdapter);
 
 			}
 			if (resultCode == RESULT_CANCELED) {

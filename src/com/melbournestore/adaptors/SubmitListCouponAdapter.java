@@ -3,24 +3,21 @@ package com.melbournestore.adaptors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.melbournestore.activities.ChooseAddressActivity;
 import com.melbournestore.activities.DeliveryNoticeActivity;
 import com.melbournestore.activities.MyCouponActivity;
 import com.melbournestore.activities.R;
-import com.melbournestore.activities.SubmitOrderActivity;
+import com.melbournestore.models.User;
+import com.melbournestore.utils.MelbourneUtils;
 
 public class SubmitListCouponAdapter extends BaseAdapter{
 	
@@ -32,24 +29,25 @@ public class SubmitListCouponAdapter extends BaseAdapter{
 	
 	Handler mHandler;
 	Context mContext;
+	User mActiveUser;
 
 	
 	private static LayoutInflater inflater = null;
 	
-	public SubmitListCouponAdapter(Context context, Handler handler) {
+	public SubmitListCouponAdapter(Context context, Handler handler, User activeUser) {
 		// TODO Auto-generated constructor stub
 
 		
 		mContext = context;
 		mHandler = handler;
-
+		mActiveUser = activeUser;
 
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void refresh(){
-
+	public void refresh(User activeUser){
+		mActiveUser = activeUser;
 		notifyDataSetChanged();
 	}
 
@@ -101,7 +99,10 @@ public class SubmitListCouponAdapter extends BaseAdapter{
         	holder_url.title = (TextView)convertView.findViewById(R.id.delivery_title);
         	holder_url.info = (TextView)convertView.findViewById(R.id.delivery_info);
         	
-        	holder_url.title.setText("≈‰ÀÕ∑—(Northwest+$8)");
+        	
+        	String suburb = mActiveUser.getSuburb();
+        	
+        	holder_url.title.setText(MelbourneUtils.getSuburbDeliveryPrice(suburb)+"("+MelbourneUtils.getSuburbRegion(suburb)+")");
         	holder_url.info.setText(Html.fromHtml("<u>"+"≈…ÀÕÀµ√˜"+"</u>"));  
         	
         	convertView.setTag(holder_url);

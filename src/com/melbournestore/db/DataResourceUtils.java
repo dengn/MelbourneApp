@@ -44,5 +44,18 @@ public class DataResourceUtils {
 					R.drawable.plate9, R.drawable.plate10 },
 			{ R.drawable.plate11, R.drawable.plate12, R.drawable.plate13,
 					R.drawable.plate14, R.drawable.plate15 } };
+	
+	
+	public static final String[] names_center={"City","Cross Roads","Jiefang Bei"};
+	public static final String[] names_southeast={"South Area"};
+	public static final String[] names_north={"Airport", "Two Rivers"};
+	public static final String[] names_west={"University Town"};
+	public static final String[] names_northeast={"Northeast Area"};
+	
+	public static final String post_center="3001";
+	public static final String post_southeast="3002";
+	public static final String post_north="3003";
+	public static final String post_west="3004";
+	public static final String post_northeast="3005";
 
 }

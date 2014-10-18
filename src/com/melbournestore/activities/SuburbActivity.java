@@ -42,6 +42,7 @@ public class SuburbActivity extends Activity implements
 		public void handleMessage(Message msg) {
 			Bundle b = msg.getData();
 			String suburbChosen = b.getString("suburb");
+			
 			switch (msg.what) {
 			// get the suburb chosen
 			case 1:
@@ -73,8 +74,8 @@ public class SuburbActivity extends Activity implements
 
 		suburb_chosen.setVisibility(View.INVISIBLE);
 
-		suburb_chosen_names = new String[] { "Airport", "City", "Cross Roads",
-				"Jiefang Bei", "Two River", "University Town", "South Area" };
+		suburb_chosen_names = new String[] { "Airport","Two River","City", "Cross Roads",
+				"Jiefang Bei", "University Town", "South Area","Northeast Area" };
 		suburb_chosen_adapter = new ArrayAdapter<String>(
 				getApplicationContext(),
 				android.R.layout.simple_expandable_list_item_1,
@@ -118,13 +119,14 @@ public class SuburbActivity extends Activity implements
 
 		List<ItemEntity> data = new ArrayList<ItemEntity>();
 
-		ItemEntity itemEntity1 = new ItemEntity("Northeast", "Airport");
-		ItemEntity itemEntity2 = new ItemEntity("Center", "City");
-		ItemEntity itemEntity3 = new ItemEntity("Center", "Cross Roads");
-		ItemEntity itemEntity4 = new ItemEntity("Center", "Jiefang Bei");
-		ItemEntity itemEntity5 = new ItemEntity("Northwest", "Two River");
-		ItemEntity itemEntity6 = new ItemEntity("Southwest", "University Town");
-		ItemEntity itemEntity7 = new ItemEntity("Southeast", "South Area");
+		ItemEntity itemEntity1 = new ItemEntity("北", "Airport");
+		ItemEntity itemEntity2 = new ItemEntity("北", "Two River");
+		ItemEntity itemEntity3 = new ItemEntity("City", "City");
+		ItemEntity itemEntity4 = new ItemEntity("City", "Cross Roads");
+		ItemEntity itemEntity5 = new ItemEntity("City", "Jiefang Bei");
+		ItemEntity itemEntity6 = new ItemEntity("西", "University Town");
+		ItemEntity itemEntity7 = new ItemEntity("东南", "South Area");
+		ItemEntity itemEntity8 = new ItemEntity("东北", "Northeast Area");
 
 		data.add(itemEntity1);
 		data.add(itemEntity2);
@@ -133,6 +135,7 @@ public class SuburbActivity extends Activity implements
 		data.add(itemEntity5);
 		data.add(itemEntity6);
 		data.add(itemEntity7);
+		data.add(itemEntity8);
 
 		return data;
 

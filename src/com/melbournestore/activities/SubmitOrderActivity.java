@@ -196,7 +196,7 @@ public class SubmitOrderActivity extends Activity {
 				currentOrder);
 		mSubmitMemoList.setAdapter(mSubmitListMemoAdapter);
 
-		mSubmitListCouponAdapter = new SubmitListCouponAdapter(this, mHandler);
+		mSubmitListCouponAdapter = new SubmitListCouponAdapter(this, mHandler, activeUser);
 		mSubmitCouponList.setAdapter(mSubmitListCouponAdapter);
 
 		mSubmitOrders.setText("确认下单");

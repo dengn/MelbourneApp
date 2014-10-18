@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import com.melbournestore.db.DataResourceUtils;
 import com.melbournestore.models.Order_user;
 import com.melbournestore.models.Plate;
 import com.melbournestore.models.Shop;
@@ -189,15 +190,67 @@ public class MelbourneUtils {
 	}
 	
 	public static final String getPostcode(String suburb){
-		return "12345";
+		if(Arrays.asList(DataResourceUtils.names_center).contains(suburb)){
+			return DataResourceUtils.post_center;
+		}
+		else if(Arrays.asList(DataResourceUtils.names_north).contains(suburb)){
+			return DataResourceUtils.post_north;
+		}
+		else if(Arrays.asList(DataResourceUtils.names_northeast).contains(suburb)){
+			return DataResourceUtils.post_northeast;
+		}
+		else if(Arrays.asList(DataResourceUtils.names_west).contains(suburb)){
+			return DataResourceUtils.post_west;
+		}
+		else if(Arrays.asList(DataResourceUtils.names_southeast).contains(suburb)){
+			return DataResourceUtils.post_southeast;
+		}
+		else{
+			return "";
+		}
 	}
 	
 	public static final String getSuburbRegion(String suburb){
-		return "北";
+		
+		if(Arrays.asList(DataResourceUtils.names_center).contains(suburb)){
+			return "City";
+		}
+		else if(Arrays.asList(DataResourceUtils.names_north).contains(suburb)){
+			return "北";
+		}
+		else if(Arrays.asList(DataResourceUtils.names_northeast).contains(suburb)){
+			return "东北";
+		}
+		else if(Arrays.asList(DataResourceUtils.names_west).contains(suburb)){
+			return "西";
+		}
+		else if(Arrays.asList(DataResourceUtils.names_southeast).contains(suburb)){
+			return "东南";
+		}
+		else{
+			return "";
+		}
 	}
 	
 	public static final String getSuburbDeliveryPrice(String suburb){
-		return "配送费: $10";
+		if(getSuburbRegion(suburb).equals("City")){
+			return "配送费: $5";
+		}
+		else if(getSuburbRegion(suburb).equals("西")){
+			return "配送费: $10";
+		}
+		else if(getSuburbRegion(suburb).equals("东北")){
+			return "配送费: $5";
+		}
+		else if(getSuburbRegion(suburb).equals("北")){
+			return "配送费: $10";
+		}
+		else if(getSuburbRegion(suburb).equals("东南")){
+			return "配送费: $5";
+		}
+		else{
+			return "";
+		}
 	}
 
 }
