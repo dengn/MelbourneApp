@@ -38,6 +38,7 @@ public class PlateFragment extends Fragment{
         headerView = new CategoryListHeaderView(mContext);
         category.addHeaderView(headerView); 
         
+        
         String[] shopSubItems = new String[DataResourceUtils.shopItemsImages.length];
         for(int i=0;i<shopSubItems.length;i++)
         {

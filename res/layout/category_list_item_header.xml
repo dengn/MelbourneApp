@@ -3,14 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#30000000"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
     <SearchView  
         android:id="@+id/category_search_view"  
-        android:layout_width="match_parent"  
+        android:layout_width="280dp"  
         android:layout_height="match_parent"  
         android:iconifiedByDefault="false"  
+        android:layout_alignParentLeft="true"
         android:inputType="textFilter"  
         android:queryHint="请输入菜品的名称" >  
     </SearchView> 
+    <TextView
+        android:id="@+id/login_notice"
+        android:layout_width="80dp"
+        android:layout_height="match_parent" 
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:textSize="20dp"
+        android:text="Cancel"
+        android:textColor="@color/white"/>
+    
 
 </LinearLayout>
