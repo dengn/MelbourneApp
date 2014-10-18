@@ -139,6 +139,7 @@ public class SubmitOrderActivity extends Activity {
 				Shop[] shops = gson.fromJson(current_choice, Shop[].class);
 				Plate[] plates = MelbourneUtils.getPlatesChosen(shops);
 				currentOrder.setPlates(plates);
+				currentOrder.setDeliveryFee(MelbourneUtils.getSuburbDeliveryPrice(activeUser.getSuburb()));
 
 				if (activeUser.getOrders() == null) {
 					Order_user[] userOrder = new Order_user[1];

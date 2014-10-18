@@ -48,7 +48,7 @@ public class DataResourceUtils {
 	
 	public static final String[] names_center={"City","Cross Roads","Jiefang Bei"};
 	public static final String[] names_southeast={"South Area"};
-	public static final String[] names_north={"Airport", "Two Rivers"};
+	public static final String[] names_north={"Airport", "Two River"};
 	public static final String[] names_west={"University Town"};
 	public static final String[] names_northeast={"Northeast Area"};
 	

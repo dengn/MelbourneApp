@@ -102,7 +102,7 @@ public class SubmitListCouponAdapter extends BaseAdapter{
         	
         	String suburb = mActiveUser.getSuburb();
         	
-        	holder_url.title.setText(MelbourneUtils.getSuburbDeliveryPrice(suburb)+"("+MelbourneUtils.getSuburbRegion(suburb)+")");
+        	holder_url.title.setText("≈‰ÀÕ∑—("+MelbourneUtils.getSuburbRegion(suburb)+" + $"+String.valueOf(MelbourneUtils.getSuburbDeliveryPrice(suburb))+")");
         	holder_url.info.setText(Html.fromHtml("<u>"+"≈…ÀÕÀµ√˜"+"</u>"));  
         	
         	convertView.setTag(holder_url);

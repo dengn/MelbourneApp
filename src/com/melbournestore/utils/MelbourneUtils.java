@@ -232,24 +232,24 @@ public class MelbourneUtils {
 		}
 	}
 	
-	public static final String getSuburbDeliveryPrice(String suburb){
+	public static final int getSuburbDeliveryPrice(String suburb){
 		if(getSuburbRegion(suburb).equals("City")){
-			return "配送费: $5";
+			return 5;
 		}
 		else if(getSuburbRegion(suburb).equals("西")){
-			return "配送费: $10";
+			return 10;
 		}
 		else if(getSuburbRegion(suburb).equals("东北")){
-			return "配送费: $5";
+			return 5;
 		}
 		else if(getSuburbRegion(suburb).equals("北")){
-			return "配送费: $10";
+			return 10;
 		}
 		else if(getSuburbRegion(suburb).equals("东南")){
-			return "配送费: $5";
+			return 5;
 		}
 		else{
-			return "";
+			return 0;
 		}
 	}
 

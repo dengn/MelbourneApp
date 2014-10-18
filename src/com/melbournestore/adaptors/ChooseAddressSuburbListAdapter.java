@@ -79,8 +79,8 @@ public class ChooseAddressSuburbListAdapter extends BaseAdapter {
 		holder_textview.title.setText(MelbourneUtils
 				.getSuburbRegion(addr_suburb));
 
-		holder_textview.info.setText(MelbourneUtils
-				.getSuburbDeliveryPrice(addr_suburb));
+		holder_textview.info.setText("≈‰ÀÕ∑—: $"+String.valueOf(MelbourneUtils
+				.getSuburbDeliveryPrice(addr_suburb)));
 
 		convertView.setTag(holder_textview);
 
